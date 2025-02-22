@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/shared/Navigation";
+import logoSvg from "@/assets/icons/The Way Forward - Logo Circular.svg";
 
 const Home = () => {
   const features = [
@@ -38,6 +39,13 @@ const Home = () => {
       <main className="container mx-auto px-4 pt-24 pb-12">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-up">
+          <div className="mb-8">
+            <img
+              src={logoSvg}
+              alt="The Way Forward Logo"
+              className="w-24 md:w-32 lg:w-48 mx-auto h-auto"
+            />
+          </div>
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
             The Way Forward
           </h1>
