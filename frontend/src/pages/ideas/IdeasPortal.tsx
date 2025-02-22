@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/shared/Navigation";
 import IdeaCard from "@/components/ideas/IdeaCard";
 import CuratorChoice from "@/components/ideas/CuratorChoice";
@@ -138,9 +139,10 @@ const IdeasPortal = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {MOCK_IDEAS.map((idea, index) => (
-            <div
+            <Link
               key={index}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+              to={`/ideas/${index + 1}`}
+              className="block bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -188,7 +190,7 @@ const IdeasPortal = () => {
                   {idea.timestamp}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </main>
