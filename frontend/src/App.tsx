@@ -3,7 +3,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+
+// Import new components
+import Home from "./pages/home/Home";
+import IdeasPortal from "./pages/ideas/IdeasPortal";
+import IdeaDetail from "./pages/ideas/IdeaDetail";
+import SubmitIdea from "./pages/ideas/SubmitIdea";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +20,21 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Home Route */}
+          <Route path="/" element={<Home />} />
+
+          {/* Ideas Routes */}
+          <Route path="/ideas" element={<IdeasPortal />} />
+          <Route path="/ideas/:id" element={<IdeaDetail />} />
+          <Route path="/ideas/submit" element={<SubmitIdea />} />
+
+          {/* Other Routes (to be implemented) */}
+          <Route path="/podcast" element={<NotFound />} />
+          <Route path="/deep-dives" element={<NotFound />} />
+          <Route path="/resources" element={<NotFound />} />
+          <Route path="/profile" element={<NotFound />} />
+
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

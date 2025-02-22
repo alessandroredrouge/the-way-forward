@@ -1,12 +1,12 @@
-
 import React from "react";
-import { 
+import { Link } from "react-router-dom";
+import {
   Home,
   Lightbulb,
   Radio,
   BookOpen,
   Boxes,
-  UserCircle
+  UserCircle,
 } from "lucide-react";
 
 const Navigation = () => {
@@ -24,18 +24,20 @@ const Navigation = () => {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-black">The Way Forward</h1>
+            <Link to="/" className="text-xl font-bold text-black">
+              The Way Forward
+            </Link>
           </div>
           <div className="hidden sm:flex sm:items-center">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="ml-8 text-sm font-medium text-gray-900 hover:text-secondary transition-colors duration-200 flex items-center"
               >
                 <item.icon className="w-4 h-4 mr-2" />
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="sm:hidden">

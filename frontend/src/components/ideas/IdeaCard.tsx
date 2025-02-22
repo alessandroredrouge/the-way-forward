@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { ArrowUp, ArrowDown, MessageSquare, Users, Lock } from "lucide-react";
-import IdeaDialog from "./IdeaDialog";
+import IdeaDialog from "@/components/ideas/IdeaDialog";
 
 interface IdeaCardProps {
   title: string;
