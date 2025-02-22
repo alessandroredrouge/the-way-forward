@@ -17,11 +17,10 @@ export const DarkModeProvider = ({
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const savedMode = localStorage.getItem("darkMode");
-      return savedMode
-        ? JSON.parse(savedMode)
-        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      // Return true (dark mode) by default if no saved preference
+      return savedMode ? JSON.parse(savedMode) : true;
     }
-    return false;
+    return true; // Default to dark mode
   });
 
   useEffect(() => {
