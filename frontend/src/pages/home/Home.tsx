@@ -6,41 +6,44 @@ const Home = () => {
   const features = [
     {
       title: "Ideas Portal",
-      description: "Discover and share innovative startup ideas across industries",
+      description:
+        "Discover and share innovative startup ideas across industries",
       icon: "💡",
-      link: "/ideas"
+      link: "/ideas",
     },
     {
       title: "Podcast",
-      description: "Listen to industry experts discuss challenges and opportunities",
+      description:
+        "Listen to industry experts discuss challenges and opportunities",
       icon: "🎙️",
-      link: "/podcast"
+      link: "/podcast",
     },
     {
       title: "Deep-dives",
       description: "In-depth analysis of trending topics and emerging markets",
       icon: "📚",
-      link: "/deep-dives"
+      link: "/deep-dives",
     },
     {
       title: "Resources",
       description: "Curated collection of tools and guides for entrepreneurs",
       icon: "🔧",
-      link: "/resources"
-    }
+      link: "/resources",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-up">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
             The Way Forward
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Your platform for discovering, sharing, and building the next generation of innovative startups.
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+            Your platform for discovering, sharing, and building the next
+            generation of innovative startups.
           </p>
           <Link
             to="/ideas"
@@ -56,23 +59,25 @@ const Home = () => {
             <Link
               key={index}
               to={feature.link}
-              className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow"
             >
               <div className="text-4xl mb-4">{feature.icon}</div>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                 {feature.title}
               </h2>
-              <p className="text-gray-600">{feature.description}</p>
+              <p className="text-gray-600 dark:text-gray-300">
+                {feature.description}
+              </p>
             </Link>
           ))}
         </div>
 
         {/* Call to Action */}
         <div className="max-w-4xl mx-auto text-center mt-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Ready to Share Your Idea?
           </h2>
-          <p className="text-lg text-gray-600 mb-8">
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
             Join our community of innovators and bring your vision to life.
           </p>
           <Link
