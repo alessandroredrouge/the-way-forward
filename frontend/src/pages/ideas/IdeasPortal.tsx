@@ -132,7 +132,7 @@ const IdeasPortal = () => {
               </select>
             </div>
           </div>
-          <button className="flex-shrink-0 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+          <button className="flex-shrink-0 px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors">
             Submit Idea
           </button>
         </div>

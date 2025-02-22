@@ -92,7 +92,7 @@ const IdeaDetail = () => {
                   </span>
                 </div>
               </div>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              <button className="px-4 py-2 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors">
                 Show Interest
               </button>
             </div>

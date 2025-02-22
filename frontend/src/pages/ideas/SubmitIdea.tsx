@@ -112,7 +112,7 @@ const SubmitIdea = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
               >
                 Submit Idea
               </button>

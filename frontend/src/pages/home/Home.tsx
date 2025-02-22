@@ -47,7 +47,7 @@ const Home = () => {
           </p>
           <Link
             to="/ideas"
-            className="inline-block px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="inline-block px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
           >
             Explore Ideas
           </Link>
@@ -82,7 +82,7 @@ const Home = () => {
           </p>
           <Link
             to="/ideas/submit"
-            className="inline-block px-8 py-3 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
+            className="inline-block px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
           >
             Submit Your Idea
           </Link>
