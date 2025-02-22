@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   Lightbulb,
@@ -17,6 +17,7 @@ import { useDarkMode } from "@/contexts/DarkModeContext";
 const Navigation = () => {
   const { darkMode, setDarkMode } = useDarkMode();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
     { name: "Home", icon: Home, href: "/" },
@@ -26,6 +27,13 @@ const Navigation = () => {
     { name: "Resources", icon: Boxes, href: "/resources" },
     { name: "Profile", icon: UserCircle, href: "/profile" },
   ];
+
+  const isActiveRoute = (href: string) => {
+    if (href === "/") {
+      return location.pathname === href;
+    }
+    return location.pathname.startsWith(href);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
@@ -49,7 +57,11 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="ml-8 text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-secondary transition-colors duration-200 flex items-center"
+                className={`ml-8 text-sm font-medium transition-colors duration-200 flex items-center ${
+                  isActiveRoute(item.href)
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
+                }`}
               >
                 <item.icon className="w-4 h-4 mr-2" />
                 {item.name}
@@ -103,7 +115,11 @@ const Navigation = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium ${
+                    isActiveRoute(item.href)
+                      ? "text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800"
+                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <item.icon className="w-5 h-5 mr-3" />

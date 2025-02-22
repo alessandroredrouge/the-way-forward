@@ -5,11 +5,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
 
-// Import new components
+// Import all pages
 import Home from "./pages/home/Home";
 import IdeasPortal from "./pages/ideas/IdeasPortal";
 import IdeaDetail from "./pages/ideas/IdeaDetail";
 import SubmitIdea from "./pages/ideas/SubmitIdea";
+import Podcast from "./pages/podcast/Podcast";
+import DeepDives from "./pages/deep-dives/DeepDives";
+import Resources from "./pages/resources/Resources";
+import Profile from "./pages/profile/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,11 +35,11 @@ const App = () => (
               <Route path="/ideas/:id" element={<IdeaDetail />} />
               <Route path="/ideas/submit" element={<SubmitIdea />} />
 
-              {/* Other Routes (to be implemented) */}
-              <Route path="/podcast" element={<NotFound />} />
-              <Route path="/deep-dives" element={<NotFound />} />
-              <Route path="/resources" element={<NotFound />} />
-              <Route path="/profile" element={<NotFound />} />
+              {/* New Routes */}
+              <Route path="/podcast" element={<Podcast />} />
+              <Route path="/deep-dives" element={<DeepDives />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/profile" element={<Profile />} />
 
               {/* Catch-all route for 404 */}
               <Route path="*" element={<NotFound />} />
