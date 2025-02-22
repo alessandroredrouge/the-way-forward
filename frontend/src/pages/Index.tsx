@@ -1,9 +1,9 @@
 
 import React from "react";
-import Navigation from "@/components/Navigation";
-import IdeaCard from "@/components/IdeaCard";
-import CuratorChoice from "@/components/CuratorChoice";
-import Filters from "@/components/Filters";
+import Navigation from "@/components/shared/Navigation";
+import IdeaCard from "@/components/ideas/IdeaCard";
+import CuratorChoice from "@/components/ideas/CuratorChoice";
+import Filters from "@/components/ideas/Filters";
 
 const MOCK_CURATOR_IDEAS = [
   {
