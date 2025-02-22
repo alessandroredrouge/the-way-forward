@@ -81,7 +81,7 @@ const Index = () => {
         <CuratorChoice ideas={MOCK_CURATOR_IDEAS} />
         <Filters />
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {MOCK_IDEAS.map((idea, index) => (
             <IdeaCard key={index} {...idea} />
           ))}
