@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
 import logoSvg from "@/assets/icons/The Way Forward - Logo Circular.svg";
 
 const Home = () => {
@@ -41,11 +41,10 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-20 pb-12 max-w-[100vw]">
+    <PageLayout>
+      <div className="w-full max-w-full">
         {/* Hero Section */}
-        <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up px-4">
+        <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up">
           <div className="mb-8">
             <img
               src={logoSvg}
@@ -56,7 +55,7 @@ const Home = () => {
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             The Way Forward
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8 px-4">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
             Your platform for discovering, sharing, and building the next
             generation of innovative startups.
           </p>
@@ -69,7 +68,7 @@ const Home = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <Link
               key={index}
@@ -88,7 +87,7 @@ const Home = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="max-w-4xl mx-auto text-center mt-12 sm:mt-16 px-4">
+        <div className="max-w-4xl mx-auto text-center mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Ready to Share Your Idea?
           </h2>
@@ -102,8 +101,8 @@ const Home = () => {
             Submit Your Idea
           </Link>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

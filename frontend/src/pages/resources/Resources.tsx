@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
 import {
   ExternalLink,
   Book,
@@ -76,44 +76,43 @@ const Resources = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-24 pb-12">
+    <PageLayout>
+      <div className="w-full max-w-full">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Resources
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
               Curated collection of valuable resources to help you explore and
               understand different industries.
             </p>
           </div>
 
           {/* Resources by Category */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {Object.entries(MOCK_RESOURCES).map(([category, resources]) => (
               <div
                 key={category}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6"
               >
                 <div className="flex items-center gap-3 mb-6">
                   {renderCategoryIcon(category)}
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
                     {category}
                   </h2>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid gap-3 sm:gap-4">
                   {resources.map((resource, index) => (
                     <div
                       key={index}
-                      className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                      className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     >
-                      <div className="flex items-start justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                         <div>
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
+                          <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-1">
                             {resource.title}
                           </h3>
                           <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
@@ -139,8 +138,8 @@ const Resources = () => {
             ))}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

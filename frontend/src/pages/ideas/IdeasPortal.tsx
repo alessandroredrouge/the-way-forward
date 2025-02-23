@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
 import IdeaCard from "@/components/ideas/IdeaCard";
 import CuratorChoice from "@/components/ideas/CuratorChoice";
 import Filters from "@/components/ideas/Filters";
@@ -71,31 +71,30 @@ const MOCK_IDEAS = [
 
 const IdeasPortal = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-24 pb-12">
+    <PageLayout>
+      <div className="w-full max-w-full">
         <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Explore & Share Startup Ideas
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Discover innovative startup ideas across industries, collaborate
             with like-minded entrepreneurs, and bring your vision to life.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-blue-600 dark:text-blue-400">⭐</span>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               Curator's Choice
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {MOCK_CURATOR_IDEAS.map((idea, index) => (
               <div
                 key={index}
-                className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6"
+                className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 sm:p-6"
               >
                 <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   {idea.category}
@@ -114,35 +113,33 @@ const IdeasPortal = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-8 gap-4">
-          <div className="overflow-x-auto flex-1 -mx-4 px-4">
-            <div className="flex items-center gap-4 min-w-max">
-              <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300">
-                <span>Filters</span>
-                <span className="text-gray-400">3</span>
-              </button>
-              <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
-                <option>Category</option>
-              </select>
-              <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
-                <option>Difficulty</option>
-              </select>
-              <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
-                <option>Sort By</option>
-              </select>
-            </div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+          <div className="flex-1 w-full sm:w-auto overflow-x-auto flex items-center gap-4 pb-2 sm:pb-0">
+            <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 whitespace-nowrap">
+              <span>Filters</span>
+              <span className="text-gray-400">3</span>
+            </button>
+            <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
+              <option>Category</option>
+            </select>
+            <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
+              <option>Difficulty</option>
+            </select>
+            <select className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 border-0">
+              <option>Sort By</option>
+            </select>
           </div>
-          <button className="flex-shrink-0 px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors">
+          <button className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors">
             Submit Idea
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {MOCK_IDEAS.map((idea, index) => (
             <Link
               key={index}
               to={`/ideas/${index + 1}`}
-              className="block bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+              className="block bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -193,8 +190,8 @@ const IdeasPortal = () => {
             </Link>
           ))}
         </div>
-      </main>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

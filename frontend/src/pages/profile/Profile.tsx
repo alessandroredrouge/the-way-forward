@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
 import { Settings, Star, MessageSquare, Heart, BookMarked } from "lucide-react";
 
 const MOCK_USER = {
@@ -37,13 +37,12 @@ const MOCK_USER = {
 
 const Profile = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-24 pb-12">
+    <PageLayout>
+      <div className="w-full max-w-full">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-2xl text-white">
@@ -51,7 +50,7 @@ const Profile = () => {
                   </span>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {MOCK_USER.name}
                   </h1>
                   <p className="text-gray-600 dark:text-gray-300">
@@ -79,14 +78,14 @@ const Profile = () => {
           </div>
 
           {/* Saved Ideas */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <BookMarked className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                 Saved Ideas
               </h2>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {MOCK_USER.savedIdeas.map((idea, index) => (
                 <div
                   key={index}
@@ -109,14 +108,14 @@ const Profile = () => {
           </div>
 
           {/* Recent Comments */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <MessageSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                 Recent Comments
               </h2>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {MOCK_USER.comments.map((comment, index) => (
                 <div
                   key={index}
@@ -136,8 +135,8 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 
