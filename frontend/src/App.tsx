@@ -12,6 +12,7 @@ import IdeaDetail from "./pages/ideas/IdeaDetail";
 import SubmitIdea from "./pages/ideas/SubmitIdea";
 import Podcast from "./pages/podcast/Podcast";
 import DeepDives from "./pages/deep-dives/DeepDives";
+import Community from "./pages/community/Community";
 import Resources from "./pages/resources/Resources";
 import Profile from "./pages/profile/Profile";
 import NotFound from "./pages/NotFound";
@@ -38,6 +39,7 @@ const App = () => (
               {/* New Routes */}
               <Route path="/podcast" element={<Podcast />} />
               <Route path="/deep-dives" element={<DeepDives />} />
+              <Route path="/community" element={<Community />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/profile" element={<Profile />} />
 

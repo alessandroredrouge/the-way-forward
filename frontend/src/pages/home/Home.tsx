@@ -26,6 +26,13 @@ const Home = () => {
       link: "/deep-dives",
     },
     {
+      title: "Community",
+      description:
+        "Connect with like-minded innovators and join exciting competitions",
+      icon: "👥",
+      link: "/community",
+    },
+    {
       title: "Resources",
       description: "Curated collection of tools and guides for entrepreneurs",
       icon: "🔧",

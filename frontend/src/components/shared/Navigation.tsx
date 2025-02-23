@@ -11,6 +11,7 @@ import {
   Sun,
   Menu,
   X,
+  Users,
 } from "lucide-react";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 
@@ -24,6 +25,7 @@ const Navigation = () => {
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
     { name: "Podcast", icon: Radio, href: "/podcast" },
     { name: "Deep-dives", icon: BookOpen, href: "/deep-dives" },
+    { name: "Community", icon: Users, href: "/community" },
     { name: "Resources", icon: Boxes, href: "/resources" },
     { name: "Profile", icon: UserCircle, href: "/profile" },
   ];
