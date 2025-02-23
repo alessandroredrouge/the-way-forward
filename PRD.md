@@ -129,77 +129,7 @@ Goals include:
 
 ## Development Plan
 
-### Approach
-
-The development will follow a phased approach, starting with the core Ideas Portal functionality for both users and curators. Next, we'll implement user authentication and profiles, followed by content pages for podcasts, deep-dives, and resources. Finally, we'll integrate AI capabilities for automated research and analysis.
-
-## Phase 1: Core Ideas Portal
-
-**Basics**
-
-- [ ]  Create Landing Page
-- [ ]  Create Waitlist with email
-
-**User View Development**
-
-- [ ]  Implement idea browsing interface
-- [ ]  Create idea submission form
-- [ ]  Add upvote/downvote functionality
-- [ ]  Implement comment system
-
-**Curator View Development**
-
-- [ ]  Create curator dashboard
-- [ ]  Add content management tools
-- [ ]  Implement idea curation features
-
-## Phase 2: User Authentication & Profiles
-
-**Authentication System**
-
-- [ ]  Implement email signup/login
-- [ ]  Add password recovery
-- [ ]  Set up email verification
-
-**User Profiles**
-
-- [ ]  Create profile pages
-- [ ]  Add idea bookmarking feature
-- [ ]  Implement user preferences
-
-## Phase 3: Content Pages
-
-**Podcast Page**
-
-- [ ]  Create podcast listing interface
-- [ ]  Add episode management for curators
-- [ ]  Implement media embedding
-
-**Deep-dive Page**
-
-- [ ]  Build article editor for curators
-- [ ]  Create article viewing interface
-- [ ]  Add media support
-
-**Resources Page**
-
-- [ ]  Implement resource management system
-- [ ]  Create categorized resource listings
-- [ ]  Add resource description support
-
-## Phase 4: AI Integration
-
-**Research Automation**
-
-- [ ]  Implement AI agent framework
-- [ ]  Set up market research automation
-- [ ]  Create competitor analysis system
-
-**Content Enhancement**
-
-- [ ]  Add automated idea validation
-- [ ]  Implement trend analysis
-- [ ]  Create automated reporting system
+Check DevelopmentPlan.md
 
 ## Design
 
