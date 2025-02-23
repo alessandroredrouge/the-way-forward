@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
+import "@/styles/globals.css";
 
 // Import all pages
 import Home from "./pages/home/Home";

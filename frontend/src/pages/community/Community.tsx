@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Search, Filter, Trophy, Users, MessageSquare } from "lucide-react";
-import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
 
 interface User {
   id: string;
@@ -169,16 +169,15 @@ const Community = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navigation />
-      <div className="container mx-auto px-4 py-8 mt-16">
+    <PageLayout>
+      <div className="w-full max-w-full">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Community
             </h1>
-            <div className="flex items-center gap-4">
-              <div className="relative">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:flex-initial">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
@@ -188,15 +187,15 @@ const Community = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <button className="p-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <button className="p-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0">
                 <Filter className="w-5 h-5" />
               </button>
             </div>
           </div>
 
-          <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex gap-2 sm:gap-4 border-b border-gray-200 dark:border-gray-700 overflow-x-auto scrollbar-hide">
             <button
-              className={`py-2 px-4 ${
+              className={`py-2 px-4 whitespace-nowrap ${
                 activeTab === "people"
                   ? "border-b-2 border-blue-600 text-blue-600"
                   : "text-gray-600 dark:text-gray-400"
@@ -209,7 +208,7 @@ const Community = () => {
               </div>
             </button>
             <button
-              className={`py-2 px-4 ${
+              className={`py-2 px-4 whitespace-nowrap ${
                 activeTab === "competitions"
                   ? "border-b-2 border-blue-600 text-blue-600"
                   : "text-gray-600 dark:text-gray-400"
@@ -222,7 +221,7 @@ const Community = () => {
               </div>
             </button>
             <button
-              className={`py-2 px-4 ${
+              className={`py-2 px-4 whitespace-nowrap ${
                 activeTab === "discussions"
                   ? "border-b-2 border-blue-600 text-blue-600"
                   : "text-gray-600 dark:text-gray-400"
@@ -236,7 +235,7 @@ const Community = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {activeTab === "people" &&
               mockUsers.map((user) => <UserCard key={user.id} user={user} />)}
             {activeTab === "competitions" &&
@@ -254,7 +253,7 @@ const Community = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
