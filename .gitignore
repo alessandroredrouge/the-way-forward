@@ -28,3 +28,10 @@ dist-ssr
 
 # Virtual environment
 venv
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.pyw
