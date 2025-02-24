@@ -99,16 +99,16 @@ const IdeaCard = (props: IdeaCardProps) => {
   return (
     <>
       <div
-        className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 animate-fade-up cursor-pointer"
+        className="group bg-white dark:bg-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600 animate-fade-up cursor-pointer"
         onClick={() => setIsDialogOpen(true)}
       >
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full">
                 {category}
               </span>
-              <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full">
                 {subcategory}
               </span>
               <span
@@ -121,11 +121,11 @@ const IdeaCard = (props: IdeaCardProps) => {
               {isPremium && <Lock className="w-4 h-4 text-secondary" />}
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-secondary transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-secondary transition-colors">
               {title}
             </h3>
 
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
               <Globe className="w-3 h-3" />
               <span>{geographicFocus}</span>
               <Calendar className="w-3 h-3 ml-2" />
@@ -133,29 +133,35 @@ const IdeaCard = (props: IdeaCardProps) => {
             </div>
 
             <div className="mb-3">
-              <p className="text-sm text-gray-600 font-medium mb-1">Problem</p>
-              <p className="text-sm text-gray-600 line-clamp-2">
+              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium mb-1">
+                Problem
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
                 {problemStatement}
               </p>
             </div>
 
             <div className="mb-4">
-              <p className="text-sm text-gray-600 font-medium mb-1">Solution</p>
-              <p className="text-sm text-gray-600 line-clamp-2">{solution}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium mb-1">
+                Solution
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                {solution}
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
               {technologies.slice(0, 3).map((tech, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 text-xs text-gray-600"
+                  className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs text-gray-600 dark:text-gray-300"
                 >
                   <Zap className="w-3 h-3 mr-1" />
                   {tech}
                 </span>
               ))}
               {technologies.length > 3 && (
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
                   +{technologies.length - 3} more
                 </span>
               )}
@@ -164,7 +170,7 @@ const IdeaCard = (props: IdeaCardProps) => {
 
           <div className="flex flex-col items-center ml-4 space-y-1">
             <button
-              className="text-gray-400 hover:text-secondary transition-colors"
+              className="text-gray-400 dark:text-gray-500 hover:text-secondary transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 // Add upvote logic here
@@ -172,9 +178,11 @@ const IdeaCard = (props: IdeaCardProps) => {
             >
               <ArrowUp className="w-5 h-5" />
             </button>
-            <span className="text-sm font-medium text-gray-700">{votes}</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {votes}
+            </span>
             <button
-              className="text-gray-400 hover:text-secondary transition-colors"
+              className="text-gray-400 dark:text-gray-500 hover:text-secondary transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 // Add downvote logic here
@@ -185,20 +193,24 @@ const IdeaCard = (props: IdeaCardProps) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-600">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center text-gray-500">
+            <div className="flex items-center text-gray-500 dark:text-gray-400">
               <MessageSquare className="w-4 h-4 mr-1" />
               <span className="text-xs">{comments}</span>
             </div>
-            <div className="flex items-center text-gray-500">
+            <div className="flex items-center text-gray-500 dark:text-gray-400">
               <Users className="w-4 h-4 mr-1" />
               <span className="text-xs">{interestedCount}</span>
             </div>
           </div>
           <div className="flex flex-col items-end text-xs">
-            <span className="text-gray-500">by {author}</span>
-            <span className="text-gray-400">{timestamp}</span>
+            <span className="text-gray-500 dark:text-gray-400">
+              by {author}
+            </span>
+            <span className="text-gray-400 dark:text-gray-500">
+              {timestamp}
+            </span>
           </div>
         </div>
       </div>
