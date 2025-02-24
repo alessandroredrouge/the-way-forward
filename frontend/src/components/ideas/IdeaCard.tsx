@@ -1,14 +1,48 @@
-
 import React, { useState } from "react";
-import { ArrowUp, ArrowDown, MessageSquare, Users, Lock } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowDown,
+  MessageSquare,
+  Users,
+  Lock,
+  Calendar,
+  Globe,
+  Zap,
+} from "lucide-react";
 import IdeaDialog from "@/components/ideas/IdeaDialog";
 
 interface IdeaCardProps {
+  // Mandatory Fields
   title: string;
   category: string;
   subcategory: string;
-  difficulty: "Easy" | "Moderate" | "Advanced";
+  geographicFocus: string;
+  dateCreated: string;
+  dateUpdated: string;
   problemStatement: string;
+  solution: string;
+  whyNow: string;
+  marketEstimate: number;
+  businessModel: string;
+  technologies: string[];
+  competition: string;
+  status: string;
+  typeOfAuthor: string;
+  author: string;
+  sources: string[];
+
+  // Optional Fields
+  idealCustomerProfile?: string;
+  skillsRequired?: string[];
+  potentialInvestors?: string[];
+  potentialCustomers?: string[];
+  contacts?: string[];
+  collaborationGroups?: string[];
+  similarIdeas?: string[];
+  supportingMaterial?: File[];
+  other?: string;
+
+  // Interaction metrics
   votes: number;
   comments: number;
   interestedCount: number;
@@ -18,12 +52,21 @@ interface IdeaCardProps {
 
 const IdeaCard = (props: IdeaCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Add console logging
+  console.log("IdeaCard props:", props);
+
   const {
     title,
     category,
     subcategory,
-    difficulty,
+    geographicFocus,
+    dateCreated,
     problemStatement,
+    solution,
+    technologies = [],
+    status = "early-stage",
+    author,
     votes,
     comments,
     interestedCount,
@@ -31,14 +74,23 @@ const IdeaCard = (props: IdeaCardProps) => {
     isPremium = false,
   } = props;
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "Easy":
+  // Add more logging
+  console.log("Status after destructuring:", status);
+
+  const getStatusColor = (status: string = "early-stage") => {
+    // Log the status being passed to getStatusColor
+    console.log("getStatusColor received:", status);
+
+    // Ensure we have a string to work with
+    const normalizedStatus = (status || "early-stage").toLowerCase();
+
+    switch (normalizedStatus) {
+      case "early-stage":
+        return "bg-blue-100 text-blue-800";
+      case "proven":
         return "bg-green-100 text-green-800";
-      case "Moderate":
+      case "pilot":
         return "bg-yellow-100 text-yellow-800";
-      case "Advanced":
-        return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -60,21 +112,56 @@ const IdeaCard = (props: IdeaCardProps) => {
                 {subcategory}
               </span>
               <span
-                className={`text-xs font-medium px-2 py-1 rounded-full ${getDifficultyColor(
-                  difficulty
+                className={`text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(
+                  status
                 )}`}
               >
-                {difficulty}
+                {status}
               </span>
               {isPremium && <Lock className="w-4 h-4 text-secondary" />}
             </div>
+
             <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-secondary transition-colors">
               {title}
             </h3>
-            <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-              {problemStatement}
-            </p>
+
+            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+              <Globe className="w-3 h-3" />
+              <span>{geographicFocus}</span>
+              <Calendar className="w-3 h-3 ml-2" />
+              <span>{new Date(dateCreated).toLocaleDateString()}</span>
+            </div>
+
+            <div className="mb-3">
+              <p className="text-sm text-gray-600 font-medium mb-1">Problem</p>
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {problemStatement}
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 font-medium mb-1">Solution</p>
+              <p className="text-sm text-gray-600 line-clamp-2">{solution}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              {technologies.slice(0, 3).map((tech, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 text-xs text-gray-600"
+                >
+                  <Zap className="w-3 h-3 mr-1" />
+                  {tech}
+                </span>
+              ))}
+              {technologies.length > 3 && (
+                <span className="text-xs text-gray-500">
+                  +{technologies.length - 3} more
+                </span>
+              )}
+            </div>
           </div>
+
           <div className="flex flex-col items-center ml-4 space-y-1">
             <button
               className="text-gray-400 hover:text-secondary transition-colors"
@@ -97,6 +184,7 @@ const IdeaCard = (props: IdeaCardProps) => {
             </button>
           </div>
         </div>
+
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
           <div className="flex items-center space-x-4">
             <div className="flex items-center text-gray-500">
@@ -108,9 +196,13 @@ const IdeaCard = (props: IdeaCardProps) => {
               <span className="text-xs">{interestedCount}</span>
             </div>
           </div>
-          <span className="text-xs text-gray-400">{timestamp}</span>
+          <div className="flex flex-col items-end text-xs">
+            <span className="text-gray-500">by {author}</span>
+            <span className="text-gray-400">{timestamp}</span>
+          </div>
         </div>
       </div>
+
       <IdeaDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}

@@ -31,24 +31,53 @@ const MOCK_CURATOR_IDEAS = [
 
 const MOCK_IDEAS = [
   {
-    title: "Decentralized Education Platform",
-    category: "Education",
-    subcategory: "E-learning",
-    difficulty: "Moderate" as const,
+    title: "Local Food Supply Chain Platform",
+    category: "Agriculture",
+    subcategory: "Supply Chain",
+    geographicFocus: "Local Communities",
+    dateCreated: "2024-02-24T10:00:00Z",
+    dateUpdated: "2024-02-24T10:00:00Z",
     problemStatement:
-      "Creating accessible, verified educational content through blockchain technology and peer review systems.",
-    votes: 128,
-    comments: 45,
-    interestedCount: 67,
-    timestamp: "2 hours ago",
+      "Connecting local farmers directly with consumers and restaurants to reduce food waste and support local economies.",
+    solution:
+      "A digital platform that enables direct farm-to-table connections, with real-time inventory management and delivery coordination.",
+    whyNow:
+      "Growing demand for local, sustainable food sources and need to reduce food waste.",
+    marketEstimate: 10000000000,
+    businessModel:
+      "Commission on transactions + Premium features for restaurants",
+    technologies: ["React", "Node.js", "Mobile Apps", "GPS Integration"],
+    competition: "Traditional distributors, Farmers markets",
+    status: "early-stage",
+    typeOfAuthor: "User",
+    author: "localFoodAdvocate",
+    sources: ["USDA Local Food Report", "Food Waste Statistics"],
+    votes: 156,
+    comments: 67,
+    interestedCount: 89,
+    timestamp: "1 day ago",
   },
   {
     title: "Smart City Waste Management",
     category: "Environment",
     subcategory: "Urban Tech",
-    difficulty: "Advanced" as const,
+    geographicFocus: "Metropolitan Areas",
+    dateCreated: "2024-02-23T15:30:00Z",
+    dateUpdated: "2024-02-24T09:00:00Z",
     problemStatement:
-      "IoT-enabled waste bins and routing optimization for efficient city waste collection and recycling.",
+      "Inefficient waste collection routes and poor recycling sorting in urban areas.",
+    solution:
+      "IoT-enabled waste bins with real-time monitoring and AI-powered route optimization.",
+    whyNow:
+      "Rising urban population and increasing focus on sustainability goals.",
+    marketEstimate: 25000000000,
+    businessModel: "Hardware sales + SaaS subscription for municipalities",
+    technologies: ["IoT", "AI/ML", "GPS", "Cloud Computing"],
+    competition: "Traditional waste management companies, Rubicon",
+    status: "pilot",
+    typeOfAuthor: "Curator",
+    author: "greenTech_expert",
+    sources: ["UN Urban Development Report", "EPA Waste Statistics"],
     votes: 89,
     comments: 23,
     interestedCount: 34,
@@ -56,16 +85,33 @@ const MOCK_IDEAS = [
     isPremium: true,
   },
   {
-    title: "Local Food Supply Chain Platform",
-    category: "Agriculture",
-    subcategory: "Supply Chain",
-    difficulty: "Easy" as const,
+    title: "Decentralized Education Platform",
+    category: "Education",
+    subcategory: "E-learning",
+    geographicFocus: "Global",
+    dateCreated: "2024-02-24T08:00:00Z",
+    dateUpdated: "2024-02-24T08:00:00Z",
     problemStatement:
-      "Connecting local farmers directly with consumers and restaurants to reduce food waste and support local economies.",
-    votes: 156,
-    comments: 67,
-    interestedCount: 89,
-    timestamp: "1 day ago",
+      "Traditional education systems lack accessibility and verification methods for online credentials.",
+    solution:
+      "Blockchain-based platform for creating, sharing, and verifying educational content and credentials.",
+    whyNow:
+      "Remote learning surge and increasing demand for verifiable digital credentials.",
+    marketEstimate: 50000000000,
+    businessModel: "Freemium + Enterprise licensing for institutions",
+    technologies: ["Blockchain", "Smart Contracts", "React", "Node.js"],
+    competition: "Coursera, Udemy, edX",
+    status: "proven",
+    typeOfAuthor: "User",
+    author: "eduTech_innovator",
+    sources: [
+      "World Economic Forum Education Report 2024",
+      "UNESCO Digital Learning Stats",
+    ],
+    votes: 128,
+    comments: 45,
+    interestedCount: 67,
+    timestamp: "2 hours ago",
   },
 ];
 
@@ -136,58 +182,31 @@ const IdeasPortal = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {MOCK_IDEAS.map((idea, index) => (
-            <Link
+            <IdeaCard
               key={index}
-              to={`/ideas/${index + 1}`}
-              className="block bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {idea.category}
-                  </span>
-                  <span className="mx-2 text-gray-300 dark:text-gray-600">
-                    •
-                  </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {idea.subcategory}
-                  </span>
-                </div>
-                <span
-                  className={`px-2 py-1 text-xs rounded ${
-                    idea.difficulty === "Easy"
-                      ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
-                      : idea.difficulty === "Moderate"
-                      ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200"
-                      : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
-                  }`}
-                >
-                  {idea.difficulty}
-                </span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {idea.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                {idea.problemStatement}
-              </p>
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-4">
-                  <span className="text-gray-500 dark:text-gray-400">
-                    👍 {idea.votes}
-                  </span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    💬 {idea.comments}
-                  </span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    👥 {idea.interestedCount}
-                  </span>
-                </div>
-                <span className="text-gray-400 dark:text-gray-500">
-                  {idea.timestamp}
-                </span>
-              </div>
-            </Link>
+              title={idea.title}
+              category={idea.category}
+              subcategory={idea.subcategory}
+              geographicFocus={idea.geographicFocus}
+              dateCreated={idea.dateCreated}
+              dateUpdated={idea.dateUpdated}
+              problemStatement={idea.problemStatement}
+              solution={idea.solution}
+              whyNow={idea.whyNow}
+              marketEstimate={idea.marketEstimate}
+              businessModel={idea.businessModel}
+              technologies={idea.technologies}
+              competition={idea.competition}
+              status={idea.status}
+              typeOfAuthor={idea.typeOfAuthor}
+              author={idea.author}
+              sources={idea.sources}
+              votes={idea.votes}
+              comments={idea.comments}
+              interestedCount={idea.interestedCount}
+              timestamp={idea.timestamp}
+              isPremium={idea.isPremium}
+            />
           ))}
         </div>
       </div>

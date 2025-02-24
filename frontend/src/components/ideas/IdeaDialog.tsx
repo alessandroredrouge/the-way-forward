@@ -10,7 +10,6 @@ interface IdeaDialogProps {
     title: string;
     category: string;
     subcategory: string;
-    difficulty: "Easy" | "Moderate" | "Advanced";
     problemStatement: string;
     votes: number;
     comments: number;
@@ -47,14 +46,7 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
               <span className="text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                 {idea.subcategory}
               </span>
-              <span
-                className={`text-sm font-medium px-2 py-1 rounded-full ${getDifficultyColor(
-                  idea.difficulty
-                )}`}
-              >
-                {idea.difficulty}
-              </span>
-              {idea.isPremium && <Lock className="w-5 h-5 text-secondary" />}
+                            {idea.isPremium && <Lock className="w-5 h-5 text-secondary" />}
             </div>
             <Dialog.Close className="text-gray-400 hover:text-gray-900">
               <X className="w-5 h-5" />
