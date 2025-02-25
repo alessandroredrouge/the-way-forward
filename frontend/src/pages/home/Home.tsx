@@ -6,46 +6,32 @@ import logoSvg from "@/assets/icons/The Way Forward - Logo Circular.svg";
 const Home = () => {
   const features = [
     {
-      title: "Humanity's Challenges",
+      title: "Global Challenges Tracker",
       description:
-        "An up-to-date overview on humanity's most pressing challenges",
+        "Track and understand humanity's most pressing challenges through real-time data",
       icon: "🌍",
       link: "/challenges",
     },
     {
-      title: "Ideas Portal",
+      title: "Ideas' Portal",
       description:
-        "A collection of ideas and solutions to make a difference",
-      icon: "🎯",
+        "Get inspired by innovative ideas to solve those challenges. Act, today!",
+      icon: "💡",
       link: "/ideas",
-    },
-    {
-      title: "Podcast",
-      description:
-        "Deep conversations with visionaries shaping tomorrow's solutions",
-      icon: "🎙️",
-      link: "/podcast",
-    },
-    {
-      title: "Deep-dives",
-      description:
-        "Comprehensive analysis of breakthrough solutions and their potential impact",
-      icon: "🔍",
-      link: "/deep-dives",
-    },
-    {
-      title: "Community",
-      description:
-        "Join forces with brilliant minds dedicated to moving humanity forward",
-      icon: "🌟",
-      link: "/community",
     },
     {
       title: "Knowledge Hub",
       description:
-        "Essential resources and insights for creating meaningful change",
+        "Access curated insights, research, and resources to understand complex global issues and their solutions",
       icon: "📚",
-      link: "/resources",
+      link: "/knowledge-hub",
+    },
+    {
+      title: "Community",
+      description:
+        "Connect with changemakers and experts dedicated to solving humanity's greatest challenges",
+      icon: "👥",
+      link: "/community",
     },
   ];
 
@@ -65,15 +51,18 @@ const Home = () => {
             The Way Forward
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            The source of truth for everything that matters - creating a bridge between today's challenges and tomorrow's solutions for humanity's prosperity.
+            The source of truth for everything that matters - bridging today's
+            challenges with tomorrow's solutions for humanity's prosperity.
           </p>
           <Link
-            to="/ideas"
-            className="inline-block text-lg sm:text-xl text-[#ffbd59] hover:text-[#e6aa50] transition-colors flex items-center justify-center"
+            to="/challenges"
+            className="inline-block px-6 sm:px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors mb-4"
           >
-            <span className="mr-2">Learn how you can make a difference</span>
-            <span className="animate-pulse">⬇️</span>
+            Explore Global Challenges
           </Link>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Understand the challenges. Find solutions. Make an impact.
+          </div>
         </div>
 
         {/* Features Grid */}
@@ -98,18 +87,26 @@ const Home = () => {
         {/* Call to Action */}
         <div className="max-w-4xl mx-auto text-center mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Ready to Shape the Future?
+            Ready to Make a Difference?
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Share your insights and solutions to help build the future we all
-            want to see.
+            Join our community of changemakers and help shape humanity's path to
+            prosperity.
           </p>
-          <Link
-            to="/ideas/submit"
-            className="inline-block px-6 sm:px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
-          >
-            Contribute Solution
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/challenges"
+              className="inline-block px-6 sm:px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
+            >
+              View Challenges
+            </Link>
+            <Link
+              to="/ideas/submit"
+              className="inline-block px-6 sm:px-8 py-3 border-2 border-[#ffbd59] text-[#ffbd59] rounded-md hover:bg-[#ffbd59] hover:text-white transition-colors"
+            >
+              Propose Solutions
+            </Link>
+          </div>
         </div>
       </div>
     </PageLayout>

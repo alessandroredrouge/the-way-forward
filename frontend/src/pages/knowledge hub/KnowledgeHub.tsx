@@ -8,7 +8,7 @@ const KnowledgeHub = () => {
     {
       title: "Podcast",
       description:
-        "Deep conversations with visionaries shaping tomorrow's solutions. Listen to thought leaders discuss pathways to a prosperous future.",
+        "Deep conversations with visionaries, experts and changemakers shaping tomorrow's solutions. Listen to learn directly from the trenches how to make a difference.",
       icon: (
         <Headphones className="w-12 h-12 text-blue-600 dark:text-blue-400" />
       ),
@@ -18,7 +18,7 @@ const KnowledgeHub = () => {
     {
       title: "Deep-dives",
       description:
-        "Comprehensive analysis of breakthrough solutions and their potential impact. In-depth exploration of transformative approaches to global challenges.",
+        "Various deep-dives into field-specific challenges, breakthrough solutions, and more. To go one step further in your understanding of what matters.",
       icon: <BookOpen className="w-12 h-12 text-blue-600 dark:text-blue-400" />,
       link: "/deep-dives",
       bgImage: "deep-dives-bg.jpg",
@@ -26,7 +26,7 @@ const KnowledgeHub = () => {
     {
       title: "External Resources",
       description:
-        "Curated collection of valuable resources and insights for creating meaningful change. Essential knowledge to help you understand and tackle global challenges.",
+        "Curated collection of valuable external resources and insights that will enable you to make a difference.",
       icon: <Library className="w-12 h-12 text-blue-600 dark:text-blue-400" />,
       link: "/resources",
       bgImage: "resources-bg.jpg",

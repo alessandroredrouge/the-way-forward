@@ -12,6 +12,7 @@ import IdeasPortal from "./pages/ideas/IdeasPortal";
 import IdeaDetail from "./pages/ideas/IdeaDetail";
 import SubmitIdea from "./pages/ideas/SubmitIdea";
 import KnowledgeHub from "./pages/knowledge hub/KnowledgeHub";
+import Challenges from "./pages/challenges/Challenges";
 import Podcast from "./pages/podcast/Podcast";
 import DeepDives from "./pages/deep-dives/DeepDives";
 import Community from "./pages/community/Community";
@@ -33,10 +34,11 @@ const App = () => (
               {/* Home Route */}
               <Route path="/" element={<Home />} />
 
-              {/* Ideas Routes */}
+              {/* Ideas & Challenges Routes */}
               <Route path="/ideas" element={<IdeasPortal />} />
               <Route path="/ideas/:id" element={<IdeaDetail />} />
               <Route path="/ideas/submit" element={<SubmitIdea />} />
+              <Route path="/challenges" element={<Challenges />} />
 
               {/* Knowledge Hub Routes */}
               <Route path="/knowledge-hub" element={<KnowledgeHub />} />

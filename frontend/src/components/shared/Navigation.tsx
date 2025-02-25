@@ -10,6 +10,7 @@ import {
   X,
   Users,
   BookOpen,
+  Globe,
 } from "lucide-react";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 
@@ -20,6 +21,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: "Home", icon: Home, href: "/" },
+    { name: "Challenges", icon: Globe, href: "/challenges" },
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
     { name: "Knowledge Hub", icon: BookOpen, href: "/knowledge-hub" },
     { name: "Community", icon: Users, href: "/community" },
