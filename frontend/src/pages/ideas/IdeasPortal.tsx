@@ -56,6 +56,7 @@ const MOCK_IDEAS = [
     comments: 67,
     interestedCount: 89,
     timestamp: "1 day ago",
+    timeHorizon: "<1 year",
   },
   {
     title: "Smart City Waste Management",
@@ -83,6 +84,7 @@ const MOCK_IDEAS = [
     interestedCount: 34,
     timestamp: "5 hours ago",
     isPremium: true,
+    timeHorizon: "<1 year",
   },
   {
     title: "Decentralized Education Platform",
@@ -112,6 +114,7 @@ const MOCK_IDEAS = [
     comments: 45,
     interestedCount: 67,
     timestamp: "2 hours ago",
+    timeHorizon: "5-10 years",
   },
 ];
 
@@ -206,6 +209,7 @@ const IdeasPortal = () => {
               interestedCount={idea.interestedCount}
               timestamp={idea.timestamp}
               isPremium={idea.isPremium}
+              timeHorizon={idea.timeHorizon}
             />
           ))}
         </div>

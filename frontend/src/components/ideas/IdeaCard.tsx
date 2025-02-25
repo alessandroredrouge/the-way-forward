@@ -8,6 +8,7 @@ import {
   Calendar,
   Globe,
   Zap,
+  Clock,
 } from "lucide-react";
 import IdeaDialog from "@/components/ideas/IdeaDialog";
 
@@ -30,6 +31,7 @@ interface IdeaCardProps {
   typeOfAuthor: string;
   author: string;
   sources: string[];
+  timeHorizon: string;
 
   // Optional Fields
   idealCustomerProfile?: string;
@@ -66,6 +68,7 @@ const IdeaCard = (props: IdeaCardProps) => {
     solution,
     technologies = [],
     status = "early-stage",
+    timeHorizon,
     author,
     votes,
     comments,
@@ -117,6 +120,12 @@ const IdeaCard = (props: IdeaCardProps) => {
                 )}`}
               >
                 {status}
+              </span>
+              <span
+                className={`text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 `}
+              >
+                <Clock className="w-3 h-3" />
+                {timeHorizon}
               </span>
               {isPremium && <Lock className="w-4 h-4 text-secondary" />}
             </div>

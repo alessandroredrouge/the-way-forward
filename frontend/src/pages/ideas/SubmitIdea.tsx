@@ -77,6 +77,29 @@ const SubmitIdea = () => {
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="timeHorizon"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Time Horizon
+                </label>
+                <select
+                  id="timeHorizon"
+                  name="timeHorizon"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  required
+                >
+                  <option value="">Select time horizon</option>
+                  <option value="<1 year">Less than 1 year</option>
+                  <option value="1-5 years">1-5 years</option>
+                  <option value="5-10 years">5-10 years</option>
+                  <option value=">10 years">More than 10 years</option>
+                </select>
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="problemStatement"

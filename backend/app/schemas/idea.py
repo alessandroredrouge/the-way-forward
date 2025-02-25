@@ -7,10 +7,10 @@ class IdeaBase(BaseModel):
     description: str
     category: str
     subcategory: Optional[str] = None
-    difficulty: str
     problem_statement: str
     solution: Optional[str] = None
     market_estimate: Optional[str] = None
+    time_horizon: str
 
 class IdeaCreate(IdeaBase):
     pass
