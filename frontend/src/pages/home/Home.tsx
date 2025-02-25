@@ -78,12 +78,12 @@ const Home = () => {
           <div className="flex justify-center mb-8">
             <button
               onClick={scrollToFeatures}
-              className="relative w-full max-w-md h-32 cursor-pointer group"
+              className="relative w-full max-w-md h-40 sm:h-32 cursor-pointer group"
               aria-label="Learn how to make a difference"
             >
-              {/* Text that appears sequentially */}
-              <div className="flex justify-center mb-6 h-8 overflow-hidden">
-                <div className="flex space-x-2">
+              {/* Text that appears sequentially - Responsive version */}
+              <div className="flex justify-center mb-6">
+                <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 px-4">
                   <span
                     className={`text-2xl font-bold text-[#ffbd59] transition-opacity duration-500 ${
                       animationStarted ? "opacity-100" : "opacity-0"
