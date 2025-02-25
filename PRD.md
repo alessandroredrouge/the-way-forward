@@ -6,11 +6,11 @@ The Way Forward
 
 ### Purpose
 
-The purpose of this Product Requirements Document (PRD) is to outline the requirements and specifications for *The Way Forward*, a web application designed to collect, rank, and share startup ideas across various industries and subcategories. This document serves as a guide for the development team to deliver an MVP that meets the needs of its target users while providing a platform for idea discovery, collaboration, and engagement.
+The purpose of this Product Requirements Document (PRD) is to outline the requirements and specifications for _The Way Forward_, a comprehensive web platform designed to be the source of truth for everything that matters - bridging today's challenges with tomorrow's solutions for humanity's prosperity. This document serves as a guide for the development team to deliver an MVP that connects global challenges with innovative solutions while fostering collaboration and engagement among changemakers worldwide.
 
 ### Scope
 
-This PRD covers the functional and non-functional requirements of *The Way Forward*, including user interactions, system architecture, technology stack, and integration points. It also defines the assumptions, dependencies, constraints, and risks associated with the project.
+This PRD covers the functional and non-functional requirements of _The Way Forward_, including user interactions, system architecture, technology stack, and integration points. It also defines the assumptions, dependencies, constraints, and risks associated with the project.
 
 ### Definitions, Acronyms, and Abbreviations
 
@@ -25,27 +25,34 @@ This PRD covers the functional and non-functional requirements of *The Way Forwa
 
 ### Problem Statement
 
-Entrepreneurs and innovators often struggle to identify promising startup ideas that can have a huge impact on society and also validate them. Existing resources do not effectively aggregate new ideas from diverse sources and/or do not include the validation step, or offer at the same time a collaborative space for discussion, ranking, and quick iteration. As a result, good ideas may never reach the right audience, and potential collaborators miss valuable opportunities to connect.
+The world faces numerous complex challenges that require innovative solutions, yet there's no centralized platform that effectively connects these challenges with potential solutions and the people who can implement them. While various resources exist for specific aspects (challenge tracking, startup ideas, knowledge sharing), they operate in silos and don't provide an integrated view of humanity's challenges and their potential solutions. As a result, opportunities for impactful innovation are missed, and potential collaborators fail to connect.
 
 ### Project Overview
 
-*The Way Forward* aims to address this problem by creating a centralized platform where users can easily discover, discuss, and refine high-impact startup ideas in various sectors. The platform consists of four main areas:
+_The Way Forward_ aims to address this problem by creating an integrated platform that connects global challenges with innovative solutions and the people who can implement them. The platform consists of six main areas:
 
-- Ideas Portal: A central hub where ideas are collected and users can interact with them. Ideas come from interviews, user submissions, and AI agents that crawl specific web resources (e.g., LinkedIn, Reddit, Hacker News) to identify needs and generate ideas. Each idea follows a structured format with consistent fields (title, category, subcategory, difficulty, market estimates, sources, etc.). Users can vote on ideas, post comments, and form interest groups. A premium model offers direct contact features for deeper collaboration. This is the platform's core offering.
-- Podcast: A curated list of "The Way Forward" podcast episodes, available on Spotify and YouTube. Each 20-30 minute episode features an industry expert discussing their sector's challenges, potential solutions, and associated value propositions. Ideas generated from these interviews are structured and added to the Ideas Portal. The podcast has different hosts specialized on the various verticals, which differentiate the episodes. Examples of episodes could be “Climatetech with Ale #1: Pascal Kuhn - future of BESS, EPC companies, energy regulation in Europe” or “Automotive with Sam #3: Leonardo Scalpi - CEO Ferrari talks about F1, new ways of modelling fluid dynamics, EVs”.
-- Deep-dives: A collection of in-depth articles exploring specific ideas, published also on Medium and Substack. These weekly vertical-specific analyses may evolve to also become a newsletter.
-- Resources: A curated collection of useful external resources that help users explore related industries in greater depth.
+- **Home**: The landing page that introduces users to the platform's mission and provides quick access to all main sections.
+- **Challenges**: A dashboard tracking major global challenges (e.g., Climate Change, AI Safety, Healthcare Distribution) with live KPIs, data visualizations, and maps.
+- **Ideas Portal**: A central hub where ideas are collected and users can interact with them. Ideas come from interviews, user submissions, and AI agents that crawl specific web resources (e.g., LinkedIn, Reddit, Hacker News) to identify needs and generate ideas. Each idea follows a structured format with consistent fields (title, category, subcategory, difficulty, market estimates, time horizon, sources, etc.). Users can vote on ideas, post comments, and form interest groups. A premium model offers direct contact features for deeper collaboration.
+- **Knowledge Hub**: A comprehensive resource center that includes:
+  - Podcast: A curated list of "The Way Forward" podcast episodes, available on Spotify and YouTube.
+  - Deep-dives: A collection of in-depth articles exploring specific ideas, published also on Medium and Substack.
+  - Resources: A curated collection of useful external resources that help users explore related industries in greater depth.
+- **Community**: A space for users to connect, collaborate, and engage with other changemakers.
+- **Profile**: Personal user space for managing preferences, saved ideas, and account settings.
 
 ### Objectives and Goals
 
-**Primary Objective:** Develop an MVP of *The Way Forward* that captures and organizes startup ideas, enabling users to upvote/downvote, comment, and indicate interest in collaboration.
+**Primary Objective:** Develop an MVP of _The Way Forward_ that serves as the definitive platform for understanding, tracking, and solving humanity's greatest challenges through collaborative innovation.
 
 Goals include:
 
-- Provide a user-friendly interface for capturing, browsing, and discussing startup ideas.
-- Ensure ideas can be easily filtered by category, subcategory, difficulty, or popularity.
-- Offer a freemium model: free access to ideas, plus premium subscriptions or pay-per-idea contact features.
-- Create the foundational structure of the platform including the 4 main pillars (Ideas Portal, Podcast, Deep-dives, Resources) and integrate them more and more step-by-step
+- Create a comprehensive dashboard of global challenges with real-time tracking and visualization.
+- Enable the discovery, submission, and refinement of innovative solutions to these challenges.
+- Foster collaboration between experts, innovators, and implementers across different domains.
+- Provide an integrated knowledge hub that connects challenges, solutions, and resources.
+- Build a vibrant community of changemakers dedicated to humanity's progress.
+- Ensure accessibility while maintaining premium features for deeper engagement.
 
 ## User Personas and Use Cases
 
@@ -66,43 +73,118 @@ Goals include:
 
 ### Functional Requirements
 
-1. **Ideas Portal page**
-    - Users can submit ideas directly on the platform (with mandatory fields like title, category, difficulty, etc.).
-    - Interviews uploaded (by the “curators”, which have access to a different additional view respect to “normal” users) can automatically generate multiple ideas, all linked to the associated podcast/interview.
-    - Automated AI agent to collect startup ideas from public platforms (Reddit, LinkedIn, X, etc.).
-    - Mandatory fields for each idea include:
-    Title, Category, Sub-category, Difficulty level, Date of creation, Date of last update, Problem Statement, Solution, Why now, Market estimate, Ideal Customer Profile (ICP), Competition, Business Model, Sources, Status, Type of Creator (user, curator, agent…), Creator.
-    - Optional fields include:
-    Skills required, Potential investors, Conferences, Steps suggested, Eventual revisions, Collaboration Groups (Reddit, Discord…).
-    - Upvote/downvote system for each idea (similar to Reddit).
-    - Comment section under each idea for detailed discussion.
-    - Ability to form an "interest bucket" or group for each idea to facilitate collaboration among interested users.
-    - Various browsing sections: Curated Selection, Users’ Choice, Category-based listing, Newest ideas.
-    - Search and filtering by category, subcategory, difficulty, and popularity.
-2. **Podcast pages**
-    - Curators exclusively can add content here, and should be enabled to do so in an easy and intuitive way
-    - Here only the links to spotify and youtube are hosted. it includes also links to the ideas in the Ideas Portal extrapolated from these interviews
-3. **Deep-dive page**
-    - Curators exclusively can add content here, and should be enabled to do so in an easy and intuitive way
-    - Authors can directly write on the portal in an intuitive manner, which is kept simple by design (a simpler version of how text is formatted in notion, medium or substack, including the ability to add images and videos in the middle of text if needed)
-4. **Resources page**
-    - Curators exclusively can add content here, and should be enabled to do so in an easy and intuitive way
-    - simply a list of resources divided per industry, with a brief description of why they are useful
-5. **Split between “users” and “curators” views**
-    - for each page, there are 2 different views. The users, subscribed or not, can only have a certain, limited capability to interact with the Ideas Portal, and can only view the content in the Podcast, Deep-dive, and Resources pages. On the other side, Curators have a much deeper capability to interact with the Ideas Portal page (e.g., can select “Curator’s choice ideas”, can spin up agents to look for new ideas), and are for now the only ones that can modify the contents inn the Podcasts, Deep-dive, and Resources pages.
-6. **Premium Modes**
-    - Users can access all ideas for free but require a premium subscription or one-time payment to contact the idea owner directly.
-    - in the future, it will be added a functionality that by describing an idea you have with simple text, an AI agent makes an analysis of it on the web and comes back with a properly structured idea in the style of the ones available in the ideas portal
-    - Payment options: Monthly subscription (unlimited contact) or per-idea access (higher one-off cost).
-7. **Content Promotion**
-    - Automatic generation of social media posts highlighting top ideas or curated picks.
-    - Occasional hackathons/events hosted to spur collaboration on top ideas.
-8. **Multi-Channel Publishing**
-    - Ability to embed or link podcast interviews on YouTube and Spotify.
-    - Automated cross-posting of new or trending ideas to social channels.
-9. **Fostering Early Engagement**
-    - Potential use of “fake” accounts or seed activities (comments, upvotes) to simulate community traction at launch.
-    - Strategic outreach on Reddit, Discord, X communities, etc., to showcase the product.
+1. **Ideas Portal page** - Users can submit ideas directly on the platform (with mandatory fields like title, category, difficulty, etc.). - Interviews uploaded (by the "curators", which have access to a different additional view respect to "normal" users) can automatically generate multiple ideas, all linked to the associated podcast/interview. - Automated AI agent to collect startup ideas from public platforms (Reddit, LinkedIn, X, etc.). - Upvote/downvote system for each idea (similar to Reddit). - Comment section under each idea for detailed discussion. - Ability to form an "interest bucket" or group for each idea to facilitate collaboration among interested users. - Various browsing sections: Curated Selection, Users' Choice, Category-based listing, Newest ideas. - Search and filtering by category, subcategory, difficulty, and popularity.
+   **Ideas fields**
+
+**Mandatory Fields**
+
+- **Title** _(String)_: The main name or headline of the idea.
+- **Humanity's Challenge** _(String)_: The Humanity's Challenge that this idea addresses (e.g., Climate Change, AI Safety).
+- **Category** _(String)_: The top-level category (e.g., Energy, Supply Chain, LLMs).
+- **Sub-category** _(String)_: A more specific classification under the main category (e.g., Energy Storage, Logistics, AI Alignment).
+- **Geographic Focus** _(String)_: The location or region targeted by the idea.
+- **Time Horizon** _(String)_: Estimate of the amount of time needed to have the idea realized (<1 year, 1-5 years, 5-10 years, >10 years).
+- **Date of Creation** _(Date)_: The day the idea was first submitted.
+- **Date of Last Update** _(Date)_: The day the idea was last edited or updated.
+- **Problem Statement** _(String)_: A concise explanation of the problem this idea aims to solve.
+- **Solution** _(String)_: A summary of how the idea addresses the identified problem.
+- **Why Now** _(String)_: A brief rationale for why this idea is timely or relevant.
+- **Market Estimate** _(Integer)_: An approximation or range indicating market size or potential.
+- **Business Model** _(String)_: How the idea plans to generate revenue or create value.
+- **Technologies** _(List of Strings)_: A list of core technologies involved (e.g., LLMs, blockchain).
+- **Competition** _(String)_: Key competitors or alternative solutions in the market.
+- **Status** _(String)_: A label for the stage of the idea (e.g., early-stage, proven, pilot).
+- **Type of Author** _(String)_: Identifies if the author is a user, curator, or AI agent.
+- **Author** _(String)_: The username or display name of the idea creator.
+- **Sources** _(List of Strings)_: References or citations for data that informed the idea.
+
+**Optional Fields**
+
+- **Ideal Customer Profile (ICP)** _(String)_: A concise profile of the target customer or audience.
+- **Skills Required** _(List of Strings)_: Specific expertise needed to develop or implement the idea.
+- **Potential Investors** _(List of Strings)_: Links or names of investors who might be interested.
+- **Potential Customers** _(List of Strings )_: References to early adopters, pilot customers, or target companies.
+- **Contacts** _(List of Strings)_: Relevant email addresses, websites, or other ways to get in touch.
+- **Collaboration Groups** _(List of Strings)_: Related discussion communities such as subreddits or Discord channels.
+- **Similar Ideas** _(List of Strings)_: References to ideas on the portal with overlapping concepts.
+- Supporting Material _(Files)_: A place where users can add external files as additional info/context.
+- **Other** _(String)_: A general field for additional notes or details outside the standard categories.
+
+2. **Challenges Page**
+
+   - Dashboard tracking major global challenges with live KPIs and data visualizations
+   - Real-time tracking and visualization of challenge metrics
+   - Interactive maps showing geographic impact and distribution
+   - Detailed descriptions and statistics for each challenge
+   - Links to related ideas and solutions in the Ideas Portal
+   - Ability to filter and sort challenges by category, urgency, and impact
+   - Regular updates of challenge metrics and statistics
+
+3. **Knowledge Hub**
+
+   - Comprehensive resource center organized by industry and topic
+   - Podcast section with links to Spotify and YouTube episodes
+   - Deep-dive articles with rich text formatting and media support
+   - Curated external resources with descriptions and relevance explanations
+   - Cross-referencing between resources and related challenges/ideas
+   - Curator-exclusive content management interface
+   - Search and filter functionality for all resources
+
+4. **Community Page**
+
+   - Discussion forums organized by topics and interests
+   - User groups based on expertise and focus areas
+   - Event announcements and virtual meetup organization
+   - Direct messaging system for premium users
+   - Activity feed showing recent discussions and contributions
+   - User reputation and contribution tracking
+   - Integration with external community platforms
+
+5. **Profile Page**
+
+   - Personal profile management with bio and expertise sections
+   - Portfolio showcase for past projects and contributions
+   - Activity tracking for platform engagement
+   - Premium features access management
+   - Saved ideas and challenges tracking
+   - Network connections and collaborations display
+   - Privacy settings and notification preferences
+
+6. **Split between "users" and "curators" views**
+
+   - Differentiated access levels and capabilities
+   - Curator-exclusive content management tools
+   - Special curator features for Ideas Portal management
+   - Content moderation and curation tools
+   - Analytics and engagement metrics for curators
+
+7. **Premium Modes**
+
+   - Subscription and per-idea access options
+   - Direct contact features for premium users
+   - AI-powered idea analysis and structuring (future feature)
+   - Enhanced collaboration tools
+   - Premium content access
+
+8. **Content Promotion**
+
+   - Automated social media post generation
+   - Event and hackathon organization tools
+   - Cross-platform content distribution
+   - Engagement tracking and analytics
+
+9. **Multi-Channel Publishing**
+
+   - Integration with external platforms (YouTube, Spotify)
+   - Automated content syndication
+   - Cross-posting capabilities
+   - Media embedding support
+
+10. **Fostering Early Engagement**
+    - Community seeding strategies
+    - Strategic outreach tools
+    - Engagement analytics and tracking
+    - Community growth monitoring
 
 ## Non-Functional Requirements
 
@@ -119,12 +201,12 @@ Goals include:
 - **Backend:** Python with FastAPI for the main logic (managing ideas, user interactions, premium features).
 - **AI Agent Framework:** Langchain or Hugging Face to automate the ingestion of ideas from external platforms.
 - **Databases:**
-    - Supabase (SQL) for primary data storage and user authentication.
-    - Pinecone as an optional vector database (if advanced semantic searches or recommendation engines become needed).
+  - Supabase (SQL) for primary data storage and user authentication.
+  - Pinecone as an optional vector database (if advanced semantic searches or recommendation engines become needed).
 - **Hosting:** Render for both frontend and backend.
 - **Content Storage & Processing:**
-    - Store interview videos or audio externally (YouTube, Spotify) and link them back to each idea.
-    - Monitoring workflows to parse and categorize content.
+  - Store interview videos or audio externally (YouTube, Spotify) and link them back to each idea.
+  - Monitoring workflows to parse and categorize content.
 - **Payment System:** Integration with a payment gateway (Stripe or similar) to support subscription and per-idea payments.
 
 ## Development Plan
@@ -168,13 +250,13 @@ Basic example from which take inspiration for the Idea Portal
 
 ### Risks and Mitigations
 
-| Risk | Likelihood | Impact | Mitigation Strategy |
-| --- | --- | --- | --- |
-| AI agent failing to scrape desired data | Medium | Medium | Diversify data sources, fallback on manual curation. |
-| Low user engagement at launch | High | High | Seed the platform with “fake” activity, strong marketing push. |
-| Legal challenges around content scraping | Low | Medium | Limit scraping to publicly available data in compliance with TOS. |
-| Scalability issues with rapid growth | Medium | Medium | Use cloud services capable of scaling on demand. |
+| Risk                                     | Likelihood | Impact | Mitigation Strategy                                               |
+| ---------------------------------------- | ---------- | ------ | ----------------------------------------------------------------- |
+| AI agent failing to scrape desired data  | Medium     | Medium | Diversify data sources, fallback on manual curation.              |
+| Low user engagement at launch            | High       | High   | Seed the platform with "fake" activity, strong marketing push.    |
+| Legal challenges around content scraping | Low        | Medium | Limit scraping to publicly available data in compliance with TOS. |
+| Scalability issues with rapid growth     | Medium     | Medium | Use cloud services capable of scaling on demand.                  |
 
 ## Conclusion
 
-*The Way Forward* seeks to become a rich, structured hub for startup ideas, fostering collaboration and community engagement across diverse industries. By combining user-submitted content, AI-driven idea generation, and robust discussion/upvoting mechanisms, the platform aims to inspire innovation and connect like-minded individuals. Building out from an MVP with core features, *The Way Forward* will then grow with additional functionalities such as advanced AI scraping, automated social posting, and event-based hackathons to transform good ideas into breakthrough projects.
+_The Way Forward_ aims to become the definitive platform for understanding and addressing humanity's greatest challenges. By providing an integrated view of global challenges, innovative solutions, and comprehensive resources, the platform serves as a bridge between today's problems and tomorrow's breakthroughs. Through its combination of challenge tracking, solution development, knowledge sharing, and community building, _The Way Forward_ empowers changemakers to collaborate effectively and accelerate humanity's progress. The MVP will establish the core infrastructure for this vision, with future developments expanding its capabilities in data analysis, AI-driven insights, and global collaboration.
