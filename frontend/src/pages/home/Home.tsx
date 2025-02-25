@@ -6,36 +6,45 @@ import logoSvg from "@/assets/icons/The Way Forward - Logo Circular.svg";
 const Home = () => {
   const features = [
     {
+      title: "Humanity's Challenges",
+      description:
+        "An up-to-date overview on humanity's most pressing challenges",
+      icon: "🌍",
+      link: "/challenges",
+    },
+    {
       title: "Ideas Portal",
       description:
-        "Discover and share innovative startup ideas across industries",
-      icon: "💡",
+        "A collection of ideas and solutions to make a difference",
+      icon: "🎯",
       link: "/ideas",
     },
     {
       title: "Podcast",
       description:
-        "Listen to industry experts discuss challenges and opportunities",
+        "Deep conversations with visionaries shaping tomorrow's solutions",
       icon: "🎙️",
       link: "/podcast",
     },
     {
       title: "Deep-dives",
-      description: "In-depth analysis of trending topics and emerging markets",
-      icon: "📚",
+      description:
+        "Comprehensive analysis of breakthrough solutions and their potential impact",
+      icon: "🔍",
       link: "/deep-dives",
     },
     {
       title: "Community",
       description:
-        "Connect with like-minded innovators and join exciting competitions",
-      icon: "👥",
+        "Join forces with brilliant minds dedicated to moving humanity forward",
+      icon: "🌟",
       link: "/community",
     },
     {
-      title: "Resources",
-      description: "Curated collection of tools and guides for entrepreneurs",
-      icon: "🔧",
+      title: "Knowledge Hub",
+      description:
+        "Essential resources and insights for creating meaningful change",
+      icon: "📚",
       link: "/resources",
     },
   ];
@@ -56,14 +65,14 @@ const Home = () => {
             The Way Forward
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            Your platform for discovering, sharing, and building the next
-            generation of innovative startups.
+            The source of truth for everything that matters - creating a bridge between today's challenges and tomorrow's solutions for humanity's prosperity.
           </p>
           <Link
             to="/ideas"
-            className="inline-block px-6 sm:px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
+            className="inline-block text-lg sm:text-xl text-[#ffbd59] hover:text-[#e6aa50] transition-colors flex items-center justify-center"
           >
-            Explore Ideas
+            <span className="mr-2">Learn how you can make a difference</span>
+            <span className="animate-pulse">⬇️</span>
           </Link>
         </div>
 
@@ -89,16 +98,17 @@ const Home = () => {
         {/* Call to Action */}
         <div className="max-w-4xl mx-auto text-center mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Ready to Share Your Idea?
+            Ready to Shape the Future?
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Join our community of innovators and bring your vision to life.
+            Share your insights and solutions to help build the future we all
+            want to see.
           </p>
           <Link
             to="/ideas/submit"
             className="inline-block px-6 sm:px-8 py-3 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
           >
-            Submit Your Idea
+            Contribute Solution
           </Link>
         </div>
       </div>

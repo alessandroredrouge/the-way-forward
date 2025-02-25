@@ -118,7 +118,7 @@ const MOCK_IDEAS = [
 const IdeasPortal = () => {
   return (
     <PageLayout>
-      <div className="w-full max-w-full">
+      <div className="w-full max-w-full px-6 sm:px-8 md:px-12">
         <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Explore & Share Startup Ideas

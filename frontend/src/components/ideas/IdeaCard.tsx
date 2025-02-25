@@ -121,7 +121,7 @@ const IdeaCard = (props: IdeaCardProps) => {
               {isPremium && <Lock className="w-4 h-4 text-secondary" />}
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-secondary transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#4c77f6] transition-colors">
               {title}
             </h3>
 

@@ -11,6 +11,7 @@ import Home from "./pages/home/Home";
 import IdeasPortal from "./pages/ideas/IdeasPortal";
 import IdeaDetail from "./pages/ideas/IdeaDetail";
 import SubmitIdea from "./pages/ideas/SubmitIdea";
+import KnowledgeHub from "./pages/knowledge hub/KnowledgeHub";
 import Podcast from "./pages/podcast/Podcast";
 import DeepDives from "./pages/deep-dives/DeepDives";
 import Community from "./pages/community/Community";
@@ -37,11 +38,14 @@ const App = () => (
               <Route path="/ideas/:id" element={<IdeaDetail />} />
               <Route path="/ideas/submit" element={<SubmitIdea />} />
 
-              {/* New Routes */}
+              {/* Knowledge Hub Routes */}
+              <Route path="/knowledge-hub" element={<KnowledgeHub />} />
               <Route path="/podcast" element={<Podcast />} />
               <Route path="/deep-dives" element={<DeepDives />} />
-              <Route path="/community" element={<Community />} />
               <Route path="/resources" element={<Resources />} />
+
+              {/* Other Routes */}
+              <Route path="/community" element={<Community />} />
               <Route path="/profile" element={<Profile />} />
 
               {/* Catch-all route for 404 */}

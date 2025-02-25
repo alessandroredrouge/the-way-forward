@@ -3,15 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   Lightbulb,
-  Radio,
-  BookOpen,
-  Boxes,
   UserCircle,
   Moon,
   Sun,
   Menu,
   X,
   Users,
+  BookOpen,
 } from "lucide-react";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 
@@ -23,10 +21,8 @@ const Navigation = () => {
   const navItems = [
     { name: "Home", icon: Home, href: "/" },
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
-    { name: "Podcast", icon: Radio, href: "/podcast" },
-    { name: "Deep-dives", icon: BookOpen, href: "/deep-dives" },
+    { name: "Knowledge Hub", icon: BookOpen, href: "/knowledge-hub" },
     { name: "Community", icon: Users, href: "/community" },
-    { name: "Resources", icon: Boxes, href: "/resources" },
     { name: "Profile", icon: UserCircle, href: "/profile" },
   ];
 
