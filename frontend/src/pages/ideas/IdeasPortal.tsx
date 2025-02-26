@@ -53,6 +53,7 @@ interface Idea {
   downvotes: number;
   views: number;
   time_horizon: string;
+  humanity_challenge: string;
   // Optional fields
   ideal_customer_profile?: string;
   skills_required?: string[];
@@ -193,13 +194,13 @@ const IdeasPortal = () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 auto-rows-fr">
             {ideas.map((idea) => (
               <IdeaCard
                 key={idea.id}
                 title={idea.title || "Untitled Idea"}
                 category={idea.category || "Uncategorized"}
-                subcategory={idea.sub_category || ""}
+                sub_category={idea.sub_category || ""}
                 geographicFocus={idea.geographic_focus || "Global"}
                 dateCreated={idea.created_at || new Date().toISOString()}
                 dateUpdated={idea.updated_at || new Date().toISOString()}
@@ -221,6 +222,7 @@ const IdeasPortal = () => {
                   idea.created_at || new Date()
                 ).toLocaleDateString()}
                 timeHorizon={idea.time_horizon || "Short-term"}
+                humanityChallenge={idea.humanity_challenge || "General"}
                 skillsRequired={idea.skills_required || []}
                 idealCustomerProfile={idea.ideal_customer_profile || ""}
                 other={idea.other || ""}
