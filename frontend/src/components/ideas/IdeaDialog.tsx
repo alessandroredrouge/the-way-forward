@@ -93,7 +93,7 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
             </Dialog.Close>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 break-words">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 break-words hyphens-auto">
             {idea.title}
           </h2>
 

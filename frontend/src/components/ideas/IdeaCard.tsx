@@ -103,7 +103,7 @@ const IdeaCard = (props: IdeaCardProps) => {
                 <Lock className="w-4 h-4 text-secondary flex-shrink-0" />
               )}
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#4c77f6] transition-colors truncate">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-[#4c77f6] transition-colors break-words line-clamp-3">
               {title}
             </h3>
             <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
