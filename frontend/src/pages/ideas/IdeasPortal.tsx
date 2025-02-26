@@ -66,6 +66,7 @@ const IdeasPortal = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState<boolean>(false);
   const [isIdeaDialogOpen, setIsIdeaDialogOpen] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
 
   // Function to handle dialog open/close state
   const handleDialogState = (isOpen: boolean) => {
@@ -74,25 +75,53 @@ const IdeasPortal = () => {
     // Immediately update sticky state when dialog opens/closes
     if (isOpen) {
       setIsSticky(false); // Hide sticky header when dialog opens
+      setScrollProgress(0);
     } else {
       // Check if we should show sticky header based on scroll position
       const filterSection = document.getElementById("filter-section");
       if (filterSection) {
         const filterPosition = filterSection.getBoundingClientRect().top;
-        setIsSticky(filterPosition < 0);
+        const threshold = 100; // Adjust this value to control when the transition starts
+
+        if (filterPosition < threshold) {
+          // Calculate scroll progress (0 to 1)
+          const progress = Math.min(
+            1,
+            Math.max(0, (threshold - filterPosition) / threshold)
+          );
+          setScrollProgress(progress);
+          setIsSticky(filterPosition < 0);
+        } else {
+          setScrollProgress(0);
+          setIsSticky(false);
+        }
       }
     }
   };
 
   useEffect(() => {
     const handleScroll = () => {
+      // Don't update if dialog is open
+      if (isIdeaDialogOpen) return;
+
       // Get the position of the filter section
       const filterSection = document.getElementById("filter-section");
       if (filterSection) {
         const filterPosition = filterSection.getBoundingClientRect().top;
-        // If the filter section is above the viewport, show the sticky header
-        // But only if no idea dialog is open
-        setIsSticky(filterPosition < 0 && !isIdeaDialogOpen);
+        const threshold = 100; // Adjust this value to control when the transition starts
+
+        if (filterPosition < threshold) {
+          // Calculate scroll progress (0 to 1)
+          const progress = Math.min(
+            1,
+            Math.max(0, (threshold - filterPosition) / threshold)
+          );
+          setScrollProgress(progress);
+          setIsSticky(filterPosition < 0);
+        } else {
+          setScrollProgress(0);
+          setIsSticky(false);
+        }
       }
     };
 
@@ -143,40 +172,54 @@ const IdeasPortal = () => {
 
   return (
     <PageLayout>
-      {isSticky && !isIdeaDialogOpen && (
-        <div className="fixed top-16 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-md py-2 sm:py-3 px-4 sm:px-6 md:px-12 animate-fade-down border-b border-gray-200 dark:border-gray-700">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between gap-3 sm:gap-4">
-              <div className="flex-1 overflow-x-auto flex items-center gap-2 sm:gap-4 pb-2 sm:pb-0 no-scrollbar">
-                <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 whitespace-nowrap text-sm">
-                  <span>Filters</span>
-                  <span className="text-gray-400">3</span>
-                </button>
-                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
-                  <option>Category</option>
-                </select>
-                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
-                  <option>Difficulty</option>
-                </select>
-                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
-                  <option>Sort By</option>
-                </select>
-              </div>
-              <Link
-                to="/ideas/submit"
-                className="flex-shrink-0 px-4 sm:px-6 py-1.5 sm:py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors text-center text-sm sm:text-base"
-              >
-                Submit Idea
-              </Link>
+      {/* Sticky header with transition */}
+      <div
+        className={`fixed top-16 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-md py-2 sm:py-3 px-4 sm:px-6 md:px-12 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out ${
+          isIdeaDialogOpen ? "opacity-0 -translate-y-full" : ""
+        }`}
+        style={{
+          opacity: scrollProgress,
+          transform: `translateY(${
+            scrollProgress < 1 ? "-" + (100 - scrollProgress * 100) + "%" : "0"
+          })`,
+          pointerEvents: scrollProgress > 0.5 ? "auto" : "none",
+          boxShadow: `0 ${scrollProgress * 4}px ${
+            scrollProgress * 8
+          }px rgba(0, 0, 0, ${scrollProgress * 0.1})`,
+        }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-3 sm:gap-4">
+            <div className="flex-1 overflow-x-auto flex items-center gap-2 sm:gap-4 pb-2 sm:pb-0 no-scrollbar">
+              <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 whitespace-nowrap text-sm">
+                <span>Filters</span>
+                <span className="text-gray-400">3</span>
+              </button>
+              <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                <option>Category</option>
+              </select>
+              <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                <option>Difficulty</option>
+              </select>
+              <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                <option>Sort By</option>
+              </select>
             </div>
+            <Link
+              to="/ideas/submit"
+              className="flex-shrink-0 px-4 sm:px-6 py-1.5 sm:py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors text-center text-sm sm:text-base"
+            >
+              Submit Idea
+            </Link>
           </div>
         </div>
-      )}
+      </div>
 
       <div
-        className={`w-full max-w-full px-6 sm:px-8 md:px-12 ${
-          isSticky ? "pt-16 sm:pt-14" : ""
-        }`}
+        className="w-full max-w-full px-6 sm:px-8 md:px-12 transition-all duration-300 ease-in-out"
+        style={{
+          paddingTop: `${scrollProgress * 56}px`, // Dynamically adjust padding based on scroll progress
+        }}
       >
         <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
