@@ -32,6 +32,8 @@ interface IdeaFormData {
 }
 
 const SubmitIdea = () => {
+  const [ideaDescription, setIdeaDescription] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [formData, setFormData] = useState<IdeaFormData>({
     title: "",
     humanity_challenge: "",
@@ -55,6 +57,7 @@ const SubmitIdea = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const [aiAssisted, setAiAssisted] = useState<boolean>(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -76,6 +79,64 @@ const SubmitIdea = () => {
   const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+  };
+
+  // This function will eventually call the LLM API
+  const analyzeWithAI = async () => {
+    if (!ideaDescription.trim()) {
+      setError("Please provide a description of your idea first");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setError(null);
+
+    try {
+      // TODO: Replace with actual LLM API call
+      // For now, we'll simulate a response with a timeout
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Mock AI response - in the real implementation, this would come from the LLM
+      const mockAiResponse: IdeaFormData = {
+        title: "AI-Generated Title Based on Your Description",
+        humanity_challenge: "Climate Change and Sustainability",
+        category: "Environment",
+        sub_category: "Renewable Energy",
+        geographic_focus: "Global",
+        time_horizon: "5-10 years",
+        problem_statement:
+          "Your description suggests addressing environmental challenges through innovative technology solutions.",
+        solution:
+          "A platform that connects renewable energy producers with consumers, facilitating direct energy trading.",
+        why_now:
+          "Increasing climate concerns and advancements in renewable energy technologies make this the perfect time.",
+        market_estimate: 25000000000,
+        business_model: "Subscription-based platform with transaction fees",
+        technologies: ["Blockchain", "IoT", "AI", "Cloud Computing"],
+        competition:
+          "Traditional energy providers, Existing energy marketplaces",
+        status: "early-stage",
+        type_of_author: "User",
+        author: "",
+        sources: ["IPCC Report 2023", "Renewable Energy Market Analysis"],
+        ideal_customer_profile:
+          "Environmentally conscious consumers and businesses looking to reduce carbon footprint",
+        skills_required: [
+          "Software Development",
+          "Energy Market Expertise",
+          "Blockchain",
+        ],
+      };
+
+      setFormData(mockAiResponse);
+      setAiAssisted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to analyze your idea"
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -129,6 +190,70 @@ const SubmitIdea = () => {
               {error}
             </div>
           ) : null}
+
+          {/* AI-Assisted Idea Description */}
+          <div className="mb-8 p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+              Describe Your Idea
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Describe your idea in detail and our AI Agent will help you fill out the
+              form. You can review and edit the information before submitting.
+            </p>
+            <textarea
+              value={ideaDescription}
+              onChange={(e) => setIdeaDescription(e.target.value)}
+              rows={6}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white mb-4"
+              placeholder="Describe your idea here in as much detail as possible. What problem does it solve? How does it work? What technologies does it use? What's the market potential?"
+            />
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={analyzeWithAI}
+                disabled={isAnalyzing || !ideaDescription.trim()}
+                className={`px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center ${
+                  isAnalyzing || !ideaDescription.trim()
+                    ? "opacity-70 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                {isAnalyzing ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Analyzing...
+                  </>
+                ) : (
+                  "Get help from our AI Agent"
+                )}
+              </button>
+            </div>
+            {aiAssisted && (
+              <div className="mt-4 text-sm text-green-600 dark:text-green-400">
+                ✓ AI has analyzed your idea. Please review the form below and
+                make any necessary adjustments.
+              </div>
+            )}
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
