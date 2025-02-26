@@ -1,149 +1,542 @@
-import React from "react";
+import React, { useState } from "react";
 import Navigation from "@/components/shared/Navigation";
+import PageLayout from "@/components/shared/PageLayout";
+
+interface IdeaFormData {
+  title: string;
+  humanity_challenge: string;
+  category: string;
+  sub_category: string;
+  geographic_focus: string;
+  time_horizon: string;
+  problem_statement: string;
+  solution: string;
+  why_now: string;
+  market_estimate: number;
+  business_model: string;
+  technologies: string[];
+  competition: string;
+  status: string;
+  type_of_author: string;
+  author: string;
+  sources: string[];
+  // Optional fields
+  ideal_customer_profile?: string;
+  skills_required?: string[];
+  potential_investors?: string[];
+  potential_customers?: string[];
+  contacts?: string[];
+  collaboration_groups?: string[];
+  similar_ideas?: string[];
+  other?: string;
+}
 
 const SubmitIdea = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState<IdeaFormData>({
+    title: "",
+    humanity_challenge: "",
+    category: "",
+    sub_category: "",
+    geographic_focus: "",
+    time_horizon: "",
+    problem_statement: "",
+    solution: "",
+    why_now: "",
+    market_estimate: 0,
+    business_model: "",
+    technologies: [],
+    competition: "",
+    status: "early-stage",
+    type_of_author: "User",
+    author: "",
+    sources: [],
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleArrayInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: keyof IdeaFormData
+  ) => {
+    const values = e.target.value.split(",").map((item) => item.trim());
+    setFormData((prev) => ({ ...prev, [field]: values }));
+  };
+
+  const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // TODO: Replace with actual API endpoint
+      const response = await fetch("http://localhost:8000/api/ideas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to submit idea");
+      }
+
+      setSuccess(true);
+      // Reset form or redirect
+      // window.location.href = "/ideas";
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+    <PageLayout>
+      <div className="container mx-auto px-4 pt-8 pb-12">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
             Submit Your Idea
           </h1>
 
+          {success ? (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+              Your idea has been submitted successfully!
+            </div>
+          ) : null}
+
+          {error ? (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              {error}
+            </div>
+          ) : null}
+
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
+            {/* Basic Information */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Basic Information
+              </h2>
 
-            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  htmlFor="category"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="title"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  Category
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="humanity_challenge"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Humanity Challenge *
+                </label>
+                <input
+                  type="text"
+                  id="humanity_challenge"
+                  name="humanity_challenge"
+                  value={formData.humanity_challenge}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Category *
+                  </label>
+                  <select
+                    id="category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
+                  >
+                    <option value="">Select a category</option>
+                    <option value="AI/ML">AI/ML</option>
+                    <option value="Energy">Energy</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Environment">Environment</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Finance">Finance</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="sub_category"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Sub-Category *
+                  </label>
+                  <input
+                    type="text"
+                    id="sub_category"
+                    name="sub_category"
+                    value={formData.sub_category}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="geographic_focus"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Geographic Focus *
+                  </label>
+                  <input
+                    type="text"
+                    id="geographic_focus"
+                    name="geographic_focus"
+                    value={formData.geographic_focus}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="time_horizon"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Time Horizon *
+                  </label>
+                  <select
+                    id="time_horizon"
+                    name="time_horizon"
+                    value={formData.time_horizon}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
+                  >
+                    <option value="">Select time horizon</option>
+                    <option value="<1 year">Less than 1 year</option>
+                    <option value="1-5 years">1-5 years</option>
+                    <option value="5-10 years">5-10 years</option>
+                    <option value=">10 years">More than 10 years</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Problem & Solution */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Problem & Solution
+              </h2>
+
+              <div>
+                <label
+                  htmlFor="problem_statement"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Problem Statement *
+                </label>
+                <textarea
+                  id="problem_statement"
+                  name="problem_statement"
+                  value={formData.problem_statement}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="solution"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Solution *
+                </label>
+                <textarea
+                  id="solution"
+                  name="solution"
+                  value={formData.solution}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="why_now"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Why Now? *
+                </label>
+                <textarea
+                  id="why_now"
+                  name="why_now"
+                  value={formData.why_now}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Business & Market */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Business & Market
+              </h2>
+
+              <div>
+                <label
+                  htmlFor="market_estimate"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Market Estimate (USD) *
+                </label>
+                <input
+                  type="number"
+                  id="market_estimate"
+                  name="market_estimate"
+                  value={formData.market_estimate}
+                  onChange={handleNumberInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="business_model"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Business Model *
+                </label>
+                <textarea
+                  id="business_model"
+                  name="business_model"
+                  value={formData.business_model}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="technologies"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Technologies (comma separated) *
+                </label>
+                <input
+                  type="text"
+                  id="technologies"
+                  name="technologies"
+                  value={formData.technologies.join(", ")}
+                  onChange={(e) => handleArrayInputChange(e, "technologies")}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                  placeholder="AI, Blockchain, IoT, etc."
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="competition"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Competition *
+                </label>
+                <textarea
+                  id="competition"
+                  name="competition"
+                  value={formData.competition}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Additional Information
+              </h2>
+
+              <div>
+                <label
+                  htmlFor="status"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Status *
                 </label>
                 <select
-                  id="category"
-                  name="category"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
                 >
-                  <option value="">Select a category</option>
-                  <option value="AI/ML">AI/ML</option>
-                  <option value="Energy">Energy</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Education">Education</option>
-                  <option value="Environment">Environment</option>
+                  <option value="early-stage">Early Stage</option>
+                  <option value="pilot">Pilot</option>
+                  <option value="proven">Proven</option>
+                  <option value="scaling">Scaling</option>
                 </select>
               </div>
 
               <div>
                 <label
-                  htmlFor="difficulty"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="author"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  Difficulty
+                  Author *
                 </label>
-                <select
-                  id="difficulty"
-                  name="difficulty"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                <input
+                  type="text"
+                  id="author"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
-                >
-                  <option value="">Select difficulty</option>
-                  <option value="Easy">Easy</option>
-                  <option value="Moderate">Moderate</option>
-                  <option value="Advanced">Advanced</option>
-                </select>
+                />
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  htmlFor="timeHorizon"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="sources"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  Time Horizon
+                  Sources (comma separated) *
                 </label>
-                <select
-                  id="timeHorizon"
-                  name="timeHorizon"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                <input
+                  type="text"
+                  id="sources"
+                  name="sources"
+                  value={formData.sources.join(", ")}
+                  onChange={(e) => handleArrayInputChange(e, "sources")}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
-                >
-                  <option value="">Select time horizon</option>
-                  <option value="<1 year">Less than 1 year</option>
-                  <option value="1-5 years">1-5 years</option>
-                  <option value="5-10 years">5-10 years</option>
-                  <option value=">10 years">More than 10 years</option>
-                </select>
+                  placeholder="Research papers, articles, etc."
+                />
               </div>
-            </div>
 
-            <div>
-              <label
-                htmlFor="problemStatement"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Problem Statement
-              </label>
-              <textarea
-                id="problemStatement"
-                name="problemStatement"
-                rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
+              <div>
+                <label
+                  htmlFor="ideal_customer_profile"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Ideal Customer Profile (optional)
+                </label>
+                <textarea
+                  id="ideal_customer_profile"
+                  name="ideal_customer_profile"
+                  value={formData.ideal_customer_profile || ""}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                />
+              </div>
 
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
+              <div>
+                <label
+                  htmlFor="skills_required"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Skills Required (comma separated, optional)
+                </label>
+                <input
+                  type="text"
+                  id="skills_required"
+                  name="skills_required"
+                  value={formData.skills_required?.join(", ") || ""}
+                  onChange={(e) => handleArrayInputChange(e, "skills_required")}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  placeholder="Programming, Marketing, Design, etc."
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="other"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Other Information (optional)
+                </label>
+                <textarea
+                  id="other"
+                  name="other"
+                  value={formData.other || ""}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                />
+              </div>
             </div>
 
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors"
+                disabled={isSubmitting}
+                className={`px-6 py-2 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors ${
+                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
-                Submit Idea
+                {isSubmitting ? "Submitting..." : "Submit Idea"}
               </button>
             </div>
           </form>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

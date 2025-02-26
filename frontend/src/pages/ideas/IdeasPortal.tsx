@@ -178,9 +178,12 @@ const IdeasPortal = () => {
               <option>Sort By</option>
             </select>
           </div>
-          <button className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors">
+          <Link 
+            to="/ideas/submit" 
+            className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors"
+          >
             Submit Idea
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
