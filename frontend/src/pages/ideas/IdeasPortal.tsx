@@ -1,124 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/shared/PageLayout";
 import IdeaCard from "@/components/ideas/IdeaCard";
-import CuratorChoice from "@/components/ideas/CuratorChoice";
 import Filters from "@/components/ideas/Filters";
 
-const MOCK_CURATOR_IDEAS = [
-  {
-    title: "AI-Powered Personal Shopping Assistant",
-    category: "AI/ML",
-    curator: "Sarah Johnson",
-    description:
-      "A smart shopping assistant that learns user preferences and provides personalized recommendations across multiple e-commerce platforms.",
-  },
-  {
-    title: "Sustainable Energy Marketplace",
-    category: "Energy",
-    curator: "Michael Chen",
-    description:
-      "A platform connecting renewable energy producers with consumers, facilitating direct energy trading and promoting sustainable practices.",
-  },
-  {
-    title: "Healthcare IoT Integration Platform",
-    category: "Healthcare",
-    curator: "Dr. Emily Brown",
-    description:
-      "An integrated system for managing and analyzing data from various healthcare IoT devices, improving patient care and monitoring.",
-  },
-];
+// TODO: Uncomment and implement Curator's Choice when ready
+// const MOCK_CURATOR_IDEAS = [
+//   {
+//     title: "AI-Powered Personal Shopping Assistant",
+//     category: "AI/ML",
+//     curator: "Sarah Johnson",
+//     description:
+//       "A smart shopping assistant that learns user preferences and provides personalized recommendations across multiple e-commerce platforms.",
+//   },
+//   {
+//     title: "Sustainable Energy Marketplace",
+//     category: "Energy",
+//     curator: "Michael Chen",
+//     description:
+//       "A platform connecting renewable energy producers with consumers, facilitating direct energy trading and promoting sustainable practices.",
+//   },
+//   {
+//     title: "Healthcare IoT Integration Platform",
+//     category: "Healthcare",
+//     curator: "Dr. Emily Brown",
+//     description:
+//       "An integrated system for managing and analyzing data from various healthcare IoT devices, improving patient care and monitoring.",
+//   },
+// ];
 
-const MOCK_IDEAS = [
-  {
-    title: "Local Food Supply Chain Platform",
-    category: "Agriculture",
-    subcategory: "Supply Chain",
-    geographicFocus: "Local Communities",
-    dateCreated: "2024-02-24T10:00:00Z",
-    dateUpdated: "2024-02-24T10:00:00Z",
-    problemStatement:
-      "Connecting local farmers directly with consumers and restaurants to reduce food waste and support local economies.",
-    solution:
-      "A digital platform that enables direct farm-to-table connections, with real-time inventory management and delivery coordination.",
-    whyNow:
-      "Growing demand for local, sustainable food sources and need to reduce food waste.",
-    marketEstimate: 10000000000,
-    businessModel:
-      "Commission on transactions + Premium features for restaurants",
-    technologies: ["React", "Node.js", "Mobile Apps", "GPS Integration"],
-    competition: "Traditional distributors, Farmers markets",
-    status: "early-stage",
-    typeOfAuthor: "User",
-    author: "localFoodAdvocate",
-    sources: ["USDA Local Food Report", "Food Waste Statistics"],
-    votes: 156,
-    comments: 67,
-    interestedCount: 89,
-    timestamp: "1 day ago",
-    timeHorizon: "<1 year",
-  },
-  {
-    title: "Smart City Waste Management",
-    category: "Environment",
-    subcategory: "Urban Tech",
-    geographicFocus: "Metropolitan Areas",
-    dateCreated: "2024-02-23T15:30:00Z",
-    dateUpdated: "2024-02-24T09:00:00Z",
-    problemStatement:
-      "Inefficient waste collection routes and poor recycling sorting in urban areas.",
-    solution:
-      "IoT-enabled waste bins with real-time monitoring and AI-powered route optimization.",
-    whyNow:
-      "Rising urban population and increasing focus on sustainability goals.",
-    marketEstimate: 25000000000,
-    businessModel: "Hardware sales + SaaS subscription for municipalities",
-    technologies: ["IoT", "AI/ML", "GPS", "Cloud Computing"],
-    competition: "Traditional waste management companies, Rubicon",
-    status: "pilot",
-    typeOfAuthor: "Curator",
-    author: "greenTech_expert",
-    sources: ["UN Urban Development Report", "EPA Waste Statistics"],
-    votes: 89,
-    comments: 23,
-    interestedCount: 34,
-    timestamp: "5 hours ago",
-    isPremium: true,
-    timeHorizon: "<1 year",
-  },
-  {
-    title: "Decentralized Education Platform",
-    category: "Education",
-    subcategory: "E-learning",
-    geographicFocus: "Global",
-    dateCreated: "2024-02-24T08:00:00Z",
-    dateUpdated: "2024-02-24T08:00:00Z",
-    problemStatement:
-      "Traditional education systems lack accessibility and verification methods for online credentials.",
-    solution:
-      "Blockchain-based platform for creating, sharing, and verifying educational content and credentials.",
-    whyNow:
-      "Remote learning surge and increasing demand for verifiable digital credentials.",
-    marketEstimate: 50000000000,
-    businessModel: "Freemium + Enterprise licensing for institutions",
-    technologies: ["Blockchain", "Smart Contracts", "React", "Node.js"],
-    competition: "Coursera, Udemy, edX",
-    status: "proven",
-    typeOfAuthor: "User",
-    author: "eduTech_innovator",
-    sources: [
-      "World Economic Forum Education Report 2024",
-      "UNESCO Digital Learning Stats",
-    ],
-    votes: 128,
-    comments: 45,
-    interestedCount: 67,
-    timestamp: "2 hours ago",
-    timeHorizon: "5-10 years",
-  },
-];
+// Define the Idea interface based on the backend schema
+interface Idea {
+  id: string;
+  title: string;
+  category: string;
+  sub_category: string;
+  geographic_focus: string;
+  created_at: string;
+  updated_at: string;
+  problem_statement: string;
+  solution: string;
+  why_now: string;
+  market_estimate: number;
+  business_model: string;
+  technologies: string[];
+  competition: string;
+  status: string;
+  type_of_author: string;
+  author: string;
+  sources: string[];
+  upvotes: number;
+  downvotes: number;
+  views: number;
+  time_horizon: string;
+  // Optional fields
+  ideal_customer_profile?: string;
+  skills_required?: string[];
+  other?: string;
+}
 
 const IdeasPortal = () => {
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchIdeas = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:8000/api/v1/ideas/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          mode: "cors",
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch ideas");
+        }
+
+        const data = await response.json();
+        console.log("Ideas data received from backend:", data);
+        setIdeas(data);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An error occurred while fetching ideas"
+        );
+        console.error("Error fetching ideas:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIdeas();
+  }, []);
+
   return (
     <PageLayout>
       <div className="w-full max-w-full px-6 sm:px-8 md:px-12">
@@ -132,6 +113,7 @@ const IdeasPortal = () => {
           </p>
         </div>
 
+        {/* TODO: Implement Curator's Choice section when ready 
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-blue-600 dark:text-blue-400">⭐</span>
@@ -161,6 +143,7 @@ const IdeasPortal = () => {
             ))}
           </div>
         </div>
+        */}
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div className="flex-1 w-full sm:w-auto overflow-x-auto flex items-center gap-4 pb-2 sm:pb-0">
@@ -186,36 +169,65 @@ const IdeasPortal = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {MOCK_IDEAS.map((idea, index) => (
-            <IdeaCard
-              key={index}
-              title={idea.title}
-              category={idea.category}
-              subcategory={idea.subcategory}
-              geographicFocus={idea.geographicFocus}
-              dateCreated={idea.dateCreated}
-              dateUpdated={idea.dateUpdated}
-              problemStatement={idea.problemStatement}
-              solution={idea.solution}
-              whyNow={idea.whyNow}
-              marketEstimate={idea.marketEstimate}
-              businessModel={idea.businessModel}
-              technologies={idea.technologies}
-              competition={idea.competition}
-              status={idea.status}
-              typeOfAuthor={idea.typeOfAuthor}
-              author={idea.author}
-              sources={idea.sources}
-              votes={idea.votes}
-              comments={idea.comments}
-              interestedCount={idea.interestedCount}
-              timestamp={idea.timestamp}
-              isPremium={idea.isPremium}
-              timeHorizon={idea.timeHorizon}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ffbd59]"></div>
+          </div>
+        ) : error ? (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            {error}
+          </div>
+        ) : ideas.length === 0 ? (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              No ideas found
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Be the first to submit an idea!
+            </p>
+            <Link
+              to="/ideas/submit"
+              className="px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors"
+            >
+              Submit Idea
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {ideas.map((idea) => (
+              <IdeaCard
+                key={idea.id}
+                title={idea.title || "Untitled Idea"}
+                category={idea.category || "Uncategorized"}
+                subcategory={idea.sub_category || ""}
+                geographicFocus={idea.geographic_focus || "Global"}
+                dateCreated={idea.created_at || new Date().toISOString()}
+                dateUpdated={idea.updated_at || new Date().toISOString()}
+                problemStatement={idea.problem_statement || ""}
+                solution={idea.solution || ""}
+                whyNow={idea.why_now || ""}
+                marketEstimate={idea.market_estimate || 0}
+                businessModel={idea.business_model || ""}
+                technologies={idea.technologies || []}
+                competition={idea.competition || ""}
+                status={idea.status || "early-stage"}
+                typeOfAuthor={idea.type_of_author || ""}
+                author={idea.author || "Anonymous"}
+                sources={idea.sources || []}
+                votes={idea.upvotes || 0}
+                comments={0} // This might need to be implemented later
+                interestedCount={idea.views || 0}
+                timestamp={new Date(
+                  idea.created_at || new Date()
+                ).toLocaleDateString()}
+                timeHorizon={idea.time_horizon || "Short-term"}
+                skillsRequired={idea.skills_required || []}
+                idealCustomerProfile={idea.ideal_customer_profile || ""}
+                other={idea.other || ""}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </PageLayout>
   );

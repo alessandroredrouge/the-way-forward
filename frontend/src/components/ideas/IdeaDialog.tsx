@@ -59,12 +59,9 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      notation: "compact",
-      maximumFractionDigits: 1,
-    }).format(amount);
+    // Convert to millions for display
+    const inMillions = amount / 1000000;
+    return `$${inMillions.toLocaleString()} Million`;
   };
 
   return (

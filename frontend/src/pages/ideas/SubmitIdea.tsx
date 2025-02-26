@@ -79,9 +79,17 @@ const SubmitIdea = () => {
   const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const parsedValue = parseInt(value) || 0;
-    // Ensure the value doesn't exceed PostgreSQL integer limit
-    const safeValue = Math.min(parsedValue, 2147483647);
-    setFormData((prev) => ({ ...prev, [name]: safeValue }));
+
+    if (name === "market_estimate") {
+      // Convert millions to the actual value (multiply by 1,000,000)
+      // But ensure it doesn't exceed PostgreSQL integer limit
+      const actualValue = Math.min(parsedValue * 1000000, 2147483647);
+      setFormData((prev) => ({ ...prev, [name]: actualValue }));
+    } else {
+      // For other number fields, use the original logic
+      const safeValue = Math.min(parsedValue, 2147483647);
+      setFormData((prev) => ({ ...prev, [name]: safeValue }));
+    }
   };
 
   // This function will call the LLM API
@@ -129,7 +137,7 @@ const SubmitIdea = () => {
           "A platform that connects renewable energy producers with consumers, facilitating direct energy trading.",
         why_now:
           "Increasing climate concerns and advancements in renewable energy technologies make this the perfect time.",
-        market_estimate: 2000000000,
+        market_estimate: 2000000000, // This is 2,000 million (2 billion) in actual value
         business_model: "Subscription-based platform with transaction fees",
         technologies: ["Blockchain", "IoT", "AI", "Cloud Computing"],
         competition:
@@ -523,14 +531,14 @@ const SubmitIdea = () => {
                   type="number"
                   id="market_estimate"
                   name="market_estimate"
-                  value={formData.market_estimate}
+                  value={formData.market_estimate / 1000000}
                   onChange={handleNumberInputChange}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
-                  max={2147483647}
+                  max={2147}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Maximum value: 2,147,483,647 (PostgreSQL integer limit)
+                  Maximum value: 2,147 million USD
                 </p>
               </div>
 
