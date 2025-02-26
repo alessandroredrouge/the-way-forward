@@ -82,13 +82,12 @@ const SubmitIdea = () => {
 
     if (name === "market_estimate") {
       // Convert millions to the actual value (multiply by 1,000,000)
-      // But ensure it doesn't exceed PostgreSQL integer limit
-      const actualValue = Math.min(parsedValue * 1000000, 2147483647);
+      // No limit applied - allow any value
+      const actualValue = parsedValue * 1000000;
       setFormData((prev) => ({ ...prev, [name]: actualValue }));
     } else {
       // For other number fields, use the original logic
-      const safeValue = Math.min(parsedValue, 2147483647);
-      setFormData((prev) => ({ ...prev, [name]: safeValue }));
+      setFormData((prev) => ({ ...prev, [name]: parsedValue }));
     }
   };
 
@@ -535,11 +534,7 @@ const SubmitIdea = () => {
                   onChange={handleNumberInputChange}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
-                  max={2147}
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Maximum value: 2,147 million USD
-                </p>
               </div>
 
               <div>
