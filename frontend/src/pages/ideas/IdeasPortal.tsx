@@ -178,8 +178,8 @@ const IdeasPortal = () => {
               <option>Sort By</option>
             </select>
           </div>
-          <Link 
-            to="/ideas/submit" 
+          <Link
+            to="/ideas/submit"
             className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors"
           >
             Submit Idea

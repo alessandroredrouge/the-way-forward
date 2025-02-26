@@ -78,10 +78,13 @@ const SubmitIdea = () => {
 
   const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+    const parsedValue = parseInt(value) || 0;
+    // Ensure the value doesn't exceed PostgreSQL integer limit
+    const safeValue = Math.min(parsedValue, 2147483647);
+    setFormData((prev) => ({ ...prev, [name]: safeValue }));
   };
 
-  // This function will eventually call the LLM API
+  // This function will call the LLM API
   const analyzeWithAI = async () => {
     if (!ideaDescription.trim()) {
       setError("Please provide a description of your idea first");
@@ -92,7 +95,23 @@ const SubmitIdea = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual LLM API call
+      // In the future, this will be a real API call to the backend
+      // const response = await fetch("http://localhost:8000/api/v1/ideas/analyze", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ description: ideaDescription }),
+      // });
+
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error(errorData.detail || "Failed to analyze idea");
+      // }
+
+      // const aiResponse = await response.json();
+      // setFormData(aiResponse);
+
       // For now, we'll simulate a response with a timeout
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -110,7 +129,7 @@ const SubmitIdea = () => {
           "A platform that connects renewable energy producers with consumers, facilitating direct energy trading.",
         why_now:
           "Increasing climate concerns and advancements in renewable energy technologies make this the perfect time.",
-        market_estimate: 25000000000,
+        market_estimate: 2000000000,
         business_model: "Subscription-based platform with transaction fees",
         technologies: ["Blockchain", "IoT", "AI", "Cloud Computing"],
         competition:
@@ -130,6 +149,12 @@ const SubmitIdea = () => {
 
       setFormData(mockAiResponse);
       setAiAssisted(true);
+
+      // Scroll to the form section
+      const formElement = document.getElementById("idea-form");
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to analyze your idea"
@@ -145,12 +170,15 @@ const SubmitIdea = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await fetch("http://localhost:8000/api/ideas", {
+      // Try different backend URLs to resolve CORS issues
+      const response = await fetch("http://localhost:8000/api/v1/ideas/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
+        mode: "cors",
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
@@ -159,13 +187,41 @@ const SubmitIdea = () => {
         throw new Error(errorData.detail || "Failed to submit idea");
       }
 
+      const data = await response.json();
+      console.log("Idea submitted successfully:", data);
+
       setSuccess(true);
-      // Reset form or redirect
-      // window.location.href = "/ideas";
+      // Reset form after successful submission
+      setFormData({
+        title: "",
+        humanity_challenge: "",
+        category: "",
+        sub_category: "",
+        geographic_focus: "",
+        time_horizon: "",
+        problem_statement: "",
+        solution: "",
+        why_now: "",
+        market_estimate: 0,
+        business_model: "",
+        technologies: [],
+        competition: "",
+        status: "early-stage",
+        type_of_author: "User",
+        author: "",
+        sources: [],
+      });
+      setIdeaDescription("");
+      setAiAssisted(false);
+
+      // Scroll to top to show success message
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
       );
+      // Scroll to top to show error message
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setIsSubmitting(false);
     }
@@ -197,8 +253,9 @@ const SubmitIdea = () => {
               Describe Your Idea
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Describe your idea in detail and our AI Agent will help you fill out the
-              form. You can review and edit the information before submitting.
+              Describe your idea in detail and our AI Agent will help you fill
+              out the form. You can review and edit the information before
+              submitting.
             </p>
             <textarea
               value={ideaDescription}
@@ -243,19 +300,19 @@ const SubmitIdea = () => {
                     Analyzing...
                   </>
                 ) : (
-                  "Get help from our AI Agent"
+                  "Enhance Idea with AI"
                 )}
               </button>
             </div>
             {aiAssisted && (
               <div className="mt-4 text-sm text-green-600 dark:text-green-400">
-                ✓ AI has analyzed your idea. Please review the form below and
-                make any necessary adjustments.
+                ✓ The AI Agent has analyzed your idea. Please review the form
+                below and make any necessary adjustments.
               </div>
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form id="idea-form" onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -460,7 +517,7 @@ const SubmitIdea = () => {
                   htmlFor="market_estimate"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  Market Estimate (USD) *
+                  Market Estimate (Million USD) *
                 </label>
                 <input
                   type="number"
@@ -470,7 +527,11 @@ const SubmitIdea = () => {
                   onChange={handleNumberInputChange}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
+                  max={2147483647}
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Maximum value: 2,147,483,647 (PostgreSQL integer limit)
+                </p>
               </div>
 
               <div>
