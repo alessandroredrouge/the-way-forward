@@ -72,7 +72,12 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
   };
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" />
         <Dialog.Content className="fixed left-[50%] top-[55%] translate-x-[-50%] translate-y-[-50%] max-h-[80vh] w-[90vw] max-w-[800px] rounded-2xl bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-xl animate-fade-up overflow-y-auto">

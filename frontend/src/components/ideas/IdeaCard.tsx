@@ -51,6 +51,10 @@ interface IdeaCardProps {
   interestedCount: number;
   timestamp: string;
   isPremium?: boolean;
+
+  // Dialog state callbacks
+  onDialogOpen?: () => void;
+  onDialogClose?: () => void;
 }
 
 const IdeaCard = (props: IdeaCardProps) => {
@@ -74,7 +78,23 @@ const IdeaCard = (props: IdeaCardProps) => {
     interestedCount,
     timestamp,
     isPremium = false,
+    onDialogOpen,
+    onDialogClose,
   } = props;
+
+  // Function to handle dialog open
+  const handleDialogOpen = () => {
+    console.log("Dialog opening");
+    setIsDialogOpen(true);
+    if (onDialogOpen) onDialogOpen();
+  };
+
+  // Function to handle dialog close
+  const handleDialogClose = () => {
+    console.log("Dialog closing");
+    setIsDialogOpen(false);
+    if (onDialogClose) onDialogClose();
+  };
 
   // Function to truncate text if it's too long
   const truncateText = (text: string, maxLength: number = 30) => {
@@ -85,8 +105,8 @@ const IdeaCard = (props: IdeaCardProps) => {
   return (
     <>
       <div
-        className="group bg-white dark:bg-gray-700 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600 animate-fade-up cursor-pointer w-full h-full flex flex-col"
-        onClick={() => setIsDialogOpen(true)}
+        className="group bg-white dark:bg-gray-700 rounded-xl p-5 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 border border-gray-100 dark:border-gray-600 animate-fade-up cursor-pointer w-full h-full flex flex-col"
+        onClick={handleDialogOpen}
       >
         <div className="flex items-start justify-between flex-grow">
           <div className="flex-1 min-w-0 overflow-hidden">
@@ -201,7 +221,7 @@ const IdeaCard = (props: IdeaCardProps) => {
 
       <IdeaDialog
         isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        onClose={handleDialogClose}
         idea={props}
       />
     </>

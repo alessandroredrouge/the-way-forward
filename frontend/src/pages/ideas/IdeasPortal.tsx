@@ -64,6 +64,46 @@ const IdeasPortal = () => {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSticky, setIsSticky] = useState<boolean>(false);
+  const [isIdeaDialogOpen, setIsIdeaDialogOpen] = useState<boolean>(false);
+
+  // Function to handle dialog open/close state
+  const handleDialogState = (isOpen: boolean) => {
+    setIsIdeaDialogOpen(isOpen);
+
+    // Immediately update sticky state when dialog opens/closes
+    if (isOpen) {
+      setIsSticky(false); // Hide sticky header when dialog opens
+    } else {
+      // Check if we should show sticky header based on scroll position
+      const filterSection = document.getElementById("filter-section");
+      if (filterSection) {
+        const filterPosition = filterSection.getBoundingClientRect().top;
+        setIsSticky(filterPosition < 0);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Get the position of the filter section
+      const filterSection = document.getElementById("filter-section");
+      if (filterSection) {
+        const filterPosition = filterSection.getBoundingClientRect().top;
+        // If the filter section is above the viewport, show the sticky header
+        // But only if no idea dialog is open
+        setIsSticky(filterPosition < 0 && !isIdeaDialogOpen);
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isIdeaDialogOpen]); // Add isIdeaDialogOpen as a dependency
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -103,7 +143,41 @@ const IdeasPortal = () => {
 
   return (
     <PageLayout>
-      <div className="w-full max-w-full px-6 sm:px-8 md:px-12">
+      {isSticky && !isIdeaDialogOpen && (
+        <div className="fixed top-16 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-md py-2 sm:py-3 px-4 sm:px-6 md:px-12 animate-fade-down border-b border-gray-200 dark:border-gray-700">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between gap-3 sm:gap-4">
+              <div className="flex-1 overflow-x-auto flex items-center gap-2 sm:gap-4 pb-2 sm:pb-0 no-scrollbar">
+                <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 whitespace-nowrap text-sm">
+                  <span>Filters</span>
+                  <span className="text-gray-400">3</span>
+                </button>
+                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                  <option>Category</option>
+                </select>
+                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                  <option>Difficulty</option>
+                </select>
+                <select className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border-0 text-sm">
+                  <option>Sort By</option>
+                </select>
+              </div>
+              <Link
+                to="/ideas/submit"
+                className="flex-shrink-0 px-4 sm:px-6 py-1.5 sm:py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors text-center text-sm sm:text-base"
+              >
+                Submit Idea
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`w-full max-w-full px-6 sm:px-8 md:px-12 ${
+          isSticky ? "pt-16 sm:pt-14" : ""
+        }`}
+      >
         <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-up">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Explore & Share Startup Ideas
@@ -146,7 +220,10 @@ const IdeasPortal = () => {
         </div>
         */}
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+        <div
+          id="filter-section"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4"
+        >
           <div className="flex-1 w-full sm:w-auto overflow-x-auto flex items-center gap-4 pb-2 sm:pb-0">
             <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 whitespace-nowrap">
               <span>Filters</span>
@@ -164,7 +241,7 @@ const IdeasPortal = () => {
           </div>
           <Link
             to="/ideas/submit"
-            className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors"
+            className="w-full sm:w-auto px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors text-center"
           >
             Submit Idea
           </Link>
@@ -188,7 +265,7 @@ const IdeasPortal = () => {
             </p>
             <Link
               to="/ideas/submit"
-              className="px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors"
+              className="px-6 py-2 bg-[#ffbd59] hover:bg-[#e6aa50] text-white rounded-lg transition-colors text-center"
             >
               Submit Idea
             </Link>
@@ -226,6 +303,8 @@ const IdeasPortal = () => {
                 skillsRequired={idea.skills_required || []}
                 idealCustomerProfile={idea.ideal_customer_profile || ""}
                 other={idea.other || ""}
+                onDialogOpen={() => handleDialogState(true)}
+                onDialogClose={() => handleDialogState(false)}
               />
             ))}
           </div>

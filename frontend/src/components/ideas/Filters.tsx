@@ -33,7 +33,7 @@ const Filters = () => {
       </div>
 
       <div className="ml-auto">
-        <button className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-hover rounded-lg transition-colors">
+        <button className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-hover rounded-lg transition-colors text-center">
           Submit Idea
         </button>
       </div>
