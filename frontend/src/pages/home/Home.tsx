@@ -70,7 +70,7 @@ const Home = () => {
             The Way Forward
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            The place where brilliant minds can make a difference working on humanity's greatest challenges.
+            The place where brilliant minds reunite to make a difference working on humanity's greatest challenges.
           </p>
 
           {/* Sequential Text Animation with Arrow */}
