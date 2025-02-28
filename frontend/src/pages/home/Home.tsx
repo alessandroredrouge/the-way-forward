@@ -70,8 +70,7 @@ const Home = () => {
             The Way Forward
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            The source of truth for everything that matters - bridging today's
-            challenges with tomorrow's solutions for humanity's prosperity.
+            The place where brilliant minds can make a difference working on humanity's greatest challenges.
           </p>
 
           {/* Sequential Text Animation with Arrow */}
@@ -203,14 +202,14 @@ const Home = () => {
               "In our world today, humanity faces unprecedented challenges that
               demand immediate and impactful solutions. Yet, many of our
               brightest minds, talented, ambitious individuals with
-              extraordinary potential find themselves working on incremental
-              improvements to products with limited real-world impact. Or
-              simply, they don't know where to start.
+              extraordinary potential often find themselves working on secondary
+              problems with limited real-world impact. And even when they want to work on first-order problems,
+              they usually don't know where to start.
               <br />
               <br />
-              This profound 'talent misplacement' problem is what's stopping us
+              This profound 'talent misplacement' is what's stopping us
               from reaching a future where all humanity can prosper. The Way
-              Forward has been therefore created to address this problem, by
+              Forward has been created to address this problem, by
               indicating the way to the most impactful challenges while
               providing the resources needed to make a difference.
               <br />
