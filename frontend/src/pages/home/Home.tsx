@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/shared/PageLayout";
-import logoSvg from "@/assets/icons/The Way Forward - Logo Circular.svg";
+import logoSvg from "@/assets/icons/The Way Forward - New Logo Basic NO Writing.svg";
 
 const Home = () => {
   const featuresGridRef = useRef<HTMLDivElement>(null);

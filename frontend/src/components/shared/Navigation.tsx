@@ -41,7 +41,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0 flex items-center gap-2">
             <img
-              src="/src/assets/icons/The Way Forward - Logo Circular.svg"
+              src="/src/assets/icons/The Way Forward - New Logo Basic NO Writing.svg"
               alt="Logo"
               className="h-8 w-8"
             />
