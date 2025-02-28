@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/shared/PageLayout";
-import logoSvg from "@/assets/icons/The Way Forward - New Logo Basic NO Writing.svg";
+import logoSvg from "@/assets/icons/the way forward - New Logo Basic NO Writing.svg";
 
 const Home = () => {
   const featuresGridRef = useRef<HTMLDivElement>(null);
@@ -62,12 +62,12 @@ const Home = () => {
           <div className="mb-8">
             <img
               src={logoSvg}
-              alt="The Way Forward Logo"
+              alt="the way forward Logo"
               className="w-20 md:w-32 lg:w-48 mx-auto h-auto"
             />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            The Way Forward
+          <span className="font-bold text-[#4c77f6]">the way</span> <span className="font-bold text-[#ffbd59]">forward</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
             The place where brilliant minds reunite to make a difference working on humanity's greatest challenges.
@@ -215,10 +215,10 @@ const Home = () => {
               <br />
               <br />
               Let's make the world a better place, so that all humans can
-              thrive. Let's pave The Way Forward, together."
+              thrive. Let's pave <span className="font-bold text-[#4c77f6]">the way</span> <span className="font-bold text-[#ffbd59]">forward</span>, together."
             </blockquote>
             <p className="text-right text-gray-800 dark:text-gray-200 font-medium">
-              — Alessandro Rossi, Creator of The Way Forward
+              — Alessandro Rossi, Creator of the way forward
             </p>
           </div>
 
@@ -279,7 +279,7 @@ const Home = () => {
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8">
             Join our community of changemakers and help shape humanity's path to
-            prosperity.
+            prosperity!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

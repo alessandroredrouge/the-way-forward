@@ -49,7 +49,7 @@ const Navigation = () => {
               to="/"
               className="text-xl font-bold text-black dark:text-white"
             >
-              The Way Forward
+              <span className="font-bold text-[#4c77f6]">the way</span> <span className="font-bold text-[#ffbd59]">forward</span>
             </Link>
           </div>
           <div className="hidden sm:flex sm:items-center">
