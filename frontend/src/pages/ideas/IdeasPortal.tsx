@@ -318,6 +318,7 @@ const IdeasPortal = () => {
             {ideas.map((idea) => (
               <IdeaCard
                 key={idea.id}
+                id={idea.id}
                 title={idea.title || "Untitled Idea"}
                 category={idea.category || "Uncategorized"}
                 sub_category={idea.sub_category || ""}

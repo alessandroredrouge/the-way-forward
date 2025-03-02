@@ -36,8 +36,8 @@ const App = () => (
 
               {/* Ideas & Challenges Routes */}
               <Route path="/ideas" element={<IdeasPortal />} />
-              <Route path="/ideas/:id" element={<IdeaDetail />} />
               <Route path="/ideas/submit" element={<SubmitIdea />} />
+              <Route path="/ideas/:id" element={<IdeaDetail />} />
               <Route path="/challenges" element={<Challenges />} />
 
               {/* Knowledge Hub Routes */}

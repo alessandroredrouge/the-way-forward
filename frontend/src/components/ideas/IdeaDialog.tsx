@@ -1,5 +1,6 @@
 import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Link } from "react-router-dom";
 import {
   X,
   ArrowUp,
@@ -10,12 +11,14 @@ import {
   Calendar,
   Globe,
   Zap,
+  ExternalLink,
 } from "lucide-react";
 
 interface IdeaDialogProps {
   isOpen: boolean;
   onClose: () => void;
   idea: {
+    id: string;
     title: string;
     category: string;
     sub_category: string;
@@ -111,6 +114,17 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
               <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
               <span>{new Date(idea.dateCreated).toLocaleDateString()}</span>
             </div>
+          </div>
+
+          <div className="mb-6">
+            <Link
+              to={`/ideas/${idea.id}`}
+              className="inline-flex items-center px-4 py-2 bg-[#ffbd59] text-white rounded-md hover:bg-[#e6aa50] transition-colors text-sm font-medium"
+              onClick={() => onClose()}
+            >
+              <span>View in detail</span>
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </Link>
           </div>
 
           <div className="space-y-5">

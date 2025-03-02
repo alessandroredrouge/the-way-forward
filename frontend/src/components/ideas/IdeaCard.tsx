@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowUp,
   ArrowDown,
@@ -9,6 +10,7 @@ import {
   Globe,
   Zap,
   Clock,
+  ExternalLink,
 } from "lucide-react";
 import IdeaDialog from "@/components/ideas/IdeaDialog";
 
@@ -55,6 +57,9 @@ interface IdeaCardProps {
   // Dialog state callbacks
   onDialogOpen?: () => void;
   onDialogClose?: () => void;
+
+  // Additional fields
+  id: string;
 }
 
 const IdeaCard = (props: IdeaCardProps) => {
@@ -64,6 +69,7 @@ const IdeaCard = (props: IdeaCardProps) => {
   console.log("IdeaCard props:", props);
 
   const {
+    id,
     title,
     category,
     humanityChallenge,
