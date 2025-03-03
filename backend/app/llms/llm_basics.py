@@ -2,10 +2,17 @@ import os
 from openai import AsyncOpenAI
 from typing import Dict, Any, Optional
 from app.core.config import settings
+import httpx
 
 class LLMProvider:
     def __init__(self):
-        self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+        # Initialize the OpenAI client according to official documentation
+        # The latest version of openai library (1.12.0) uses a different initialization pattern
+        self.client = AsyncOpenAI(
+            api_key=settings.OPENAI_API_KEY,
+            # Configure timeout to avoid long-running requests
+            timeout=httpx.Timeout(60.0)  # 60 seconds timeout
+        )
         self.default_model = "gpt-4o-mini"
     
     async def complete(

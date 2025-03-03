@@ -19,7 +19,7 @@ async def add_cors_headers(request: Request, call_next):
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, Accept"
     return response
 
-# Add CORS middleware
+# Add CORS middleware with proper configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
