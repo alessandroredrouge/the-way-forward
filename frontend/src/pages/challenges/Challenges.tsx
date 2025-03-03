@@ -3,10 +3,6 @@ import PageLayout from "@/components/shared/PageLayout";
 import {
   LineChart,
   Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   XAxis,
@@ -20,16 +16,13 @@ import {
 import {
   Thermometer,
   Brain,
-  Heart,
-  Car,
-  Scale,
-  Globe,
+  MoreHorizontal,
   TrendingUp,
-  Users,
-  AlertTriangle,
+  ChevronDown,
+  X,
 } from "lucide-react";
 
-// Mock data - In production, this would come from your API
+// Updated challenges data with fewer options
 const CHALLENGES = [
   {
     id: "climate",
@@ -52,14 +45,14 @@ const CHALLENGES = [
     ],
   },
   {
-    id: "ai-safety",
-    name: "AI Safety",
+    id: "ai-ethics",
+    name: "AI Ethics",
     icon: Brain,
     color: "#6366f1",
-    description: "Monitoring AI development risks and safety measures",
+    description: "Monitoring AI development risks and ethical considerations",
     kpis: [
-      { label: "AI Safety Incidents", value: "245", trend: "increasing" },
-      { label: "Safety Protocols Adopted", value: "67%", trend: "increasing" },
+      { label: "AI Ethics Incidents", value: "245", trend: "increasing" },
+      { label: "Ethics Protocols Adopted", value: "67%", trend: "increasing" },
       { label: "Risk Assessment Score", value: "7.2/10", trend: "stable" },
       { label: "Compliance Rate", value: "82%", trend: "increasing" },
     ],
@@ -72,70 +65,30 @@ const CHALLENGES = [
     ],
   },
   {
-    id: "healthcare",
-    name: "Healthcare Distribution",
-    icon: Heart,
-    color: "#ec4899",
-    description: "Analyzing global healthcare access and distribution",
-    kpis: [
-      { label: "Global Healthcare Access", value: "64%", trend: "increasing" },
-      { label: "Medical Resource Gap", value: "31%", trend: "decreasing" },
-      { label: "Healthcare Workers Ratio", value: "2.8/1000", trend: "stable" },
-      { label: "Vaccination Coverage", value: "76%", trend: "increasing" },
-    ],
-    timeSeriesData: [
-      { year: 2019, value: 58 },
-      { year: 2020, value: 60 },
-      { year: 2021, value: 62 },
-      { year: 2022, value: 63 },
-      { year: 2023, value: 64 },
-    ],
-  },
-  {
-    id: "transportation",
-    name: "Transportation",
-    icon: Car,
-    color: "#f59e0b",
-    description:
-      "Tracking sustainable transportation adoption and infrastructure",
-    kpis: [
-      { label: "EV Adoption Rate", value: "14%", trend: "increasing" },
-      { label: "Public Transit Usage", value: "27%", trend: "stable" },
-      { label: "Carbon Emissions", value: "-8%", trend: "decreasing" },
-      { label: "Infrastructure Score", value: "6.4/10", trend: "increasing" },
-    ],
-    timeSeriesData: [
-      { year: 2019, value: 8 },
-      { year: 2020, value: 9 },
-      { year: 2021, value: 11 },
-      { year: 2022, value: 12 },
-      { year: 2023, value: 14 },
-    ],
-  },
-  {
-    id: "equality",
-    name: "Equality",
-    icon: Scale,
+    id: "other",
+    name: "Other Challenges",
+    icon: MoreHorizontal,
     color: "#8b5cf6",
-    description: "Measuring global equality metrics and progress",
+    description: "Exploring additional global challenges and their impact",
     kpis: [
-      { label: "Gender Pay Gap", value: "17%", trend: "decreasing" },
-      { label: "Education Access", value: "72%", trend: "increasing" },
-      { label: "Income Inequality", value: "0.68", trend: "stable" },
-      { label: "Opportunity Index", value: "6.2/10", trend: "increasing" },
+      { label: "Active Initiatives", value: "1,245", trend: "increasing" },
+      { label: "Global Participation", value: "47%", trend: "increasing" },
+      { label: "Success Rate", value: "62%", trend: "stable" },
+      { label: "Resource Allocation", value: "8.4/10", trend: "increasing" },
     ],
     timeSeriesData: [
-      { year: 2019, value: 21 },
-      { year: 2020, value: 20 },
-      { year: 2021, value: 19 },
-      { year: 2022, value: 18 },
-      { year: 2023, value: 17 },
+      { year: 2019, value: 1000 },
+      { year: 2020, value: 1050 },
+      { year: 2021, value: 1150 },
+      { year: 2022, value: 1200 },
+      { year: 2023, value: 1245 },
     ],
   },
 ];
 
 const Challenges = () => {
   const [selectedChallenge, setSelectedChallenge] = useState(CHALLENGES[0]);
+  const [isCurtainOpen, setIsCurtainOpen] = useState(false);
 
   const renderTrendIcon = (trend: string) => {
     switch (trend) {
@@ -167,22 +120,58 @@ const Challenges = () => {
           </p>
         </div>
 
-        {/* Challenge Selection Menu */}
-        <div className="flex flex-wrap gap-4 justify-center mb-12">
-          {CHALLENGES.map((challenge) => (
-            <button
-              key={challenge.id}
-              onClick={() => setSelectedChallenge(challenge)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${
-                selectedChallenge.id === challenge.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
-              } shadow-md`}
-            >
-              <challenge.icon className="w-5 h-5" />
-              <span className="font-medium">{challenge.name}</span>
-            </button>
-          ))}
+        {/* Challenge Selection Button and Curtain Menu */}
+        <div className="relative mb-12">
+          <button
+            onClick={() => setIsCurtainOpen(!isCurtainOpen)}
+            className="mx-auto flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all"
+          >
+            <selectedChallenge.icon className="w-5 h-5" />
+            <span className="font-medium">{selectedChallenge.name}</span>
+            <ChevronDown
+              className={`w-5 h-5 transition-transform ${
+                isCurtainOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {/* Curtain Menu */}
+          {isCurtainOpen && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-50 transform transition-all">
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Select Challenge
+                  </h3>
+                  <button
+                    onClick={() => setIsCurtainOpen(false)}
+                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {CHALLENGES.map((challenge) => (
+                    <button
+                      key={challenge.id}
+                      onClick={() => {
+                        setSelectedChallenge(challenge);
+                        setIsCurtainOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                        selectedChallenge.id === challenge.id
+                          ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <challenge.icon className="w-5 h-5" />
+                      <span className="font-medium">{challenge.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Dashboard Content */}
@@ -291,8 +280,6 @@ const Challenges = () => {
               </div>
             </div>
           </div>
-
-          {/* Additional Metrics or Maps could be added here */}
         </div>
       </div>
     </PageLayout>
