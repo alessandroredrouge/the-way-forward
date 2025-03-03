@@ -108,59 +108,26 @@ const SubmitIdea = () => {
     setError(null);
 
     try {
-      // In the future, this will be a real API call to the backend
-      // const response = await fetch("http://localhost:8000/api/v1/ideas/analyze", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ description: ideaDescription }),
-      // });
+      // Call the backend API to analyze the idea description
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/agents/analyze-idea`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ description: ideaDescription }),
+        }
+      );
 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.detail || "Failed to analyze idea");
-      // }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to analyze idea");
+      }
 
-      // const aiResponse = await response.json();
-      // setFormData(aiResponse);
-
-      // For now, we'll simulate a response with a timeout
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Mock AI response - in the real implementation, this would come from the LLM
-      const mockAiResponse: IdeaFormData = {
-        title: "AI-Generated Title Based on Your Description",
-        humanity_challenge: "Climate Change", // Matches exactly with the challenge name in CHALLENGES
-        category: "Environment",
-        sub_category: "Renewable Energy",
-        geographic_focus: "Global",
-        time_horizon: "5-10 years",
-        problem_statement:
-          "Your description suggests addressing environmental challenges through innovative technology solutions.",
-        solution:
-          "A platform that connects renewable energy producers with consumers, facilitating direct energy trading.",
-        why_now:
-          "Increasing climate concerns and advancements in renewable energy technologies make this the perfect time.",
-        market_estimate: 2000000000, // This is 2,000 million (2 billion) in actual value
-        business_model: "Subscription-based platform with transaction fees",
-        technologies: ["Blockchain", "IoT", "AI", "Cloud Computing"],
-        competition:
-          "Traditional energy providers, Existing energy marketplaces",
-        status: "early-stage",
-        type_of_author: "User",
-        author: "",
-        sources: ["IPCC Report 2023", "Renewable Energy Market Analysis"],
-        ideal_customer_profile:
-          "Environmentally conscious consumers and businesses looking to reduce carbon footprint",
-        skills_required: [
-          "Software Development",
-          "Energy Market Expertise",
-          "Blockchain",
-        ],
-      };
-
-      setFormData(mockAiResponse);
+      // Get the form data from the response
+      const data = await response.json();
+      setFormData(data.form_data);
       setAiAssisted(true);
 
       // Scroll to the form section
