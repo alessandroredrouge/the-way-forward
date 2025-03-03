@@ -12,8 +12,10 @@ class IdeaPrompts:
         3. Clarifying ambiguous statements
         4. Structuring the content in a logical flow
         5. Making the description more readable for an AI agent that will later analyze it
-        6. NOT adding new features or assumptions that weren't implied in the original text
+        6. NOT adding new features or assumptions that weren't implied in the original text, unless the original text is extremely short
         7. NOT changing the fundamental nature of the idea
+        8. If the idea is already clear and concise, just return the original text.
+        9. If the description is extremely short, add more details to help the AI agent understand the idea better.
         
         Here is the raw idea description:
         
