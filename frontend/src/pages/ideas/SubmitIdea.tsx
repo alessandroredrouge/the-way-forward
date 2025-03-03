@@ -34,6 +34,7 @@ interface IdeaFormData {
 const SubmitIdea = () => {
   const [ideaDescription, setIdeaDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isImprovingDescription, setIsImprovingDescription] = useState(false);
   const [formData, setFormData] = useState<IdeaFormData>({
     title: "",
     humanity_challenge: "",
@@ -171,6 +172,31 @@ const SubmitIdea = () => {
     }
   };
 
+  const handleImproveDescription = async () => {
+    if (!ideaDescription.trim()) {
+      setError("Please provide a description of your idea first");
+      return;
+    }
+
+    setIsImprovingDescription(true);
+    setError(null);
+
+    try {
+      // TODO: This will be implemented later with the backend
+      // For now, just simulate a delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // This is just a placeholder - will be replaced with actual API call
+      setIdeaDescription((prev) => prev);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to improve description"
+      );
+    } finally {
+      setIsImprovingDescription(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -271,7 +297,45 @@ const SubmitIdea = () => {
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white mb-4"
               placeholder="Describe your idea here in as much detail as possible. What problem does it solve? How does it work? What technologies does it use? What's the market potential?"
             />
-            <div className="flex justify-end">
+            <div className="flex justify-end space-x-4">
+              <button
+                type="button"
+                onClick={handleImproveDescription}
+                disabled={isImprovingDescription || !ideaDescription.trim()}
+                className={`px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center ${
+                  isImprovingDescription || !ideaDescription.trim()
+                    ? "opacity-70 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                {isImprovingDescription ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Improving...
+                  </>
+                ) : (
+                  <>✨ Improve Text</>
+                )}
+              </button>
               <button
                 type="button"
                 onClick={analyzeWithAI}
@@ -307,13 +371,13 @@ const SubmitIdea = () => {
                     Analyzing...
                   </>
                 ) : (
-                  "Enhance Idea with AI"
+                  "🤖 Fill Form"
                 )}
               </button>
             </div>
             {aiAssisted && (
               <div className="mt-4 text-sm text-green-600 dark:text-green-400">
-                ✓ The AI Agent has analyzed your idea. Please review the form
+                ✓ The AI Agents' Crew has analyzed your idea. Please review the form
                 below and make any necessary adjustments.
               </div>
             )}
