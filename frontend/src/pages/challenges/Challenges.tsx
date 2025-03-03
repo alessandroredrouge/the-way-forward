@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 // Updated challenges data with fewer options
-const CHALLENGES = [
+export const CHALLENGES = [
   {
     id: "climate",
     name: "Climate Change",

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Navigation from "@/components/shared/Navigation";
 import PageLayout from "@/components/shared/PageLayout";
 
+// Import the challenges data from the Challenges page
+import { CHALLENGES } from "@/pages/challenges/Challenges";
+
 interface IdeaFormData {
   title: string;
   humanity_challenge: string;
@@ -126,7 +129,7 @@ const SubmitIdea = () => {
       // Mock AI response - in the real implementation, this would come from the LLM
       const mockAiResponse: IdeaFormData = {
         title: "AI-Generated Title Based on Your Description",
-        humanity_challenge: "Climate Change and Sustainability",
+        humanity_challenge: "Climate Change", // Matches exactly with the challenge name in CHALLENGES
         category: "Environment",
         sub_category: "Renewable Energy",
         geographic_focus: "Global",
@@ -427,15 +430,21 @@ const SubmitIdea = () => {
                 >
                   Humanity Challenge *
                 </label>
-                <input
-                  type="text"
+                <select
                   id="humanity_challenge"
                   name="humanity_challenge"
                   value={formData.humanity_challenge}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                   required
-                />
+                >
+                  <option value="">Select a challenge</option>
+                  {CHALLENGES.map((challenge) => (
+                    <option key={challenge.id} value={challenge.name}>
+                      {challenge.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -446,23 +455,16 @@ const SubmitIdea = () => {
                   >
                     Category *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     id="category"
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     required
-                  >
-                    <option value="">Select a category</option>
-                    <option value="AI/ML">AI/ML</option>
-                    <option value="Energy">Energy</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Education">Education</option>
-                    <option value="Environment">Environment</option>
-                    <option value="Agriculture">Agriculture</option>
-                    <option value="Finance">Finance</option>
-                  </select>
+                    placeholder="Enter a category"
+                  />
                 </div>
 
                 <div>
