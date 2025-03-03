@@ -27,7 +27,6 @@ class LLMProvider:
         Args:
             prompt: The prompt to send to the LLM
             model: The model to use (defaults to gpt-4o-mini)
-            max_tokens: Maximum tokens in the response
             temperature: Controls randomness (0-1)
             
         Returns:
