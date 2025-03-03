@@ -182,12 +182,24 @@ const SubmitIdea = () => {
     setError(null);
 
     try {
-      // TODO: This will be implemented later with the backend
-      // For now, just simulate a delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/llms/improve-text`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: ideaDescription }),
+        }
+      );
 
-      // This is just a placeholder - will be replaced with actual API call
-      setIdeaDescription((prev) => prev);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to improve description");
+      }
+
+      const data = await response.json();
+      setIdeaDescription(data.improved_text);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to improve description"
@@ -377,8 +389,8 @@ const SubmitIdea = () => {
             </div>
             {aiAssisted && (
               <div className="mt-4 text-sm text-green-600 dark:text-green-400">
-                ✓ The AI Agents' Crew has analyzed your idea. Please review the form
-                below and make any necessary adjustments.
+                ✓ The AI Agents' Crew has analyzed your idea. Please review the
+                form below and make any necessary adjustments.
               </div>
             )}
           </div>
