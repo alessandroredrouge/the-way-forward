@@ -12,7 +12,6 @@ class LLMProvider:
         self, 
         prompt: str, 
         model: Optional[str] = None,
-        max_tokens: int = 1024,
         temperature: float = 0.7
     ) -> str:
         """
@@ -30,7 +29,6 @@ class LLMProvider:
         try:
             response = await self.client.chat.completions.create(
                 model=model or self.default_model,
-                max_tokens=max_tokens,
                 temperature=temperature,
                 messages=[
                     {"role": "user", "content": prompt}
