@@ -36,8 +36,8 @@ interface Idea {
   category: string;
   sub_category: string;
   geographic_focus: string;
-  created_at: string;
-  updated_at: string;
+  date_created: string;
+  date_updated: string;
   problem_statement: string;
   solution: string;
   why_now: string;
@@ -323,8 +323,8 @@ const IdeasPortal = () => {
                 category={idea.category || "Uncategorized"}
                 sub_category={idea.sub_category || ""}
                 geographicFocus={idea.geographic_focus || "Global"}
-                dateCreated={idea.created_at || new Date().toISOString()}
-                dateUpdated={idea.updated_at || new Date().toISOString()}
+                dateCreated={idea.date_created}
+                dateUpdated={idea.date_updated}
                 problemStatement={idea.problem_statement || ""}
                 solution={idea.solution || ""}
                 whyNow={idea.why_now || ""}
@@ -339,9 +339,7 @@ const IdeasPortal = () => {
                 votes={idea.upvotes || 0}
                 comments={0} // This might need to be implemented later
                 interestedCount={idea.views || 0}
-                timestamp={new Date(
-                  idea.created_at || new Date()
-                ).toLocaleDateString()}
+                timestamp={idea.date_created}
                 timeHorizon={idea.time_horizon || "Short-term"}
                 humanityChallenge={idea.humanity_challenge || "General"}
                 skillsRequired={idea.skills_required || []}

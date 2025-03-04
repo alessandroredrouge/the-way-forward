@@ -269,11 +269,7 @@ const IdeaDetail = () => {
               </div>
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-2" />
-                <span>
-                  {new Date(
-                    idea.date_created || idea.date_updated
-                  ).toLocaleDateString()}
-                </span>
+                <span>{new Date(idea.date_created).toLocaleDateString()}</span>
               </div>
               {idea.time_horizon && (
                 <div className="flex items-center">

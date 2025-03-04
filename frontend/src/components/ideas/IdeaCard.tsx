@@ -219,7 +219,7 @@ const IdeaCard = (props: IdeaCardProps) => {
               by {author}
             </span>
             <span className="text-gray-400 dark:text-gray-500 truncate max-w-[100px]">
-              {timestamp}
+              {new Date(timestamp).toLocaleDateString()}
             </span>
           </div>
         </div>
