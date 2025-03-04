@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 // Import the challenges data from the Challenges page
 import { CHALLENGES } from "@/pages/challenges/Challenges";
 
+// TODO: ensure that when the user submits an idea, its username is saved in the author field, and its user_id in the creator_id
 // Define the accepted author types
 enum AuthorType {
   Individual = "Individual",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Lightbulb,
@@ -11,21 +11,48 @@ import {
   Users,
   BookOpen,
   Globe,
+  LogOut,
 } from "lucide-react";
 import { useDarkMode } from "@/contexts/DarkModeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 const Navigation = () => {
   const { darkMode, setDarkMode } = useDarkMode();
+  const { authState, signOut, isAuthenticated, isCurator } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
+  // Get initials for avatar fallback
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+  };
+
+  // Define navigation items - some are conditional based on auth status
   const navItems = [
     { name: "Home", icon: Home, href: "/" },
     { name: "Challenges", icon: Globe, href: "/challenges" },
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
     { name: "Knowledge Hub", icon: BookOpen, href: "/knowledge-hub" },
-    { name: "Community", icon: Users, href: "/community" },
-    { name: "Profile", icon: UserCircle, href: "/profile" },
+    // Community is only for authenticated users
+    ...(isAuthenticated()
+      ? [{ name: "Community", icon: Users, href: "/community" }]
+      : []),
   ];
 
   const isActiveRoute = (href: string) => {
@@ -49,7 +76,8 @@ const Navigation = () => {
               to="/"
               className="text-xl font-bold text-black dark:text-white"
             >
-              <span className="font-bold text-[#4c77f6]">the way</span> <span className="font-bold text-[#ffbd59]">forward</span>
+              <span className="font-bold text-[#4c77f6]">the way</span>{" "}
+              <span className="font-bold text-[#ffbd59]">forward</span>
             </Link>
           </div>
           <div className="hidden sm:flex sm:items-center">
@@ -67,6 +95,8 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
+
+            {/* Dark mode toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="ml-8 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors duration-200"
@@ -78,7 +108,75 @@ const Navigation = () => {
                 <Moon className="w-5 h-5" />
               )}
             </button>
+
+            {/* Authentication UI */}
+            {isAuthenticated() ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="ml-4 relative h-10 w-10 rounded-full"
+                  >
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage
+                        src={`https://api.dicebear.com/7.x/initials/svg?seed=${
+                          authState.profile?.full_name || "User"
+                        }`}
+                        alt={authState.profile?.full_name || "User"}
+                      />
+                      <AvatarFallback>
+                        {authState.profile
+                          ? getInitials(authState.profile.full_name)
+                          : "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {authState.profile?.full_name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {authState.profile?.email}
+                      </p>
+                      {isCurator() && (
+                        <Badge className="mt-1 w-fit">Curator</Badge>
+                      )}
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <UserCircle className="w-4 h-4 mr-2" />
+                    Profile
+                  </DropdownMenuItem>
+                  {isCurator() && (
+                    <DropdownMenuItem
+                      onClick={() => navigate("/knowledge-hub/admin")}
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Knowledge Hub Admin
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                onClick={() => navigate("/auth")}
+                variant="default"
+                className="ml-4"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
+
           <div className="sm:hidden flex items-center">
             {/* Dark mode toggle for mobile */}
             <button
@@ -92,6 +190,39 @@ const Navigation = () => {
                 <Moon className="w-5 h-5" />
               )}
             </button>
+
+            {/* Auth button for mobile */}
+            {isAuthenticated() ? (
+              <Button
+                variant="ghost"
+                className="mr-2 relative h-8 w-8 rounded-full"
+                onClick={() => navigate("/profile")}
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${
+                      authState.profile?.full_name || "User"
+                    }`}
+                    alt={authState.profile?.full_name || "User"}
+                  />
+                  <AvatarFallback>
+                    {authState.profile
+                      ? getInitials(authState.profile.full_name)
+                      : "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate("/auth")}
+                variant="default"
+                size="sm"
+                className="mr-2"
+              >
+                Sign In
+              </Button>
+            )}
+
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -126,6 +257,36 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Profile link for authenticated users */}
+              {isAuthenticated() && (
+                <Link
+                  to="/profile"
+                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium ${
+                    isActiveRoute("/profile")
+                      ? "text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800"
+                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <UserCircle className="w-5 h-5 mr-3" />
+                  Profile
+                </Link>
+              )}
+
+              {/* Sign out button for authenticated users */}
+              {isAuthenticated() && (
+                <button
+                  onClick={() => {
+                    signOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex w-full items-center px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  <LogOut className="w-5 h-5 mr-3" />
+                  Sign Out
+                </button>
+              )}
             </div>
           </div>
         )}
