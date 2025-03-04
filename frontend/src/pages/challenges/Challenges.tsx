@@ -29,9 +29,8 @@ interface KPI {
   limit: string;
   trend: "increasing" | "decreasing" | "stable";
   explanation?: {
-    methodology: string;
-    source: string;
-    verification: string;
+    methodology?: string;
+    source?: string;
   };
 }
 
@@ -45,6 +44,7 @@ interface Challenge {
   timeSeriesData: { year: number; value: number }[];
 }
 
+// TODO: Instead of hardcoding the challenges, we should fetch them from the database
 // Updated challenges data with explanations
 export const CHALLENGES: Challenge[] = [
   {
@@ -61,11 +61,9 @@ export const CHALLENGES: Challenge[] = [
         trend: "increasing",
         explanation: {
           methodology:
-            "Global temperature rise is measured as the increase in Earth's average surface temperature compared to pre-industrial levels (1850-1900). The current value represents the temperature anomaly for the most recent complete year.",
+            "Global temperature rise is measured as the increase in Earth's average surface temperature compared to pre-industrial levels (1850-1900). The current value represents the temperature anomaly for the most recent complete year. The manageable limit currently in use derives from the Paris Agreement. However, this limit is subject to ongoing debate. For the time being, we use that as a reference.",
           source:
-            "Data is sourced from NASA's Goddard Institute for Space Studies (GISS) and NOAA's National Centers for Environmental Information (NCEI).",
-          verification:
-            "This data can be verified through: \n1. NASA GISS Surface Temperature Analysis (GISTEMP) \n2. NOAA Global Temperature Anomaly Dataset \n3. UK Met Office Hadley Centre observations datasets",
+            "Data sourced from <a href='https://www.climate.gov/climatedashboard'>Climate.gov</a>",
         },
       },
       {
@@ -75,39 +73,33 @@ export const CHALLENGES: Challenge[] = [
         trend: "increasing",
         explanation: {
           methodology:
-            "Atmospheric CO2 levels are measured in parts per million (ppm) using a global network of monitoring stations. The primary measurement comes from the Mauna Loa Observatory in Hawaii, which provides the longest continuous record of CO2 measurements.",
+            "Atmospheric CO2 levels are measured in parts per million (ppm) using a global network of monitoring stations. ",
           source:
-            "Data is collected by NOAA's Global Monitoring Laboratory and the Scripps Institution of Oceanography.",
-          verification:
-            "You can verify this data through: \n1. NOAA's Global Monitoring Laboratory website \n2. The Scripps CO2 Program \n3. The World Data Centre for Greenhouse Gases",
+            "Data sourced from <a href='https://www.climate.gov/climatedashboard'>Climate.gov</a>",
         },
       },
       {
         label: "Sea Level Rise",
         value: "81",
-        limit: "200 mm",
+        limit: "TBD mm",
         trend: "increasing",
         explanation: {
           methodology:
             "Sea level rise is measured using satellite altimetry and tide gauges worldwide. The value represents the global mean sea level rise in millimeters relative to the 1993-2008 average.",
           source:
-            "Data is collected by multiple satellites and agencies including NASA, NOAA, and the European Space Agency.",
-          verification:
-            "This data can be verified through: \n1. NASA's Sea Level Change Portal \n2. NOAA Tides and Currents \n3. The Copernicus Marine Service",
+            "Data sourced from <a href='https://www.climate.gov/climatedashboard'>Climate.gov</a>",
         },
       },
       {
         label: "Arctic Ice Loss",
-        value: "13.1%",
-        limit: "0%",
+        value: "TBD%",
+        limit: "TBD%",
         trend: "decreasing",
         explanation: {
           methodology:
             "Arctic ice loss is calculated as the percentage decrease in minimum sea ice extent compared to the 1981-2010 average. Measurements are taken using satellite observations.",
           source:
-            "Data is provided by the National Snow and Ice Data Center (NSIDC) using satellite measurements.",
-          verification:
-            "You can verify this data through: \n1. National Snow and Ice Data Center \n2. NASA's Arctic Sea Ice News \n3. The Copernicus Climate Change Service",
+            "Data is provided by ",
         },
       },
     ],
@@ -190,6 +182,11 @@ export const CHALLENGES: Challenge[] = [
     timeSeriesData: [{ year: 2023, value: 0 }],
   },
 ];
+
+// Add this function before the Challenges component
+const createMarkup = (html: string) => {
+  return { __html: html };
+};
 
 const Challenges = () => {
   const [selectedChallenge, setSelectedChallenge] = useState(CHALLENGES[0]);
@@ -423,14 +420,6 @@ const Challenges = () => {
                     <div className="space-y-6">
                       <div>
                         <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-                          Current Value
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {selectedKPI.value} / {selectedKPI.limit}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                           Methodology
                         </h4>
                         <p className="text-gray-600 dark:text-gray-300">
@@ -441,23 +430,18 @@ const Challenges = () => {
                         <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                           Data Source
                         </h4>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {selectedKPI.explanation?.source}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-                          How to Verify
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
-                          {selectedKPI.explanation?.verification}
-                        </p>
+                        <div
+                          className="text-gray-600 dark:text-gray-300"
+                          dangerouslySetInnerHTML={createMarkup(
+                            selectedKPI.explanation?.source || ""
+                          )}
+                        ></div>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-
+{/*TODO: Add real values to charts*/}
               {/* Charts Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Trend Chart */}
