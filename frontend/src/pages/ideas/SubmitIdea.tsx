@@ -7,6 +7,15 @@ import { ArrowLeft } from "lucide-react";
 // Import the challenges data from the Challenges page
 import { CHALLENGES } from "@/pages/challenges/Challenges";
 
+// Define the accepted author types
+enum AuthorType {
+  Individual = "Individual",
+  Company = "Company",
+  Agent = "Agent",
+  Curator = "Curator",
+  Other = "Other",
+}
+
 interface IdeaFormData {
   title: string;
   humanity_challenge: string;
@@ -22,7 +31,7 @@ interface IdeaFormData {
   technologies: string[];
   competition: string;
   status: string;
-  type_of_author: string;
+  type_of_author: AuthorType; // Updated to use enum
   author: string;
   sources: string[];
   // Optional fields
@@ -58,10 +67,10 @@ const SubmitIdea = () => {
     technologies: [],
     competition: "",
     status: "early-stage",
-    type_of_author: "User",
+    type_of_author: AuthorType.Individual, // Set default to Individual
     author: "",
     sources: [],
-    is_published: true, // Default to true
+    is_published: true,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -228,7 +237,7 @@ const SubmitIdea = () => {
         technologies: [],
         competition: "",
         status: "early-stage",
-        type_of_author: "User",
+        type_of_author: AuthorType.Individual, // Reset to Individual
         author: "",
         sources: [],
         is_published: true,
@@ -511,6 +520,8 @@ const SubmitIdea = () => {
                     </select>
                   </div>
                 </div>
+
+                
               </div>
 
               {/* Problem & Solution */}
@@ -684,24 +695,6 @@ const SubmitIdea = () => {
 
                 <div>
                   <label
-                    htmlFor="author"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                  >
-                    Author *
-                  </label>
-                  <input
-                    type="text"
-                    id="author"
-                    name="author"
-                    value={formData.author}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
                     htmlFor="sources"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >
@@ -716,6 +709,47 @@ const SubmitIdea = () => {
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     required
                     placeholder="Research papers, articles, etc."
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="type_of_author"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Author Type *
+                  </label>
+                  <select
+                    id="type_of_author"
+                    name="type_of_author"
+                    value={formData.type_of_author}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
+                  >
+                    {Object.values(AuthorType).map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="author"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Author *
+                  </label>
+                  <input
+                    type="text"
+                    id="author"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    required
                   />
                 </div>
 
