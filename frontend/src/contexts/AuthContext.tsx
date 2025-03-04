@@ -293,6 +293,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       toast({
         title: "Signed out successfully",
       });
+
+      // Refresh the page to ensure UI is completely reset
+      window.location.href = "/";
     } catch (error: any) {
       setAuthState((prev) => ({
         ...prev,
