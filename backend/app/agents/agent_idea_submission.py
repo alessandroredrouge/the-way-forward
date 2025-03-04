@@ -4,11 +4,6 @@ import os
 import json
 from typing import Dict, Any
 
-model = LiteLLMModel(
-    "gpt-4o-mini",
-    temperature=0.2,
-    api_key=os.environ["OPENAI_API_KEY"]
-)
 
 @tool
 def market_estimate_tool() -> int:
@@ -24,17 +19,20 @@ time_horizons = ["Less than 1 year", "1-5 years", "5-10 years", "More than 10 ye
 form_prompt= f"""
 You are an expert AI assistant that helps users fill out idea submission forms.
 Your goal is to analyze the user's idea description thoroughly and extract relevant information to populate the form fields.
-If information for a field is not provided, access the web and other resources available to you to find the information.
-Prioritize the use of the tools provided whenever they could be helpful.
-The tools are:
-- DuckDuckGoSearchTool: To search the web for information
-- market_estimate_tool: To estimate the market size of the idea
+If information for a field is not provided, use the agents available to you to get the information.
+The agents are:
+- web_agent (for web search)
+- market_agent (for market estimate)
+
+To use the agents, you can use the following format:
+# {"Description of what you want to do"}           
+{"Task name made by you"} = {"agent name"}(task="{"Task description for the agent"}")
 
 Never make up information, only base your answers on the information provided by the user or your tools.
 For list fields, provide items as a comma-separated list.
 For the market_estimate field, provide a numeric value.
 
-Ensure to write an answer for each field. Use the tools to get the information needed.
+Ensure to write an answer for each field. Use the agents to get external information when needed.
 
 The form has the following fields:
 - title: A concise title for the idea
@@ -48,8 +46,8 @@ The form has the following fields:
 - why_now: Why this idea is relevant and timely now. Ensure to write at least 2-3 sentences.
 - market_estimate: Estimated market size in dollars (numeric value)
 - business_model: How the idea will generate revenue or sustain itself
-- technologies: List of technologies used
-- competition: Description of competing solutions. Use the DuckDuckGoSearchTool and VisitWebpageTool to get the information. 
+- technologies: List of technologies potentially used.
+- competition: List of competing companies (max 5)
 - status: Current status of the idea (early-stage, prototype, etc.)
 - type_of_author: Type of person/entity submitting the idea
 - author: Name of the author
@@ -58,15 +56,49 @@ The form has the following fields:
 Optional fields:
 - ideal_customer_profile: Description of the ideal customer
 - skills_required: List of skills needed to implement the idea
-- potential_investors: List of potential investors. Use the DuckDuckGoSearchTool and VisitWebpageTool to get the information. 
-- potential_customers: List of potential customers. Use the DuckDuckGoSearchTool and VisitWebpageTool to get the information. 
+- potential_investors: List of potential investors. 
+- potential_customers: List of potential customers. 
 - contacts: List of relevant contacts. 
 - collaboration_groups: List of groups to collaborate with. 
 - similar_ideas: List of similar ideas. 
 - other: Any other relevant information
 """
 
-agent = CodeAgent(tools=[DuckDuckGoSearchTool(), VisitWebpageTool(), market_estimate_tool], model=model, additional_authorized_imports=['json'])
+model = LiteLLMModel(
+    "gpt-4o-mini",
+    temperature=0.2,
+    api_key=os.environ["OPENAI_API_KEY"]
+)
+
+web_agent = CodeAgent(
+    tools=[DuckDuckGoSearchTool(),VisitWebpageTool()],
+    model=model,
+    name="web_agent",
+    description="The web_agent is responsible for searching the web for information.",
+    verbosity_level=0,
+    additional_authorized_imports=['json'],
+    max_steps=4
+)
+
+market_agent = CodeAgent(
+    tools=[market_estimate_tool],
+    model=model,
+    name="market_agent",
+    description="The market_agent is responsible for estimating the market size of the idea.",
+    verbosity_level=0,
+    additional_authorized_imports=['json'],
+    max_steps=1
+)
+
+manager_agent = CodeAgent(
+    tools=[], 
+    managed_agents=[web_agent, market_agent],
+    model=model, 
+    additional_authorized_imports=['json'],
+    max_steps=25,
+    planning_interval=5,
+    verbosity_level=2
+    )
 
 
 def analyze_idea_description(description: str) -> Dict[str, Any]:
@@ -80,7 +112,7 @@ def analyze_idea_description(description: str) -> Dict[str, Any]:
         A dictionary containing the form data
     """
     # Run the agent with the description
-    result = agent.run(form_prompt + "Here is the idea description: " + description)
+    result = manager_agent.run(form_prompt + "Here is the idea description: " + description)
     
     # The agent's final output is a dictionary, but it might be returned as a string
     # representation of a dictionary or as an actual dictionary
