@@ -24,6 +24,11 @@
 - [x] Implement pagination
 - [x] Add sorting capabilities
 - [x] Create validation schemas
+- [x] Set up authentication system with Supabase
+- [x] Implement user registration flow with username
+- [x] Create login system
+- [x] Create user profile database model
+- [x] Set up automatic user profile creation on signup
 
 ## Phase 1: Core Ideas Portal & Backend Setup (Current Phase)
 
@@ -55,6 +60,9 @@
 - [ ] Connect ideas listing to backend API
 - [ ] Implement real-time vote updates
 - [ ] Add idea submission form with validation
+- [ ] Fix idea submission procedure:
+  - [ ] Automatically insert username in author field
+  - [ ] Save user_id as creator_id
 - [ ] Implement search and filter functionality
 - [ ] Add loading states and error handling
 - [ ] Implement infinite scroll for ideas list
@@ -71,16 +79,17 @@
 
 ### Authentication System
 
-- [ ] Set up JWT authentication
-- [ ] Implement user registration flow
-- [ ] Create login system
+- [x] Set up authentication with Supabase
+- [x] Implement user registration flow with username
+- [x] Create login system
 - [ ] Add password reset functionality
 - [ ] Implement email verification
 - [ ] Add OAuth providers (Google, GitHub)
 
 ### User Profiles
 
-- [ ] Create user profile database model
+- [x] Create user profile database model
+- [x] Set up automatic user profile creation on signup
 - [ ] Implement profile CRUD endpoints
 - [ ] Add profile customization options
 - [ ] Implement idea bookmarking
@@ -95,6 +104,15 @@
 - [ ] Implement curator dashboard
 
 ## Phase 3: Content Management (Weeks 6-7)
+
+### Challenge Page
+
+- [ ] Update challenge page with real data
+- [ ] Create database models for challenges
+- [ ] Implement challenge CRUD endpoints
+- [ ] Connect challenge page to Supabase instead of hardcoded values
+- [ ] Add challenge submission functionality
+- [ ] Implement challenge analytics
 
 ### Podcast System
 
@@ -192,9 +210,18 @@
 - [ ] Implement premium features
 - [ ] Add usage limitations
 
-## Phase 7: Testing & Optimization (Weeks 15-16)
+## Phase 7: Analytics & Monitoring (Weeks 15-16)
 
-### Testing
+### Analytics
+
+- [ ] Integrate Plausible for user traffic analytics
+- [ ] Set up event tracking for key user actions
+- [ ] Create analytics dashboard
+- [ ] Implement conversion tracking
+- [ ] Add user journey analysis
+- [ ] Create custom reports
+
+### Testing & Optimization
 
 - [ ] Implement unit tests
 - [ ] Add integration tests
@@ -202,9 +229,6 @@
 - [ ] Implement performance tests
 - [ ] Add security testing
 - [ ] Create test automation
-
-### Optimization
-
 - [ ] Optimize database queries
 - [ ] Implement caching
 - [ ] Add CDN integration
