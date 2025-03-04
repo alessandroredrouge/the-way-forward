@@ -239,7 +239,7 @@ const IdeaDialog = ({ isOpen, onClose, idea }: IdeaDialogProps) => {
                 by {idea.author}
               </span>
               <span className="text-gray-400 dark:text-gray-500">
-                {idea.timestamp}
+                {idea.typeOfAuthor}
               </span>
             </div>
           </div>

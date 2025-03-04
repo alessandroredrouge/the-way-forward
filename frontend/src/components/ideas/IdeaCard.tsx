@@ -86,6 +86,7 @@ const IdeaCard = (props: IdeaCardProps) => {
     isPremium = false,
     onDialogOpen,
     onDialogClose,
+    typeOfAuthor,
   } = props;
 
   // Function to handle dialog open
@@ -219,7 +220,7 @@ const IdeaCard = (props: IdeaCardProps) => {
               by {author}
             </span>
             <span className="text-gray-400 dark:text-gray-500 truncate max-w-[100px]">
-              {new Date(timestamp).toLocaleDateString()}
+              {typeOfAuthor}
             </span>
           </div>
         </div>

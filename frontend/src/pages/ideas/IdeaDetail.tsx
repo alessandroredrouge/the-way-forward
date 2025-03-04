@@ -564,7 +564,8 @@ const IdeaDetail = () => {
                 </div>
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                <span className="font-medium">Author:</span> {idea.author}
+                <span className="font-medium">Author:</span> {idea.author}{" "}
+                <span className="ml-1">({idea.type_of_author})</span>
               </div>
             </div>
           </div>
