@@ -154,7 +154,14 @@ const SubmitIdea = () => {
 
       // Get the form data from the response
       const data = await response.json();
-      setFormData(data.form_data);
+
+      // Preserve the author and type_of_author fields from the current formData
+      setFormData((prevData) => ({
+        ...data.form_data,
+        author: prevData.author,
+        type_of_author: prevData.type_of_author,
+      }));
+
       setAiAssisted(true);
 
       // Scroll to the form section
@@ -749,8 +756,9 @@ const SubmitIdea = () => {
                     name="type_of_author"
                     value={formData.type_of_author}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
                     required
+                    disabled
                   >
                     {Object.values(AuthorType).map((type) => (
                       <option key={type} value={type}>
@@ -758,6 +766,9 @@ const SubmitIdea = () => {
                       </option>
                     ))}
                   </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Set by your user profile
+                  </p>
                 </div>
 
                 <div>
@@ -773,9 +784,13 @@ const SubmitIdea = () => {
                     name="author"
                     value={formData.author}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
                     required
+                    readOnly
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Set by your user profile
+                  </p>
                 </div>
 
                 <div>

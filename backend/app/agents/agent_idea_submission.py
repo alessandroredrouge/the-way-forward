@@ -50,8 +50,6 @@ The form has the following fields:
 - technologies: List of technologies potentially used, and be specific (max 5).
 - competition: List of competing companies (max 5)
 - status: Current status of the idea (must match one of the predefined statuses, which are: {statuses} )
-- type_of_author: Type of person/entity submitting the idea (leave blank)
-- author: Name of the author (leave blank)
 - sources: List of sources or references. Insert the 3 main sources used, separated by commas. E.g., "Source 1 (https://www.example1.com), Source 2 (https://www.example2.com)"
 
 Optional fields:
@@ -63,6 +61,8 @@ Optional fields:
 - collaboration_groups: List of groups to collaborate with in the following format: "Group Name (Type of group, e.g. NGO, University, etc.), Group Name (Type of group, e.g. NGO, University, etc.), etc."
 - similar_ideas: List of similar ideas in the following format: "Idea 1 (Description), Idea 2 (Description), etc."
 - other: Any other relevant information not included in the other fields.that you think is important to know.
+
+IMPORTANT: Do NOT include 'author' or 'type_of_author' fields in your response. These will be handled separately by the system.
 """
 
 model = LiteLLMModel(

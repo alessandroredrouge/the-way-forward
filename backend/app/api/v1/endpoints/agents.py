@@ -45,8 +45,6 @@ def analyze_idea(request: IdeaDescriptionRequest):
                 "technologies": [],
                 "competition": "",
                 "status": "",
-                "type_of_author": "",
-                "author": "",
                 "sources": []
             })
         
@@ -60,6 +58,12 @@ def analyze_idea(request: IdeaDescriptionRequest):
                 "title": "Error: Invalid response format",
                 "problem_statement": request.description[:100] + "..." if len(request.description) > 100 else request.description
             }
+        
+        # Ensure we're not returning author fields
+        if "author" in form_data:
+            del form_data["author"]
+        if "type_of_author" in form_data:
+            del form_data["type_of_author"]
         
         # Return the form data
         return IdeaAnalysisResponse(form_data=form_data)
@@ -83,7 +87,5 @@ def analyze_idea(request: IdeaDescriptionRequest):
             "technologies": [],
             "competition": "",
             "status": "",
-            "type_of_author": "",
-            "author": "",
             "sources": []
         })

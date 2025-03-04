@@ -27,8 +27,7 @@ class AgentService:
                 "title", "humanity_challenge", "category", "sub_category",
                 "geographic_focus", "time_horizon", "problem_statement",
                 "solution", "why_now", "market_estimate", "business_model",
-                "technologies", "competition", "status", "type_of_author",
-                "author", "sources"
+                "technologies", "competition", "status", "sources"
             ]
             
             # Add any missing required fields with empty values
