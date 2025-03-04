@@ -20,6 +20,7 @@ const Auth = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { authState, signIn, signUp, isAuthenticated } = useAuth();
@@ -65,7 +66,7 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || !fullName) {
+    if (!email || !password || !fullName || !username) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields.",
@@ -77,7 +78,7 @@ const Auth = () => {
     setIsSubmitting(true);
 
     try {
-      await signUp(email, password, fullName);
+      await signUp(email, password, fullName, username);
       // The redirect will happen in the useEffect
     } catch (error) {
       console.error("Sign up error:", error);
@@ -160,6 +161,17 @@ const Auth = () => {
                     placeholder="John Doe"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-username">Username</Label>
+                  <Input
+                    id="signup-username"
+                    type="text"
+                    placeholder="johndoe"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </div>

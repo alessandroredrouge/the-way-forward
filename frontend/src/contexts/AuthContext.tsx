@@ -8,7 +8,12 @@ import { useToast } from "@/components/ui/use-toast";
 const AuthContext = createContext<{
   authState: AuthState;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signUp: (
+    email: string,
+    password: string,
+    fullName: string,
+    username: string
+  ) => Promise<void>;
   signOut: () => Promise<void>;
   isAuthenticated: () => boolean;
   isCurator: () => boolean;
@@ -177,7 +182,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Sign up with email and password
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    fullName: string,
+    username: string
+  ) => {
     try {
       setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
@@ -185,6 +195,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            full_name: fullName,
+            username: username,
+          },
+        },
       });
 
       if (error) {
@@ -222,6 +238,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           user_id: data.user.id,
           email,
           full_name: fullName,
+          username: username,
           type_of_user: "Individual", // Default type
           credits: 0, // Default credits
         });
