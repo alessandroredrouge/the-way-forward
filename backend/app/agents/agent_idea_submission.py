@@ -15,6 +15,7 @@ def market_estimate_tool() -> int:
 
 humanity_challenges = ["Climate Change", "AI Ethics", "Other Challenges"]
 time_horizons = ["Less than 1 year", "1-5 years", "5-10 years", "More than 10 years"]
+statuses = ["Early-stage", "Pilot", "Proven", "Scaling"]
 
 form_prompt= f"""
 You are an expert AI assistant that helps users fill out idea submission forms.
@@ -32,7 +33,7 @@ Never make up information, only base your answers on the information provided by
 For list fields, provide items as a comma-separated list.
 For the market_estimate field, provide a numeric value.
 
-Ensure to write an answer for each field. Use the agents to get external information when needed.
+Try to write an answer for each field at least once. If you can't after two tries, leave it blank. Use the agents to get external information when needed.
 
 The form has the following fields:
 - title: A concise title for the idea
@@ -45,23 +46,23 @@ The form has the following fields:
 - solution: A description of the proposed solution. Ensure to encapsulate the solution in detail, writing at least 2-3 sentences.
 - why_now: Why this idea is relevant and timely now. Ensure to write at least 2-3 sentences.
 - market_estimate: Estimated market size in dollars (numeric value)
-- business_model: How the idea will generate revenue or sustain itself
-- technologies: List of technologies potentially used.
+- business_model: How the idea will generate revenue or sustain itself. Make it a short, coincise description.
+- technologies: List of technologies potentially used, and be specific (max 5).
 - competition: List of competing companies (max 5)
-- status: Current status of the idea (early-stage, prototype, etc.)
-- type_of_author: Type of person/entity submitting the idea
-- author: Name of the author
+- status: Current status of the idea (must match one of the predefined statuses, which are: {statuses} )
+- type_of_author: Type of person/entity submitting the idea (leave blank)
+- author: Name of the author (leave blank)
 - sources: List of sources or references. Insert the 3 main sources used, separated by commas. E.g., "Source 1 (https://www.example1.com), Source 2 (https://www.example2.com)"
 
 Optional fields:
-- ideal_customer_profile: Description of the ideal customer
-- skills_required: List of skills needed to implement the idea
-- potential_investors: List of potential investors. 
-- potential_customers: List of potential customers. 
-- contacts: List of relevant contacts. 
-- collaboration_groups: List of groups to collaborate with. 
-- similar_ideas: List of similar ideas. 
-- other: Any other relevant information
+- ideal_customer_profile: Description of the ideal customer (max 100 words)
+- skills_required: List of skills needed to implement the idea (max 5)
+- potential_investors: List of potential investors in the following format: "Company Name (Type of investor, e.g. VC, Angel, etc.), Company Name (Type of investor, e.g. VC, Angel, etc.), etc."
+- potential_customers: List of potential customers in the following format: "Company Name (Type of customer, e.g. Enterprise, Government, etc.), Company Name (Type of customer, e.g. Enterprise, Government, etc.), etc."
+- contacts: List of relevant contacts in the following format: "Name (Role - Company) - Contact info, Name (Role - Company) - Contact info, etc."
+- collaboration_groups: List of groups to collaborate with in the following format: "Group Name (Type of group, e.g. NGO, University, etc.), Group Name (Type of group, e.g. NGO, University, etc.), etc."
+- similar_ideas: List of similar ideas in the following format: "Idea 1 (Description), Idea 2 (Description), etc."
+- other: Any other relevant information not included in the other fields.that you think is important to know.
 """
 
 model = LiteLLMModel(
