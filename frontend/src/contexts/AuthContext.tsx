@@ -231,27 +231,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
-      // Create the user profile
-      const { error: profileError } = await supabase
-        .from("user_profiles")
-        .insert({
-          user_id: data.user.id,
-          email,
-          full_name: fullName,
-          username: username,
-          type_of_user: "Individual", // Default type
-          credits: 0, // Default credits
-        });
-
-      if (profileError) {
-        console.error("Error creating user profile:", profileError);
-        toast({
-          title: "Profile creation issue",
-          description:
-            "Your account was created, but there was an issue setting up your profile.",
-          variant: "destructive",
-        });
-      }
+      // The user profile is now created automatically by a database trigger
+      // Wait a moment for the trigger to complete
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const profile = await fetchUserProfile(data.user.id);
 
