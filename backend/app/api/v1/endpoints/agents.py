@@ -53,6 +53,14 @@ def analyze_idea(request: IdeaDescriptionRequest):
         # Use the agent service to analyze the description
         form_data = service.analyze_idea_description(request.description)
         
+        # Ensure the form_data is a dictionary
+        if not isinstance(form_data, dict):
+            print(f"Warning: form_data is not a dictionary: {type(form_data)}")
+            form_data = {
+                "title": "Error: Invalid response format",
+                "problem_statement": request.description[:100] + "..." if len(request.description) > 100 else request.description
+            }
+        
         # Return the form data
         return IdeaAnalysisResponse(form_data=form_data)
     except Exception as e:

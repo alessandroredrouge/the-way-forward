@@ -41,6 +41,26 @@ class AgentService:
                     else:
                         result[field] = ""
             
+            # Process list fields to ensure they're in the correct format
+            for field in ["technologies", "sources", "skills_required", 
+                         "potential_investors", "potential_customers", 
+                         "contacts", "collaboration_groups", "similar_ideas"]:
+                if field in result:
+                    # If the field is a string, split it by commas
+                    if isinstance(result[field], str):
+                        result[field] = [item.strip() for item in result[field].split(",")]
+            
+            # Ensure market_estimate is an integer
+            if "market_estimate" in result and result["market_estimate"] is not None:
+                try:
+                    # If it's a string with a number, convert it
+                    if isinstance(result["market_estimate"], str):
+                        # Remove any non-numeric characters (like $ or ,)
+                        clean_value = ''.join(c for c in result["market_estimate"] if c.isdigit())
+                        result["market_estimate"] = int(clean_value) if clean_value else 0
+                except (ValueError, TypeError):
+                    result["market_estimate"] = 0
+            
             return result
         except Exception as e:
             # Log the error
