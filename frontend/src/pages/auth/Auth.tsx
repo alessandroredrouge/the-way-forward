@@ -91,6 +91,15 @@ const Auth = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
+          <div className="flex justify-center mb-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="w-full"
+            >
+              Back to Homepage
+            </Button>
+          </div>
           <CardTitle className="text-2xl font-bold">
             Welcome to The Way Forward
           </CardTitle>
@@ -210,6 +219,10 @@ const Auth = () => {
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-gray-500 dark:text-gray-400">
             By continuing, you agree to our Terms of Service and Privacy Policy.
+          </div>
+          <div className="text-sm text-center">
+            If the Sign In / Sign Up procedure is stuck, try deleting your
+            cookies :)
           </div>
         </CardFooter>
       </Card>
