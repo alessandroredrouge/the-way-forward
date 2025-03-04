@@ -34,6 +34,9 @@ interface IdeaFormData {
   collaboration_groups?: string[];
   similar_ideas?: string[];
   other?: string;
+  supporting_material?: any;
+  is_featured?: boolean;
+  is_published?: boolean;
 }
 
 const SubmitIdea = () => {
@@ -58,6 +61,7 @@ const SubmitIdea = () => {
     type_of_author: "User",
     author: "",
     sources: [],
+    is_published: true, // Default to true
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -227,6 +231,7 @@ const SubmitIdea = () => {
         type_of_author: "User",
         author: "",
         sources: [],
+        is_published: true,
       });
       setIdeaDescription("");
       setAiAssisted(false);
@@ -765,6 +770,102 @@ const SubmitIdea = () => {
                     onChange={handleInputChange}
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="potential_investors"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Potential Investors (comma separated, optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="potential_investors"
+                    name="potential_investors"
+                    value={formData.potential_investors?.join(", ") || ""}
+                    onChange={(e) =>
+                      handleArrayInputChange(e, "potential_investors")
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Investor names or organizations"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="potential_customers"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Potential Customers (comma separated, optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="potential_customers"
+                    name="potential_customers"
+                    value={formData.potential_customers?.join(", ") || ""}
+                    onChange={(e) =>
+                      handleArrayInputChange(e, "potential_customers")
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Target customer segments or organizations"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contacts"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Contacts (comma separated, optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="contacts"
+                    name="contacts"
+                    value={formData.contacts?.join(", ") || ""}
+                    onChange={(e) => handleArrayInputChange(e, "contacts")}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Key contacts for this idea"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="collaboration_groups"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Collaboration Groups (comma separated, optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="collaboration_groups"
+                    name="collaboration_groups"
+                    value={formData.collaboration_groups?.join(", ") || ""}
+                    onChange={(e) =>
+                      handleArrayInputChange(e, "collaboration_groups")
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Groups interested in collaborating"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="similar_ideas"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Similar Ideas (comma separated, optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="similar_ideas"
+                    name="similar_ideas"
+                    value={formData.similar_ideas?.join(", ") || ""}
+                    onChange={(e) => handleArrayInputChange(e, "similar_ideas")}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Related or similar ideas"
                   />
                 </div>
               </div>

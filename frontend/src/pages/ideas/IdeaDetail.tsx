@@ -51,6 +51,8 @@ interface Idea {
   upvotes: number;
   downvotes: number;
   view_count: number;
+  is_featured: boolean;
+  is_published: boolean;
 }
 
 interface Comment {
@@ -416,6 +418,128 @@ const IdeaDetail = () => {
                 </p>
               </div>
             )}
+
+            {/* Additional Sections */}
+            {idea.potential_investors &&
+              idea.potential_investors.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Potential Investors
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {idea.potential_investors.map((investor, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm"
+                      >
+                        {investor}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            {idea.potential_customers &&
+              idea.potential_customers.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Potential Customers
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {idea.potential_customers.map((customer, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 text-sm"
+                      >
+                        {customer}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            {idea.contacts && idea.contacts.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  Key Contacts
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {idea.contacts.map((contact, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-sm"
+                    >
+                      {contact}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {idea.collaboration_groups &&
+              idea.collaboration_groups.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Collaboration Groups
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {idea.collaboration_groups.map((group, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200 text-sm"
+                      >
+                        {group}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            {idea.similar_ideas && idea.similar_ideas.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  Similar Ideas
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {idea.similar_ideas.map((similarIdea, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm"
+                    >
+                      {similarIdea}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {idea.supporting_material &&
+              Object.keys(idea.supporting_material).length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Supporting Material
+                  </h2>
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                      {JSON.stringify(idea.supporting_material, null, 2)}
+                    </pre>
+                  </div>
+                </div>
+              )}
+
+            {/* Status Badges */}
+            <div className="flex gap-2 mb-8">
+              {idea.is_featured && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm">
+                  ⭐ Featured
+                </span>
+              )}
+              {!idea.is_published && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm">
+                  📝 Draft
+                </span>
+              )}
+            </div>
 
             <div className="flex items-center justify-between border-t dark:border-gray-700 pt-6">
               <div className="flex items-center gap-6">
