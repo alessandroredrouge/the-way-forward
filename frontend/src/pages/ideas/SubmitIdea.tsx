@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navigation from "@/components/shared/Navigation";
 import PageLayout from "@/components/shared/PageLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Import the challenges data from the Challenges page
 import { CHALLENGES } from "@/pages/challenges/Challenges";
 
-// TODO: ensure that when the user submits an idea, its username is saved in the author field, and its user_id in the creator_id
 // Define the accepted author types
 enum AuthorType {
   Individual = "Individual",
@@ -50,6 +50,8 @@ interface IdeaFormData {
 }
 
 const SubmitIdea = () => {
+  const { authState } = useAuth();
+  const navigate = useNavigate();
   const [ideaDescription, setIdeaDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isImprovingDescription, setIsImprovingDescription] = useState(false);
@@ -68,8 +70,8 @@ const SubmitIdea = () => {
     technologies: [],
     competition: "",
     status: "early-stage",
-    type_of_author: AuthorType.Individual, // Set default to Individual
-    author: "",
+    type_of_author: AuthorType.Individual, // Default value, will be updated from user profile
+    author: "", // Will be filled with username
     sources: [],
     is_published: true,
   });
@@ -78,6 +80,17 @@ const SubmitIdea = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [aiAssisted, setAiAssisted] = useState<boolean>(false);
+
+  // Set author and type_of_author from user profile when component mounts
+  useEffect(() => {
+    if (authState.profile) {
+      setFormData((prev) => ({
+        ...prev,
+        author: authState.profile.username || authState.profile.email,
+        type_of_author: authState.profile.type_of_user as AuthorType,
+      }));
+    }
+  }, [authState.profile]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -200,7 +213,20 @@ const SubmitIdea = () => {
     setIsSubmitting(true);
     setError(null);
 
+    // Ensure user is authenticated
+    if (!authState.user) {
+      setError("You must be logged in to submit an idea");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
+      // Create submission data with creator_id
+      const submissionData = {
+        ...formData,
+        creator_id: authState.user.id, // Add the creator_id from the authenticated user
+      };
+
       // Try different backend URLs to resolve CORS issues
       const response = await fetch("http://localhost:8000/api/v1/ideas/", {
         method: "POST",
@@ -210,7 +236,7 @@ const SubmitIdea = () => {
         },
         mode: "cors",
         credentials: "include",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       if (!response.ok) {
@@ -238,8 +264,10 @@ const SubmitIdea = () => {
         technologies: [],
         competition: "",
         status: "early-stage",
-        type_of_author: AuthorType.Individual, // Reset to Individual
-        author: "",
+        type_of_author:
+          (authState.profile?.type_of_user as AuthorType) ||
+          AuthorType.Individual,
+        author: authState.profile?.username || authState.profile?.email || "",
         sources: [],
         is_published: true,
       });
@@ -250,10 +278,8 @@ const SubmitIdea = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
+        err instanceof Error ? err.message : "Failed to submit your idea"
       );
-      // Scroll to top to show error message
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setIsSubmitting(false);
     }
@@ -521,8 +547,6 @@ const SubmitIdea = () => {
                     </select>
                   </div>
                 </div>
-
-                
               </div>
 
               {/* Problem & Solution */}

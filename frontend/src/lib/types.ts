@@ -6,6 +6,7 @@ export interface UserProfile {
   user_id: string;
   email: string;
   full_name: string;
+  username: string;
   type_of_user: UserType;
   credits: number;
   created_at: string;
