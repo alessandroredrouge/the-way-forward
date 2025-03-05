@@ -46,8 +46,8 @@ const Navigation = () => {
     { name: "Challenges", icon: Globe, href: "/challenges" },
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
     { name: "Knowledge Hub", icon: BookOpen, href: "/knowledge-hub" },
-    // Community is only for authenticated users
-    ...(user ? [{ name: "Community", icon: Users, href: "/community" }] : []),
+    // Community is available for all users
+    { name: "Community", icon: Users, href: "/community" },
   ];
 
   const isActiveRoute = (href: string) => {
@@ -80,14 +80,14 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`ml-8 text-sm font-medium transition-colors duration-200 flex items-center ${
+                className={`ml-8 text-sm font-medium transition-colors duration-200 flex items-center gap-2 ${
                   isActiveRoute(item.href)
                     ? "text-blue-600 dark:text-blue-400"
                     : "text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
               >
-                <item.icon className="w-4 h-4 mr-2" />
-                {item.name}
+                <item.icon className="w-4 h-4" />
+                <span>{item.name}</span>
               </Link>
             ))}
 
@@ -222,8 +222,10 @@ const Navigation = () => {
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <item.icon className="w-5 h-5 mr-3" />
-                  {item.name}
+                  <div className="flex items-center">
+                    <item.icon className="w-5 h-5 mr-3" />
+                    {item.name}
+                  </div>
                 </Link>
               ))}
               {user && (

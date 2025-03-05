@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "@/components/shared/PageLayout";
-import { Headphones, BookOpen, Library } from "lucide-react";
+import { Headphones, BookOpen, Library, ExternalLink } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const KnowledgeHub = () => {
   const sections = [
@@ -14,14 +15,18 @@ const KnowledgeHub = () => {
       ),
       link: "/podcast",
       bgImage: "podcast-bg.jpg",
+      comingSoon: true,
+      isExternal: false,
     },
     {
       title: "Deep-dives",
       description:
         "Various deep-dives into field-specific challenges, breakthrough solutions, and more. To go one step further in your understanding of what matters.",
       icon: <BookOpen className="w-12 h-12 text-blue-600 dark:text-blue-400" />,
-      link: "/deep-dives",
+      link: "https://alessandrorossi.notion.site/the-way-forward-deep-dives",
       bgImage: "deep-dives-bg.jpg",
+      comingSoon: false,
+      isExternal: true,
     },
     {
       title: "External Resources",
@@ -30,6 +35,8 @@ const KnowledgeHub = () => {
       icon: <Library className="w-12 h-12 text-blue-600 dark:text-blue-400" />,
       link: "/resources",
       bgImage: "resources-bg.jpg",
+      comingSoon: true,
+      isExternal: false,
     },
   ];
 
@@ -50,24 +57,53 @@ const KnowledgeHub = () => {
 
         {/* Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {sections.map((section, index) => (
-            <Link
-              key={index}
-              to={section.link}
-              className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105"
-            >
-              <div className="p-6">
-                <div className="mb-4">{section.icon}</div>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {section.title}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {section.description}
-                </p>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-            </Link>
-          ))}
+          {sections.map((section, index) =>
+            section.isExternal ? (
+              <a
+                key={index}
+                href={section.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    {section.icon}
+                    <ExternalLink className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {section.title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {section.description}
+                  </p>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </a>
+            ) : (
+              <Link
+                key={index}
+                to={section.link}
+                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    {section.icon}
+                    {section.comingSoon && (
+                      <Badge variant="secondary">Coming Soon</Badge>
+                    )}
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {section.title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {section.description}
+                  </p>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </Link>
+            )
+          )}
         </div>
 
         {/* Featured Content Preview */}

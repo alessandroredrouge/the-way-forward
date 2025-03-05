@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -15,10 +15,7 @@ import IdeaDetail from "./pages/ideas/IdeaDetail";
 import SubmitIdea from "./pages/ideas/SubmitIdea";
 import KnowledgeHub from "./pages/knowledge hub/KnowledgeHub";
 import Challenges from "./pages/challenges/Challenges";
-import Podcast from "./pages/podcast/Podcast";
-import DeepDives from "./pages/deep-dives/DeepDives";
-import Community from "./pages/community/Community";
-import Resources from "./pages/resources/Resources";
+import ComingSoon from "./pages/ComingSoon";
 import Profile from "./pages/profile/Profile";
 import Auth from "./pages/auth/Auth";
 import NotFound from "./pages/NotFound";
@@ -56,19 +53,20 @@ const App = () => (
 
                 {/* Knowledge Hub Routes */}
                 <Route path="/knowledge-hub" element={<KnowledgeHub />} />
-                <Route path="/podcast" element={<Podcast />} />
-                <Route path="/deep-dives" element={<DeepDives />} />
-                <Route path="/resources" element={<Resources />} />
-
-                {/* Protected Routes */}
+                <Route path="/podcast" element={<ComingSoon />} />
                 <Route
-                  path="/community"
+                  path="/deep-dives"
                   element={
-                    <ProtectedRoute>
-                      <Community />
-                    </ProtectedRoute>
+                    <Navigate
+                      to="https://alessandrorossi.notion.site/the-way-forward-deep-dives"
+                      replace
+                    />
                   }
                 />
+                <Route path="/resources" element={<ComingSoon />} />
+
+                {/* Protected Routes */}
+                <Route path="/community" element={<ComingSoon />} />
                 <Route
                   path="/profile"
                   element={
