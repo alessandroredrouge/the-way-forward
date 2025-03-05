@@ -23,7 +23,6 @@ Your goal is to analyze the user's idea description thoroughly and extract relev
 If information for a field is not provided, use the agents available to you to get the information.
 The agents are:
 - web_agent (for web search)
-- market_agent (for market estimate)
 
 To use the agents, you can use the following format:
 # {"Description of what you want to do"}           
@@ -93,7 +92,7 @@ market_agent = CodeAgent(
 
 manager_agent = CodeAgent(
     tools=[], 
-    managed_agents=[web_agent, market_agent],
+    managed_agents=[web_agent],
     model=model, 
     additional_authorized_imports=['json'],
     max_steps=25,
