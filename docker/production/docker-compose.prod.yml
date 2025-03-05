@@ -9,6 +9,7 @@ services:
       - "8000:8000"
     environment:
       - ENVIRONMENT=production
+      - PORT=8000
     networks:
       - app-network
     restart: unless-stopped
@@ -18,11 +19,11 @@ services:
       context: ../../frontend
       dockerfile: ../docker/production/frontend.dockerfile
     ports:
-      - "80:80"
+      - "${PORT:-80}:80"
     depends_on:
       - backend
     environment:
-      - VITE_API_URL=http://backend:8000
+      - VITE_API_URL=/api
     networks:
       - app-network
     restart: unless-stopped

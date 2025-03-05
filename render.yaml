@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: the-way-forward
+    env: docker
+    dockerfilePath: ./docker/production/backend.dockerfile # This won't actually be used
+    dockerContext: .
+    dockerComposeFile: ./docker/production/docker-compose.prod.yml
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+    plan: starter # Choose an appropriate plan
+    region: ohio # Choose your preferred region
+    numInstances: 1
+    healthCheckPath: /
