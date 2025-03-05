@@ -2,9 +2,10 @@ services:
   - type: web
     name: the-way-forward
     env: docker
-    dockerfilePath: ./docker/production/backend.dockerfile # This won't actually be used
+    dockerfilePath: docker/production/backend.dockerfile
     dockerContext: .
-    dockerComposeFile: ./docker/production/docker-compose.prod.yml
+    buildCommand: docker-compose -f docker/production/docker-compose.prod.yml build
+    startCommand: docker-compose -f docker/production/docker-compose.prod.yml up
     envVars:
       - key: ENVIRONMENT
         value: production

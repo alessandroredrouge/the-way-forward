@@ -12,15 +12,19 @@ This guide explains how to deploy "The Way Forward" application to Render using 
 1. **Connect your repository to Render**:
 
    - Log in to your Render dashboard
-   - Click "New" and select "Blueprint" (to use the render.yaml configuration)
+   - Click "New" and select "Web Service"
    - Connect your Git repository
    - Select the repository containing your application
 
 2. **Configure your service**:
 
+   - Select "Docker" as the environment
    - Render will automatically detect the `render.yaml` file
-   - Review the configuration and make any necessary adjustments
-   - Click "Apply"
+   - If not using the render.yaml file, manually configure:
+     - Environment: Docker
+     - Build Command: `docker-compose -f docker/production/docker-compose.prod.yml build`
+     - Start Command: `docker-compose -f docker/production/docker-compose.prod.yml up`
+   - Click "Create Web Service"
 
 3. **Environment Variables**:
 
@@ -30,6 +34,15 @@ This guide explains how to deploy "The Way Forward" application to Render using 
 4. **Database Configuration (if needed)**:
    - If your application uses a database, you'll need to create a database service on Render
    - Update your environment variables to include the database connection details
+
+## Important Notes About Docker Compose on Render
+
+Render doesn't directly support the `dockerComposeFile` field in its configuration. Instead, we use:
+
+- `buildCommand`: To build the Docker Compose services
+- `startCommand`: To start the Docker Compose services
+
+This approach allows us to use Docker Compose while still deploying on Render's platform.
 
 ## How It Works
 
@@ -44,6 +57,7 @@ The deployment uses Docker Compose to build and run both the frontend and backen
 - **Build Failures**: Check the build logs in the Render dashboard
 - **Runtime Errors**: Check the service logs in the Render dashboard
 - **Networking Issues**: Ensure your services are properly configured to communicate with each other
+- **Docker Compose Issues**: Make sure your Docker Compose file is valid and all paths are correct
 
 ## Scaling
 
