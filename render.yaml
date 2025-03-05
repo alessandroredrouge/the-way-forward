@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: the-way-forward
+    env: docker
+    dockerfilePath: docker/production/docker-compose.prod.yml
+    envVars:
+      - key: PORT
+        value: 80
+      - key: ENVIRONMENT
+        value: production
+      - key: VITE_API_URL
+        value: /api
+    plan: starter # You can adjust this based on your needs
+    region: ohio # You can change this to your preferred region
+    numInstances: 1
+    healthCheckPath: /
+    branch: main # Specify your deployment branch
