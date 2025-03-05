@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,18 +29,15 @@ import { Badge } from "@/components/ui/badge";
 
 const Navigation = () => {
   const { darkMode, setDarkMode } = useDarkMode();
-  const { authState, signOut, isAuthenticated, isCurator } = useAuth();
+  const { user, signOut } = useAuth();
+  const { profile } = useUserProfile(user);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((part) => part[0])
-      .join("")
-      .toUpperCase();
+  // Check if user is a curator
+  const isCurator = () => {
+    return profile?.type_of_user === "Curator";
   };
 
   // Define navigation items - some are conditional based on auth status
@@ -50,9 +47,7 @@ const Navigation = () => {
     { name: "Ideas", icon: Lightbulb, href: "/ideas" },
     { name: "Knowledge Hub", icon: BookOpen, href: "/knowledge-hub" },
     // Community is only for authenticated users
-    ...(isAuthenticated()
-      ? [{ name: "Community", icon: Users, href: "/community" }]
-      : []),
+    ...(user ? [{ name: "Community", icon: Users, href: "/community" }] : []),
   ];
 
   const isActiveRoute = (href: string) => {
@@ -110,36 +105,22 @@ const Navigation = () => {
             </button>
 
             {/* Authentication UI */}
-            {isAuthenticated() ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="ml-4 relative h-10 w-10 rounded-full"
-                  >
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage
-                        src={`https://api.dicebear.com/7.x/initials/svg?seed=${
-                          authState.profile?.full_name || "User"
-                        }`}
-                        alt={authState.profile?.full_name || "User"}
-                      />
-                      <AvatarFallback>
-                        {authState.profile
-                          ? getInitials(authState.profile.full_name)
-                          : "U"}
-                      </AvatarFallback>
-                    </Avatar>
+                  <Button variant="ghost" className="ml-4 flex items-center">
+                    <UserCircle className="w-5 h-5 mr-2" />
+                    <span className="hidden md:inline">Profile</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
-                        {authState.profile?.full_name}
+                        {profile?.full_name}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        {authState.profile?.email}
+                        {user.email}
                       </p>
                       {isCurator() && (
                         <Badge className="mt-1 w-fit">Curator</Badge>
@@ -192,25 +173,13 @@ const Navigation = () => {
             </button>
 
             {/* Auth button for mobile */}
-            {isAuthenticated() ? (
+            {user ? (
               <Button
                 variant="ghost"
-                className="mr-2 relative h-8 w-8 rounded-full"
+                className="mr-2 flex items-center"
                 onClick={() => navigate("/profile")}
               >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${
-                      authState.profile?.full_name || "User"
-                    }`}
-                    alt={authState.profile?.full_name || "User"}
-                  />
-                  <AvatarFallback>
-                    {authState.profile
-                      ? getInitials(authState.profile.full_name)
-                      : "U"}
-                  </AvatarFallback>
-                </Avatar>
+                <UserCircle className="w-5 h-5" />
               </Button>
             ) : (
               <Button
@@ -248,8 +217,8 @@ const Navigation = () => {
                   to={item.href}
                   className={`flex items-center px-3 py-2 rounded-md text-base font-medium ${
                     isActiveRoute(item.href)
-                      ? "text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -257,35 +226,27 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
-
-              {/* Profile link for authenticated users */}
-              {isAuthenticated() && (
-                <Link
-                  to="/profile"
-                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium ${
-                    isActiveRoute("/profile")
-                      ? "text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <UserCircle className="w-5 h-5 mr-3" />
-                  Profile
-                </Link>
-              )}
-
-              {/* Sign out button for authenticated users */}
-              {isAuthenticated() && (
-                <button
-                  onClick={() => {
-                    signOut();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex w-full items-center px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  <LogOut className="w-5 h-5 mr-3" />
-                  Sign Out
-                </button>
+              {user && (
+                <>
+                  <Link
+                    to="/profile"
+                    className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <UserCircle className="w-5 h-5 mr-3" />
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex w-full items-center px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    <LogOut className="w-5 h-5 mr-3" />
+                    Sign out
+                  </button>
+                </>
               )}
             </div>
           </div>

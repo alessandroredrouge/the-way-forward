@@ -1,13 +1,9 @@
 import React from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import UserProfileCard from "@/components/auth/UserProfileCard";
+import UserProfileDisplay from "@/components/UserProfileDisplay";
 import PageLayout from "@/components/shared/PageLayout";
 import { Settings, Star, MessageSquare, Heart, BookMarked } from "lucide-react";
 
 const Profile = () => {
-  const { authState } = useAuth();
-  const { profile } = authState;
-
   return (
     <PageLayout>
       <div className="w-full max-w-full">
@@ -15,7 +11,7 @@ const Profile = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1">
-            <UserProfileCard />
+            <UserProfileDisplay />
           </div>
 
           <div className="md:col-span-2">

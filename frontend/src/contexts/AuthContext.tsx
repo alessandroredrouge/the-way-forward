@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
-import { AuthState, UserProfile } from "@/lib/types";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { User } from "@supabase/supabase-js";
+import { supabase, clearAuthStorage } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
 
 // Create the context with a default value
 const AuthContext = createContext<{
-  authState: AuthState;
+  user: User | null;
+  loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
     email: string,
@@ -15,15 +15,14 @@ const AuthContext = createContext<{
     username: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
-  isAuthenticated: () => boolean;
-  isCurator: () => boolean;
+  resetAuth: () => Promise<void>;
 }>({
-  authState: { user: null, profile: null, isLoading: true, error: null },
+  user: null,
+  loading: true,
   signIn: async () => {},
   signUp: async () => {},
   signOut: async () => {},
-  isAuthenticated: () => false,
-  isCurator: () => false,
+  resetAuth: async () => {},
 });
 
 // Custom hook to use the auth context
@@ -32,96 +31,33 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    profile: null,
-    isLoading: true,
-    error: null,
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
-
-  // Fetch user profile from the database
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
-
-      if (error) {
-        console.error("Error fetching user profile:", error);
-        return null;
-      }
-
-      return data as UserProfile;
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-      return null;
-    }
-  };
 
   // Initialize auth state when the component mounts
   useEffect(() => {
+    // Get initial session
     const initializeAuth = async () => {
       try {
-        // Check for an active session
         const {
           data: { session },
         } = await supabase.auth.getSession();
-
-        if (session) {
-          const { user } = session;
-          const profile = await fetchUserProfile(user.id);
-
-          setAuthState({
-            user,
-            profile,
-            isLoading: false,
-            error: null,
-          });
-        } else {
-          setAuthState({
-            user: null,
-            profile: null,
-            isLoading: false,
-            error: null,
-          });
-        }
+        setUser(session?.user ?? null);
       } catch (error) {
         console.error("Error initializing auth:", error);
-        setAuthState({
-          user: null,
-          profile: null,
-          isLoading: false,
-          error: "Failed to initialize authentication",
-        });
+      } finally {
+        setLoading(false);
       }
     };
 
     initializeAuth();
 
-    // Set up a listener for auth state changes
+    // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session && session.user) {
-        const profile = await fetchUserProfile(session.user.id);
-
-        setAuthState({
-          user: session.user,
-          profile,
-          isLoading: false,
-          error: null,
-        });
-      } else {
-        setAuthState({
-          user: null,
-          profile: null,
-          isLoading: false,
-          error: null,
-        });
-      }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
     });
 
     // Clean up the subscription when the component unmounts
@@ -133,19 +69,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Sign in with email and password
   const signIn = async (email: string, password: string) => {
     try {
-      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-      const { data, error } = await supabase.auth.signInWithPassword({
+      setLoading(true);
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: error.message,
-        }));
         toast({
           title: "Sign in failed",
           description: error.message,
@@ -154,30 +84,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
-      const profile = await fetchUserProfile(data.user.id);
-
-      setAuthState({
-        user: data.user,
-        profile,
-        isLoading: false,
-        error: null,
-      });
-
       toast({
         title: "Signed in successfully",
-        description: `Welcome back, ${profile?.full_name || email}!`,
+        description: `Welcome back!`,
       });
     } catch (error: any) {
-      setAuthState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: error.message || "An unknown error occurred",
-      }));
       toast({
         title: "Sign in failed",
         description: error.message || "An unknown error occurred",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -189,10 +107,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     username: string
   ) => {
     try {
-      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-      // Create the user in Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
+      setLoading(true);
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -204,11 +120,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       if (error) {
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: error.message,
-        }));
         toast({
           title: "Sign up failed",
           description: error.message,
@@ -217,64 +128,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
-      if (!data.user) {
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: "User creation failed",
-        }));
-        toast({
-          title: "Sign up failed",
-          description: "User creation failed",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // The user profile is now created automatically by a database trigger
-      // Wait a moment for the trigger to complete
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const profile = await fetchUserProfile(data.user.id);
-
-      setAuthState({
-        user: data.user,
-        profile,
-        isLoading: false,
-        error: null,
-      });
-
       toast({
         title: "Signed up successfully",
         description: `Welcome, ${fullName}!`,
       });
     } catch (error: any) {
-      setAuthState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: error.message || "An unknown error occurred",
-      }));
       toast({
         title: "Sign up failed",
         description: error.message || "An unknown error occurred",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   // Sign out
   const signOut = async () => {
     try {
-      setAuthState((prev) => ({ ...prev, isLoading: true }));
-
+      setLoading(true);
       const { error } = await supabase.auth.signOut();
 
       if (error) {
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: error.message,
-        }));
         toast({
           title: "Sign out failed",
           description: error.message,
@@ -283,13 +158,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
-      setAuthState({
-        user: null,
-        profile: null,
-        isLoading: false,
-        error: null,
-      });
-
       toast({
         title: "Signed out successfully",
       });
@@ -297,38 +165,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Refresh the page to ensure UI is completely reset
       window.location.href = "/";
     } catch (error: any) {
-      setAuthState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: error.message || "An unknown error occurred",
-      }));
       toast({
         title: "Sign out failed",
         description: error.message || "An unknown error occurred",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Check if the user is authenticated
-  const isAuthenticated = () => {
-    return !!authState.user;
-  };
+  // Reset auth state
+  const resetAuth = async () => {
+    try {
+      setLoading(true);
 
-  // Check if the user is a curator
-  const isCurator = () => {
-    return !!authState.profile && authState.profile.type_of_user === "Curator";
+      // Clear auth storage
+      clearAuthStorage();
+
+      // Sign out from Supabase
+      await supabase.auth.signOut();
+
+      // Reset user state
+      setUser(null);
+
+      toast({
+        title: "Authentication reset",
+        description: "Your authentication state has been reset.",
+      });
+
+      // Refresh the page to ensure UI is completely reset
+      window.location.reload();
+    } catch (error: any) {
+      toast({
+        title: "Reset failed",
+        description: error.message || "Failed to reset authentication state",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <AuthContext.Provider
       value={{
-        authState,
+        user,
+        loading,
         signIn,
         signUp,
         signOut,
-        isAuthenticated,
-        isCurator,
+        resetAuth,
       }}
     >
       {children}

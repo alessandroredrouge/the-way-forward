@@ -4,6 +4,7 @@ import PageLayout from "@/components/shared/PageLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 // Import the challenges data from the Challenges page
 import { CHALLENGES } from "@/pages/challenges/Challenges";
@@ -50,7 +51,8 @@ interface IdeaFormData {
 }
 
 const SubmitIdea = () => {
-  const { authState } = useAuth();
+  const { user } = useAuth();
+  const { profile } = useUserProfile(user);
   const navigate = useNavigate();
   const [ideaDescription, setIdeaDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -83,14 +85,15 @@ const SubmitIdea = () => {
 
   // Set author and type_of_author from user profile when component mounts
   useEffect(() => {
-    if (authState.profile) {
+    if (profile) {
       setFormData((prev) => ({
         ...prev,
-        author: authState.profile.username || authState.profile.email,
-        type_of_author: authState.profile.type_of_user as AuthorType,
+        author: profile.username || user?.email || "",
+        type_of_author:
+          (profile.type_of_user as AuthorType) || AuthorType.Individual,
       }));
     }
-  }, [authState.profile]);
+  }, [profile, user]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -221,7 +224,7 @@ const SubmitIdea = () => {
     setError(null);
 
     // Ensure user is authenticated
-    if (!authState.user) {
+    if (!user) {
       setError("You must be logged in to submit an idea");
       setIsSubmitting(false);
       return;
@@ -231,7 +234,7 @@ const SubmitIdea = () => {
       // Create submission data with creator_id
       const submissionData = {
         ...formData,
-        creator_id: authState.user.id, // Add the creator_id from the authenticated user
+        creator_id: user.id, // Add the creator_id from the authenticated user
       };
 
       // Try different backend URLs to resolve CORS issues
@@ -272,9 +275,8 @@ const SubmitIdea = () => {
         competition: "",
         status: "early-stage",
         type_of_author:
-          (authState.profile?.type_of_user as AuthorType) ||
-          AuthorType.Individual,
-        author: authState.profile?.username || authState.profile?.email || "",
+          (profile?.type_of_user as AuthorType) || AuthorType.Individual,
+        author: profile?.username || profile?.email || "",
         sources: [],
         is_published: true,
       });
@@ -756,7 +758,7 @@ const SubmitIdea = () => {
                     name="type_of_author"
                     value={formData.type_of_author}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
                     required
                     disabled
                   >
@@ -784,7 +786,7 @@ const SubmitIdea = () => {
                     name="author"
                     value={formData.author}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
                     required
                     readOnly
                   />

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
+import { AlertCircle } from "lucide-react";
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState<string>("signin");
@@ -22,8 +23,10 @@ const Auth = () => {
   const [fullName, setFullName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isResetting, setIsResetting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { authState, signIn, signUp, isAuthenticated } = useAuth();
+  const { user, loading, signIn, signUp, resetAuth } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,20 +37,17 @@ const Auth = () => {
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (isAuthenticated() && !authState.isLoading) {
+    if (user && !loading) {
       navigate(from, { replace: true });
     }
-  }, [isAuthenticated, authState.isLoading, navigate, from]);
+  }, [user, loading, navigate, from]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     if (!email || !password) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+      setError("Please fill in all required fields.");
       return;
     }
 
@@ -56,8 +56,9 @@ const Auth = () => {
     try {
       await signIn(email, password);
       // The redirect will happen in the useEffect
-    } catch (error) {
+    } catch (error: any) {
       console.error("Sign in error:", error);
+      setError(error.message || "An error occurred during sign in");
     } finally {
       setIsSubmitting(false);
     }
@@ -65,13 +66,10 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     if (!email || !password || !fullName || !username) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+      setError("Please fill in all required fields.");
       return;
     }
 
@@ -80,10 +78,27 @@ const Auth = () => {
     try {
       await signUp(email, password, fullName, username);
       // The redirect will happen in the useEffect
-    } catch (error) {
+    } catch (error: any) {
       console.error("Sign up error:", error);
+      setError(error.message || "An error occurred during sign up");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleResetAuth = async () => {
+    setIsResetting(true);
+    try {
+      await resetAuth();
+      toast({
+        title: "Authentication reset",
+        description: "Please try signing in again.",
+      });
+    } catch (error: any) {
+      console.error("Reset error:", error);
+      setError(error.message || "An error occurred during reset");
+    } finally {
+      setIsResetting(false);
     }
   };
 
@@ -108,6 +123,20 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3 mb-4 flex items-start">
+              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2 mt-0.5" />
+              <div>
+                <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
+                  Authentication Error
+                </h3>
+                <p className="text-sm text-red-700 dark:text-red-400">
+                  {error}
+                </p>
+              </div>
+            </div>
+          )}
+
           <Tabs
             defaultValue="signin"
             value={activeTab}
@@ -153,9 +182,9 @@ const Auth = () => {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || loading}
                 >
-                  {isSubmitting ? "Signing in..." : "Sign In"}
+                  {isSubmitting || loading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
             </TabsContent>
@@ -208,9 +237,11 @@ const Auth = () => {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || loading}
                 >
-                  {isSubmitting ? "Creating account..." : "Create Account"}
+                  {isSubmitting || loading
+                    ? "Creating account..."
+                    : "Create Account"}
                 </Button>
               </form>
             </TabsContent>
@@ -220,9 +251,22 @@ const Auth = () => {
           <div className="text-sm text-center text-gray-500 dark:text-gray-400">
             By continuing, you agree to our Terms of Service and Privacy Policy.
           </div>
-          <div className="text-sm text-center">
-            If the Sign In / Sign Up procedure is stuck, try deleting your
-            cookies :)
+          <div className="flex flex-col space-y-2 w-full">
+            <div className="text-sm text-center">
+              Having trouble signing in?
+            </div>
+            <Button
+              variant="outline"
+              onClick={handleResetAuth}
+              disabled={isResetting}
+              className="w-full"
+            >
+              {isResetting ? "Resetting..." : "Reset Authentication State"}
+            </Button>
+            <div className="text-xs text-center text-gray-500">
+              This will clear your local authentication data and may help if the
+              sign-in process is stuck.
+            </div>
           </div>
         </CardFooter>
       </Card>
