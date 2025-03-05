@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { supabase } from "@/lib/supabase";
 
 // Import the challenges data from the Challenges page
 import { CHALLENGES } from "@/pages/challenges/Challenges";
@@ -237,24 +238,17 @@ const SubmitIdea = () => {
         creator_id: user.id, // Add the creator_id from the authenticated user
       };
 
-      // Try different backend URLs to resolve CORS issues
-      const response = await fetch("http://localhost:8000/api/v1/ideas/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        mode: "cors",
-        credentials: "include",
-        body: JSON.stringify(submissionData),
-      });
+      // Use Supabase client to insert the idea
+      const { data, error: supabaseError } = await supabase
+        .from("ideas")
+        .insert([submissionData])
+        .select()
+        .single();
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || "Failed to submit idea");
+      if (supabaseError) {
+        throw new Error(supabaseError.message);
       }
 
-      const data = await response.json();
       console.log("Idea submitted successfully:", data);
 
       setSuccess(true);
