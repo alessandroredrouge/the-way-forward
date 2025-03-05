@@ -129,8 +129,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       toast({
-        title: "Signed up successfully",
-        description: `Welcome, ${fullName}!`,
+        title: "Account created successfully!",
+        description:
+          "Please check your email (including spam folder) to verify your account before signing in for the first time.",
+        duration: 15000,
       });
     } catch (error: any) {
       toast({
