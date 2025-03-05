@@ -91,19 +91,6 @@ const Navigation = () => {
               </Link>
             ))}
 
-            {/* Dark mode toggle */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="ml-8 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors duration-200"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
-
             {/* Authentication UI */}
             {user ? (
               <DropdownMenu>
@@ -156,13 +143,11 @@ const Navigation = () => {
                 Sign In
               </Button>
             )}
-          </div>
 
-          <div className="sm:hidden flex items-center">
-            {/* Dark mode toggle for mobile */}
+            {/* Dark mode toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full mr-2"
+              className="ml-4 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors duration-200"
               aria-label="Toggle dark mode"
             >
               {darkMode ? (
@@ -171,7 +156,9 @@ const Navigation = () => {
                 <Moon className="w-5 h-5" />
               )}
             </button>
+          </div>
 
+          <div className="sm:hidden flex items-center">
             {/* Auth button for mobile */}
             {user ? (
               <Button
@@ -191,6 +178,19 @@ const Navigation = () => {
                 Sign In
               </Button>
             )}
+
+            {/* Dark mode toggle for mobile */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full mr-2"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
 
             {/* Mobile menu button */}
             <button
