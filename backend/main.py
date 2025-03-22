@@ -22,7 +22,8 @@ async def add_cors_headers(request: Request, call_next):
 # Add CORS middleware with proper configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
+    allow_origins=[\
+        "https://the-way-forward.onrender.com",
         "http://localhost:8080",
         "http://localhost:5173",
         "http://localhost:3000",
