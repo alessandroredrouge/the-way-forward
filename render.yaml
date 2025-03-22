@@ -1,17 +1,27 @@
 services:
-  - type: web
+  # Frontend (Static Site)
+  - type: static
     name: the-way-forward
-    env: docker
-    dockerfilePath: docker/production/docker-compose.prod.yml
+    buildCommand: cd frontend && npm install && npm run build
+    publishDir: frontend/dist
     envVars:
-      - key: PORT
-        value: 80
+      - key: VITE_API_URL
+        value: https://the-way-forward-api.onrender.com
+    branch: main
+
+  # Backend (Web Service)
+  - type: web
+    name: the-way-forward-api
+    env: docker
+    dockerfilePath: docker/production/backend.dockerfile
+    dockerContext: backend
+    envVars:
       - key: ENVIRONMENT
         value: production
-      - key: VITE_API_URL
-        value: /api
-    plan: starter # You can adjust this based on your needs
-    region: ohio # You can change this to your preferred region
+      - key: PORT
+        value: 8000
+    plan: starter
+    region: ohio
     numInstances: 1
     healthCheckPath: /
-    branch: main # Specify your deployment branch
+    branch: main
