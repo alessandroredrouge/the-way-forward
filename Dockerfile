@@ -46,8 +46,7 @@ RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy frontend build from frontend stage
-COPY --from=frontend-build /app/frontend/dist /var/www/html
-
+COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
 # Copy backend from backend stage
 COPY --from=backend /app/backend /app/backend
 
