@@ -47,14 +47,16 @@ RUN apk add --no-cache python3 py3-pip
 COPY --from=backend /app/backend /app/backend
 COPY --from=backend /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
-# Create startup script
+# Create start script and make it executable
+COPY --from=backend /app/backend /app/backend
 RUN echo '#!/bin/sh\n\
 nginx &\n\
 cd /app/backend && python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4\n\
-' > /start.sh && chmod +x /start.sh
+' > /docker-entrypoint.d/40-start-services.sh && \
+chmod +x /docker-entrypoint.d/40-start-services.sh
 
 # Expose ports for both services
 EXPOSE 80 8000
 
-# Start both services
-CMD ["/start.sh"]
+# Use the default nginx entrypoint
+# The nginx image will automatically execute scripts in /docker-entrypoint.d/
