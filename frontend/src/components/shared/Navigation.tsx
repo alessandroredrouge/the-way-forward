@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import logoSvg from "@/assets/icons/The Way Forward - New Logo Basic NO Writing.svg";
 
 const Navigation = () => {
   const { darkMode, setDarkMode } = useDarkMode();
@@ -63,8 +64,8 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0 flex items-center gap-2">
             <img
-              src="/src/assets/icons/The Way Forward - New Logo Basic NO Writing.svg"
-              alt="Logo"
+              src={logoSvg}
+              alt="the way forward Logo"
               className="h-8 w-8"
             />
             <Link
