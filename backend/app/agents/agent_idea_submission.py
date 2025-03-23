@@ -16,6 +16,7 @@ def market_estimate_tool() -> int:
 humanity_challenges = ["Climate Change", "AI Ethics", "Other Challenges"]
 time_horizons = ["Less than 1 year", "1-5 years", "5-10 years", "More than 10 years"]
 statuses = ["Early-stage", "Pilot", "Proven", "Scaling"]
+max_steps_manager = 25
 
 form_prompt= f"""
 You are an expert AI assistant that helps users fill out idea submission forms.
@@ -33,6 +34,7 @@ For list fields, provide items as a comma-separated list.
 For the market_estimate field, provide a numeric value.
 
 Try to write an answer for each field at least once. If you can't after two tries, leave it blank. Use the agents to get external information when needed.
+You have maximum {max_steps_manager} steps to complete the task.
 
 The form has the following fields:
 - title: A concise title for the idea
@@ -95,7 +97,7 @@ manager_agent = CodeAgent(
     managed_agents=[web_agent],
     model=model, 
     additional_authorized_imports=['json'],
-    max_steps=25,
+    max_steps=max_steps_manager,
     planning_interval=5,
     verbosity_level=2
     )
